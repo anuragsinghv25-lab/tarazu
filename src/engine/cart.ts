@@ -186,7 +186,7 @@ export function evaluateCart(cart: Cart, campaigns: Campaign[], ctx: CartCtx): C
     const stop = (g: GateKey, reason: string) => { e.gates[g] = false; e.stopAt = g; e.reason = reason; evals.push(e) }
 
     // WHO
-    if (!live) { stop('who', c.status === 'scheduled' ? `Scheduled: starts in ${c.startDay} days` : c.status === 'draft' ? 'Draft: not live yet' : 'Paused'); continue }
+    if (!live) { stop('who', c.status === 'scheduled' ? `Scheduled: starts in ${c.startDay} days` : c.status === 'draft' ? 'Draft: not live yet' : c.status === 'review' ? 'Waiting for approval' : c.status === 'approved' ? 'Approved, not yet live' : c.status === 'paused' ? 'Paused' : 'Ended'); continue }
     if (c.channel !== 'all' && c.channel !== cart.channel) { stop('who', 'Runs on another channel'); continue }
     if (c.segment !== 'all' && c.segment !== cart.segment) { stop('who', `Only for ${SEGMENTS[c.segment].toLowerCase()}`); continue }
     e.gates.who = true

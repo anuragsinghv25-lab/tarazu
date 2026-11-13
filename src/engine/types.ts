@@ -171,11 +171,33 @@ export type Reward =
   | { kind: 'points'; multiplier: number }
   | { kind: 'cashback'; pct: number; max: number }
 
+/** Lifecycle: Draft → In review → Approved → Scheduled → Live → Paused → Ended → Archived (Rejected, Expired as exits). */
+export type CampaignStatus = 'draft' | 'review' | 'approved' | 'rejected' | 'scheduled' | 'live' | 'paused' | 'ended' | 'archived'
+
+export interface AudienceRule { kind: 'new' | 'repeat' | 'lapsed' | 'member' | 'aov' | 'city' | 'app' | 'list'; value?: number; values?: string[] }
+
+/** Builder-only settings (R4). Optional so older campaigns keep working. */
+export interface LaunchSettings {
+  goal?: string
+  audience?: AudienceRule[]
+  codes?: { mode: 'auto' | 'public' | 'bulk'; prefix?: string; count?: number }
+  recurring?: 'none' | 'weekends' | 'evenings' | 'flash'
+  flashSlots?: { day: number; from: number; to: number }[]
+  countdown?: boolean
+  graceMinutes?: number
+  channels?: string[]
+  maxOrderPct?: number
+  reservedStock?: number
+  lossLeader?: boolean
+  version?: number
+  owner?: string
+}
+
 export interface Campaign {
   id: string
   name: string
   mechanic: string
-  status: 'live' | 'scheduled' | 'draft' | 'paused'
+  status: CampaignStatus
   channel: string
   /** Day offsets from today. */
   startDay: number
@@ -198,6 +220,7 @@ export interface Campaign {
   /** Expected redemptions per day, for budget burn-down. */
   dailyRedemptions: number
   note?: string
+  launch?: LaunchSettings
 }
 
 export interface CartLine { skuId: string; qty: number }

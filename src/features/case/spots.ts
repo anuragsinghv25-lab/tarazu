@@ -17,6 +17,9 @@ export function routeOf(id: string, s: SellerDef): string | null {
     alerts: '/watchtower', autonomy: '/watchtower', guardrails: '/watchtower',
     'debrief-headline': '/debrief', 'debrief-made': '/debrief', 'debrief-looked': '/debrief', 'debrief-categories': '/debrief', 'debrief-next': '/debrief',
     'copy-controls': '/copy', 'copy-drafts': '/copy', 'copy-preview': '/copy',
+    'launch-goal': '/launch', 'launch-audience': '/launch', 'launch-codes': '/launch', 'launch-channels': '/launch', 'launch-preflight': '/launch', 'launch-scale': '/launch',
+    'lifecycle-board': '/lifecycle', approvals: '/lifecycle?tab=approvals', 'guardrails-live': '/lifecycle?tab=guardrails',
+    'code-generate': '/codes', 'code-table': '/codes', storefront: '/storefront', 'edge-catalogue': '/edge-cases', 'edge-run': '/edge-cases',
   }
   return map[id] ?? null
 }
@@ -31,6 +34,7 @@ export function needsSeller(id: string): 'anaya' | 'own' | null {
 export const SCREEN_NAME: Record<string, string> = {
   '/': 'Overview', '/pulse': 'Stock Pulse', '/sku': 'The Scale', '/truth': 'Truth Lens', '/compare': 'Platform compare', '/campaigns': 'Campaign builder',
   '/sandbox': 'Cart Sandbox', '/plan': 'Season plan', '/bundles': 'Bundles', '/loyalty': 'Loyalty', '/brand': 'Brand mode', '/sellers': 'Demo sellers',
+  '/launch': 'Launch flow', '/lifecycle': 'Lifecycle', '/codes': 'Code studio', '/storefront': 'Shopper preview', '/edge-cases': 'Edge-case lab',
   '/ask': 'Ask Tarazu', '/brief': 'Brief to plan', '/watchtower': 'Watchtower', '/debrief': 'Sale debrief', '/copy': 'Offer copy',
 }
 export const screenName = (route: string) => SCREEN_NAME[route.startsWith('/sku') ? '/sku' : route.split('?')[0]] ?? route

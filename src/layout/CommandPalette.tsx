@@ -3,7 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Glasses, SlidersHorizontal, Zap, Package, Workflow, ShoppingCart,
-  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon,
+  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon, Rocket, KanbanSquare, KeyRound, FlaskConical,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useMind } from '@/state/mind'
@@ -24,6 +24,11 @@ const SCREENS = [
   { to: '/loyalty', label: 'Loyalty, referrals and win-back', icon: Crown },
   { to: '/brand', label: 'Brand mode: trade spend and gross-to-net', icon: Building2 },
   { to: '/sellers', label: 'Demo sellers and coverage', icon: Users },
+  { to: '/launch', label: 'Launch flow: build a new offer', icon: Rocket },
+  { to: '/lifecycle', label: 'Lifecycle board and approvals', icon: KanbanSquare },
+  { to: '/codes', label: 'Code studio', icon: KeyRound },
+  { to: '/storefront', label: 'Shopper preview', icon: Store },
+  { to: '/edge-cases', label: 'Edge-case lab', icon: FlaskConical },
   { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
   { to: '/brief', label: 'Brief to plan', icon: Wand2 },
   { to: '/watchtower', label: 'Watchtower alerts and autonomy', icon: Radar },

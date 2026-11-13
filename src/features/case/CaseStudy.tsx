@@ -276,7 +276,7 @@ function Scope() {
           )
         })}
       </div>
-      <p className="mt-2 text-[12px] text-ink-3">Won't have (this prototype): real marketplace APIs, payments, live creator data, production dynamic pricing. See the Beyond R3 roadmap.</p>
+      <p className="mt-2 text-[12px] text-ink-3">Won't have (this prototype): real marketplace APIs, payments, live creator data, production dynamic pricing, real multi-user approvals.</p>
     </section>
   )
 }
@@ -339,8 +339,8 @@ function Kpis() {
   const roadmap = [
     ['R1 · The Scale', 'Engine, Overview, Stock Pulse, the Scale, Truth Lens, Platform compare, Control Room, BA Lens', 'Shipped'],
     ['R2 · The Market', 'Four sellers, Campaign builder, Cart Sandbox, Season plan, Bundles, Loyalty, Brand mode', 'Shipped'],
-    ['R3 · The Mind', 'Six scripted AI features, story mode, this Case Study, dark mode, mobile', 'This release'],
-    ['R4 · The Launch', 'The builder journey: goal to live offer, approvals, lifecycle, edge cases', 'Next'],
+    ['R3 · The Mind', 'Six scripted AI features, story mode, this Case Study, dark mode, mobile', 'Shipped'],
+    ['R4 · The Launch', 'The builder journey: goal to live offer, codes, channel formats, pre-flight, approvals, lifecycle, guardrails, edge cases', 'This release'],
     ['R5 · The Reach', 'Creators, affiliates, referrals and community selling', 'Planned'],
     ['R6 · The Edge', 'Uplift targeting, ads vs discount, ONDC, subscribe and save, experiments', 'Planned'],
   ]
