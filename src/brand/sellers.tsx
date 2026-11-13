@@ -104,7 +104,7 @@ export function SellerMark({ id, size = 28, framed = true, className }: { id: Se
 }
 
 /** Mark + wordmark, as on the seller's own packaging. */
-export function SellerLogo({ id, size = 'md', descriptor = false, className }: { id: SellerId; size?: 'sm' | 'md' | 'lg'; descriptor?: boolean; className?: string }) {
+export function SellerLogo({ id, size = 'md', descriptor = false, onLight = false, className }: { id: SellerId; size?: 'sm' | 'md' | 'lg'; descriptor?: boolean; /** Always on a light surface (e.g. a storefront mock), even in dark mode. */ onLight?: boolean; className?: string }) {
   const b = SELLER_BRANDS[id]
   const s = { sm: { mark: 26, text: 14 }, md: { mark: 36, text: 18 }, lg: { mark: 50, text: 24 } }[size]
   const twoLine = b.lines.length > 1 && size !== 'sm'
@@ -112,10 +112,10 @@ export function SellerLogo({ id, size = 'md', descriptor = false, className }: {
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <SellerMark id={id} size={s.mark} framed={false} />
       <span className="leading-none">
-        <span className={cn('block text-[var(--s-ink)] dark:text-[var(--s-ink-dark)]', b.font === 'display' ? 'font-display font-semibold tracking-[-0.02em]' : 'font-sans font-bold tracking-[-0.04em]')} style={{ ['--s-ink' as string]: b.color.ink, ['--s-ink-dark' as string]: b.color.soft, fontSize: s.text, lineHeight: twoLine ? 0.98 : 1 }}>
+        <span className={cn('block text-[var(--s-ink)]', !onLight && 'dark:text-[var(--s-ink-dark)]', b.font === 'display' ? 'font-display font-semibold tracking-[-0.02em]' : 'font-sans font-bold tracking-[-0.04em]')} style={{ ['--s-ink' as string]: b.color.ink, ['--s-ink-dark' as string]: b.color.soft, fontSize: s.text, lineHeight: twoLine ? 0.98 : 1 }}>
           {twoLine ? <>{b.lines[0]}<br />{b.lines[1]}</> : b.name}
         </span>
-        {descriptor && <span className="mt-1.5 block text-[9.5px] font-medium tracking-[0.16em] text-[var(--s-ink)] uppercase opacity-70 dark:text-[var(--s-ink-dark)]" style={{ ['--s-ink' as string]: b.color.ink, ['--s-ink-dark' as string]: b.color.soft }}>{b.descriptor}</span>}
+        {descriptor && <span className={cn('mt-1.5 block text-[9.5px] font-medium tracking-[0.16em] text-[var(--s-ink)] uppercase opacity-70', !onLight && 'dark:text-[var(--s-ink-dark)]')} style={{ ['--s-ink' as string]: b.color.ink, ['--s-ink-dark' as string]: b.color.soft }}>{b.descriptor}</span>}
       </span>
     </span>
   )

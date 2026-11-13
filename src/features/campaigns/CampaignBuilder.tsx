@@ -18,7 +18,7 @@ import { fmtDay } from '@/lib/dates'
 import { inrAxis, inrShort } from '@/lib/format'
 import { cn } from '@/lib/cn'
 
-const STATUS_TONE = { live: 'gain', scheduled: 'brass', draft: 'quiet', paused: 'warn' } as const
+const STATUS_TONE = { live: 'gain', scheduled: 'brass', draft: 'quiet', paused: 'warn', review: 'brass', approved: 'gain', rejected: 'loss', ended: 'quiet', archived: 'quiet' } as const
 
 export function CampaignBuilder() {
   const seller = useSeller()
@@ -64,7 +64,7 @@ export function CampaignBuilder() {
                       <span className="line-clamp-1 flex-1 text-[12.5px] font-medium">{c.name}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-1.5 pl-7">
-                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : { live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[var(--color-brass-ink)]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[var(--color-brass-ink)]' }[c.status])}>{c.status}</span>
+                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : ({ live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[var(--color-brass-ink)]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[var(--color-brass-ink)]', review: 'bg-brass-soft text-[var(--color-brass-ink)]', approved: 'bg-gain-soft text-gain', rejected: 'bg-paper-2 text-ink-3', ended: 'bg-paper-2 text-ink-3', archived: 'bg-paper-2 text-ink-3' } as Record<string, string>)[c.status])}>{c.status}</span>
                       <span className={cn('text-[10.5px]', c.id === selected?.id ? 'text-paper/60' : 'text-ink-3')}>{c.mechanic}</span>
                     </div>
                     <div className={cn('mt-1.5 ml-7 h-1 overflow-hidden rounded-full', c.id === selected?.id ? 'bg-paper/15' : 'bg-paper-2')}>

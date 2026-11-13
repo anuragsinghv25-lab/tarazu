@@ -72,6 +72,32 @@ Dotted-underlined terms explain themselves on hover, and every new element has a
 | **Season plan** | **Demo sellers** |
 | ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
 
+## Release 4 · "The Launch"
+
+The builder half of a promotion engine: the journey of creating, checking, approving, launching and controlling an offer,
+and what the shopper sees. Competitors build first and find out later whether it paid; Tarazu weighs while you build.
+
+| Screen | What it does |
+| --- | --- |
+| **Launch flow** | 13 steps from a goal ("clear old stock", "win back lapsed buyers", "beat a rival's price"…) to a live offer: audience, conditions, reward, codes, limits, schedule, channels, stacking, pre-flight, shopper preview, approval, publish. A mini-Scale beside every step shows given away vs earned. |
+| **Audience builder** | New, repeat, lapsed N days, members, average order above, city, app, uploaded list; live audience size and the share who'd buy anyway. |
+| **Channel format mapping** | One offer translated into each channel's format (Amazon coupon / Lightning Deal, Flipkart Deal of the Day / Buy more save more, Meesho product discount, own site), marked as built, adapted or can't run. Illustrative, not official rules. |
+| **Pre-flight check** | Margin floor, profit cliff, never above MRP, empty audience, offers it would stack or compete with, the worst stacked cart, leak-prone codes, budget run-out, unsupported channels, fake-urgency countdowns, sale-event overlap. Blockers stop publishing; most come with a one-click fix. |
+| **Lifecycle** | Kanban board (Draft → In review → Approved → Scheduled → Live → Paused → Ended → Archived) with drag-and-drop that only allows legal moves, an audit log and version diffs per campaign. |
+| **Approvals** | Maker-checker: offers above the policy (discount, budget, code count, loss leaders, pre-flight warnings; trade promotions always) go to review. Switch to the approver role to approve, or reject with a reason. |
+| **Guardrails** | Live offers auto-pause on a margin breach, redemption spike or budget hit, and auto-cap when a code shows up on a coupon site. Simulate each event and watch it act. |
+| **Code studio** | Thousands of single-use codes: random, non-sequential, collision-checked, no 0/O or 1/I. Track status, block a code, export CSV. |
+| **Shopper preview** | Listing badge, product page, cart nudge, checkout breakdown and coupon wallet in the seller's own brand, priced by the same engine as the Cart Sandbox. |
+| **Edge-case lab** | 49 edge cases in 10 areas, each with its rule. 11 run live: change the inputs and compare "without the rule" against "with Tarazu's rule". |
+
+| Launch flow | Pre-flight check |
+| --- | --- |
+| ![Launch flow](docs/screenshots/launch-flow.png) | ![Pre-flight check](docs/screenshots/preflight.png) |
+| **Channel format mapping** | **Lifecycle board** |
+| ![Channel mapping](docs/screenshots/channel-mapping.png) | ![Lifecycle](docs/screenshots/lifecycle.png) |
+| **Shopper preview** | **Edge-case lab** |
+| ![Shopper preview](docs/screenshots/shopper-preview.png) | ![Edge-case lab](docs/screenshots/edge-case-lab.png) |
+
 ## Release 3 · "The Mind"
 
 An AI layer on top of the engine, with one rule: **the engine computes every number; the AI only chooses which numbers
@@ -151,8 +177,8 @@ deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overs
 | --- | --- |
 | **1 · The Scale** (done) | Design system, engine, Meera's data, five decision screens, Control Room, BA Lens |
 | **2 · The Market** (done) | Campaign builder, Cart Sandbox, season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
-| **3 · The Mind** (this) | Six AI features, story mode, Case Study hub, night mode, mobile |
-| **4 · The Launch** | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
+| **3 · The Mind** (done) | Six AI features, story mode, Case Study hub, night mode, mobile |
+| **4 · The Launch** (this) | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
 | **5 · The Reach** | Creators and influencer codes, affiliates, referral 2.0, reseller mode, community drops |
 | **6 · The Edge** | Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders and price-drop protection, proper experiments |
 

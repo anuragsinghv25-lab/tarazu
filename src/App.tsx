@@ -29,6 +29,11 @@ const loaders = {
   Debrief: () => import('@/features/mind/Debrief'),
   CopyStudio: () => import('@/features/mind/CopyStudio'),
   CaseStudy: () => import('@/features/case/CaseStudy'),
+  LaunchFlow: () => import('@/features/launch/LaunchFlow'),
+  Lifecycle: () => import('@/features/launch/Lifecycle'),
+  CodeStudio: () => import('@/features/launch/CodeStudio'),
+  Storefront: () => import('@/features/launch/Storefront'),
+  EdgeLab: () => import('@/features/launch/EdgeLab'),
 }
 const PRELOAD = Object.values(loaders) as (() => Promise<unknown>)[]
 const page = <K extends keyof typeof loaders>(name: K) =>
@@ -51,6 +56,11 @@ const Watchtower = page('Watchtower')
 const Debrief = page('Debrief')
 const CopyStudio = page('CopyStudio')
 const CaseStudy = page('CaseStudy')
+const LaunchFlow = page('LaunchFlow')
+const Lifecycle = page('Lifecycle')
+const CodeStudio2 = page('CodeStudio')
+const Storefront = page('Storefront')
+const EdgeLab = page('EdgeLab')
 
 export default function App() {
   return (
@@ -76,6 +86,11 @@ export default function App() {
           <Route path="/debrief" element={<Debrief />} />
           <Route path="/copy" element={<CopyStudio />} />
           <Route path="/case-study" element={<CaseStudy />} />
+          <Route path="/launch" element={<LaunchFlow />} />
+          <Route path="/lifecycle" element={<Lifecycle />} />
+          <Route path="/codes" element={<CodeStudio2 />} />
+          <Route path="/storefront" element={<Storefront />} />
+          <Route path="/edge-cases" element={<EdgeLab />} />
           <Route path="*" element={<Overview />} />
         </Routes>
       </Suspense>

@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Workflow, ShoppingCart, CalendarDays, Gift, Crown, Building2,
-  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2, Radar, FileText, PenLine, Bell, Moon, Sun,
+  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2, Radar, FileText, PenLine, Bell, Moon, Sun, Rocket, KanbanSquare, KeyRound, FlaskConical,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SellerMark } from '@/brand/sellers'
@@ -12,7 +12,7 @@ import { useAlerts } from '@/features/mind/alerts'
 import { Kbd, Switch } from '@/components/ui'
 import { Spot } from '@/components/Spot'
 import { useStore } from '@/state/store'
-import { useSeller } from '@/state/hooks'
+import { useCampaigns, useSeller } from '@/state/hooks'
 import { SELLERS, type SellerDef } from '@/data/sellers'
 import { cn } from '@/lib/cn'
 
@@ -22,6 +22,7 @@ function useNav(): { section: string; soon?: boolean; items: Item[] }[] {
   const seller = useSeller()
   const alerts = useAlerts().filter((a) => a.status === 'open').length
   const startStory = useMind((s) => s.startStory)
+  const inReview = useCampaigns().filter((k) => k.status === 'review').length
   return [
     { section: 'Decide', items: [
       { to: '/', label: 'Overview', icon: LayoutDashboard },
@@ -37,6 +38,13 @@ function useNav(): { section: string; soon?: boolean; items: Item[] }[] {
       { to: '/bundles', label: 'Bundles', icon: Gift },
       { to: '/loyalty', label: 'Loyalty', icon: Crown, badge: seller.ownChannel ? undefined : 'locked' },
       { to: '/brand', label: 'Brand mode', icon: Building2, badge: seller.id === 'anaya' ? undefined : 'Anaya' },
+    ] },
+    { section: 'Launch', items: [
+      { to: '/launch', label: 'Launch flow', icon: Rocket },
+      { to: '/lifecycle', label: 'Lifecycle', icon: KanbanSquare, badge: inReview ? String(inReview) : undefined },
+      { to: '/codes', label: 'Code studio', icon: KeyRound },
+      { to: '/storefront', label: 'Shopper preview', icon: Store },
+      { to: '/edge-cases', label: 'Edge-case lab', icon: FlaskConical },
     ] },
     { section: 'Think', items: [
       { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
@@ -59,17 +67,17 @@ function Sidebar() {
   return (
     <aside className="sticky top-0 hidden h-screen w-[244px] shrink-0 flex-col border-r border-rule bg-paper/80 px-4 py-5 backdrop-blur lg:flex">
       <Logo />
-      <nav className="mt-7 flex-1 space-y-5 overflow-y-auto pr-1">
+      <nav aria-label="Main" className="mt-5 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1 pb-4 [mask-image:linear-gradient(to_bottom,black_calc(100%-28px),transparent)]">
         {nav.map((g) => (
           <div key={g.section}>
-            <div className="mb-1.5 px-2.5 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">{g.section}</div>
+            <div className="mb-1 px-2.5 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">{g.section}</div>
             <ul className="space-y-0.5">
               {g.items.map((it) => {
                 const Icon = it.icon
                 if (!it.to) {
                   return (
                     <li key={it.label}>
-                      <button onClick={it.run} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-[13.5px] text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink">
+                      <button onClick={it.run} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[5px] text-left text-[13px] text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink">
                         <Icon size={16} strokeWidth={1.75} /> <span className="flex-1">{it.label}</span><span className="text-[10px] text-ink-3">▶</span>
                       </button>
                     </li>
@@ -78,7 +86,7 @@ function Sidebar() {
                 const active = it.match ? pathname.startsWith(it.match) : pathname === it.to
                 return (
                   <li key={it.label}>
-                    <NavLink to={it.to} className={cn('group flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px] transition-colors', active ? 'bg-primary text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink')}>
+                    <NavLink to={it.to} className={cn('group flex items-center gap-2.5 rounded-lg px-2.5 py-[5px] text-[13px] transition-colors', active ? 'bg-primary text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink')}>
                       <Icon size={16} strokeWidth={1.75} className={active ? 'text-brass-2' : ''} />
                       <span className="flex-1">{it.label}</span>
                       {it.badge && <span className={cn('rounded-full px-1.5 py-px text-[9.5px] font-medium', it.alert ? 'num bg-loss text-white' : active ? 'bg-paper/15 text-paper/70' : 'bg-paper-2 text-ink-3')}>{it.badge}</span>}
@@ -90,8 +98,8 @@ function Sidebar() {
           </div>
         ))}
       </nav>
-      <div className="mt-3 rounded-xl border border-dashed border-rule p-3 text-[11.5px] leading-snug text-ink-3">
-        Prototype · Release 3 of 6. All sellers, brands and data are fictional; fees are illustrative; the AI is scripted on engine numbers.
+      <div className="mt-2 rounded-lg border border-dashed border-rule px-2.5 py-2 text-[10.5px] leading-snug text-ink-3" title="All sellers, brands and data are fictional; fees are illustrative; the AI is scripted on engine numbers.">
+        Prototype · Release 4 of 6 · fictional sellers and data
       </div>
     </aside>
   )
