@@ -75,7 +75,7 @@ export function PlatformCompare() {
                   <Money value={x.r.net} signed className={cn('mt-4 text-[34px] leading-none font-medium', x.r.net >= 0 ? 'text-gain' : 'text-loss')} />
                   <div className="mt-1 text-[11.5px] text-ink-3">net impact vs no deal</div>
                   <div className="mt-3 h-1.5 rounded-full bg-paper-2">
-                    <motion.div className="h-full rounded-full" style={{ background: x.r.net >= 0 ? '#1e7b4f' : '#c2421c' }} animate={{ width: `${(Math.abs(x.r.net) / maxAbs) * 100}%` }} />
+                    <motion.div className="h-full rounded-full" style={{ background: x.r.net >= 0 ? 'var(--color-gain)' : 'var(--color-loss)' }} animate={{ width: `${(Math.abs(x.r.net) / maxAbs) * 100}%` }} />
                   </div>
                   <dl className="mt-4 grid grid-cols-2 gap-y-1.5 text-[12px]">
                     <dt className="text-ink-3">Units sold</dt><dd className="num text-right text-ink">{units(x.r.promoUnits)}</dd>

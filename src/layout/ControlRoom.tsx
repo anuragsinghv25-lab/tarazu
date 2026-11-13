@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { X, RotateCcw, Zap, Lock } from 'lucide-react'
+import { X, RotateCcw, Zap } from 'lucide-react'
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
 import { useStore, AFFECTS } from '@/state/store'
@@ -8,6 +8,7 @@ import { useSeller } from '@/state/hooks'
 import { Segmented, Slider, Eyebrow } from '@/components/ui'
 import { Spot } from '@/components/Spot'
 import { cn } from '@/lib/cn'
+import { AutonomyDial } from '@/features/mind/alerts'
 
 const WIDGET_NAME: Record<string, string> = {
   opportunity: 'Opportunity', actions: 'Top actions', 'pulse-grid': 'Stock Pulse', scale: 'Scale', curve: 'Profit curve',
@@ -133,9 +134,9 @@ export function ControlRoom() {
                 <Row k="dataQuality" label="Sales data quality" value={c.dataQuality} hint="Messy feeds lower confidence on every recommendation">
                   <Segmented<DataQuality> size="sm" value={c.dataQuality} onChange={pick('dataQuality')} options={[{ value: 'clean', label: 'Clean' }, { value: 'messy', label: 'Messy' }]} />
                 </Row>
-                <div className="py-3 opacity-60">
-                  <div className="flex items-center justify-between text-[13px] font-medium text-ink"><span>AI autonomy</span><span className="flex items-center gap-1 text-[11px] text-ink-3"><Lock size={11} /> Release 3</span></div>
-                  <div className="text-[11.5px] text-ink-3">Suggest only → ask before acting → act within guardrails</div>
+                <div className="py-3">
+                  <div className="mb-2 flex items-center justify-between text-[13px] font-medium text-ink"><span>AI autonomy</span><span className="text-[11px] text-ink-3">Watchtower</span></div>
+                  <AutonomyDial />
                 </div>
               </div>
             </section>

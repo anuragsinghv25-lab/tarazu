@@ -84,7 +84,7 @@ export function StockPulse() {
                     >
                       <span className="leading-tight"><span className="line-clamp-2 text-[10px] text-ink-2">{r.sku.line}</span>{r.sku.variant !== 'regular' && r.sku.variant !== 'set' && r.sku.variant !== 'single' && <span className="block truncate text-[9px] text-ink-3">{r.sku.variant}</span>}</span>
                       <span className="flex items-end justify-between">
-                        <span className="num text-[17px] leading-none font-semibold" style={{ color: r.health === 'healthy' ? '#4b5563' : m.color }}>{wos >= 99 ? '99+' : wos.toFixed(wos < 10 ? 1 : 0)}</span>
+                        <span className="num text-[17px] leading-none font-semibold" style={{ color: r.health === 'healthy' ? 'var(--color-ink-2)' : m.color }}>{wos >= 99 ? '99+' : wos.toFixed(wos < 10 ? 1 : 0)}</span>
                         {breathe && <span className="mb-0.5 h-2 w-2 animate-breathe rounded-full" style={{ background: m.color, ['--breathe' as string]: m.speed }} />}
                       </span>
                     </motion.button>

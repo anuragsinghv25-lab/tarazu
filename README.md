@@ -72,6 +72,38 @@ Dotted-underlined terms explain themselves on hover, and every new element has a
 | **Season plan** | **Demo sellers** |
 | ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
 
+## Release 3 · "The Mind"
+
+An AI layer on top of the engine, with one rule: **the engine computes every number; the AI only chooses which numbers
+answer the question and says them in plain words.** In this prototype the AI is scripted (no model calls), so every answer is
+reproducible and every figure is traceable. Answers recompute live when the Control Room changes.
+
+| Feature | What it does |
+| --- | --- |
+| **Ask Tarazu** | A copilot in English, Hindi or Hinglish ("Big Billion Days mein kya daalun?"). Answers come with numbers, tappable rows that open the exact screen with the element highlighted, and a "how I worked this out" trace. `⌘K` also asks. |
+| **Brief to plan** | Write a goal ("clear ₹2 L of old stock, keep margin above 20%, don't touch face serums"). Tarazu shows how it read the brief as chips, sets the engine to match, builds the plan from its own recommendations, says honestly when the target can't be met, and adds the offers as drafts. |
+| **Watchtower** | A proactive agent: aged stock, a rival's price cut, leaking codes (found by running test carts), budgets burning early, offers nobody uses, promo fatigue, over-claimed deductions. Each alert has the money at stake and one action. |
+| **Autonomy dial + guardrails** | Suggest only → Ask before acting → Act within guardrails (max markdown, max spend per action, protect bestsellers). Auto-actions are listed with an undo. |
+| **Sale debrief** | The Truth Lens as a morning-after report: headline, what made money, what only looked good, profit by category, and what to change next time. Copy or print. |
+| **Offer copy studio** | Deal title, banner, WhatsApp broadcast, SMS and caption in four tones and three languages (English, Hinglish, हिंदी), built from the offer's facts and checked: length, real end date, no unprovable claims, T&C, opt-out, `#ad` on creator posts. |
+
+Also in this release:
+
+- **Story mode:** a guided 8-step walk through the product on the current seller's data (problem → see it → the trap → decide → where → plan → watch → outcome), pointing at each element. Arrow keys work.
+- **Case Study hub:** problem sizing across four sellers, a clickable journey map, an animated as-is/to-be process, a living traceability matrix (every BA Lens note → story → screen → KPI; click to open it), a gap map, a MoSCoW scope board, assumptions tied to Control Room settings, KPIs and the roadmap.
+- **Night market mode:** a dark theme. Every chart and the Scale read the same colour tokens, so they switch too.
+- **Mobile:** every screen checked at 390 px with no sideways scroll; story mode and the AI screens work on a phone.
+
+| Ask Tarazu | Watchtower |
+| --- | --- |
+| ![Ask Tarazu](docs/screenshots/ask-tarazu.png) | ![Watchtower](docs/screenshots/watchtower.png) |
+| **Brief to plan** | **Sale debrief** |
+| ![Brief to plan](docs/screenshots/brief-to-plan.png) | ![Sale debrief](docs/screenshots/sale-debrief.png) |
+| **Offer copy studio** | **Case Study** |
+| ![Offer copy studio](docs/screenshots/offer-copy.png) | ![Case Study](docs/screenshots/case-study.png) |
+| **Story mode** | **Night market mode** |
+| ![Story mode](docs/screenshots/story-mode.png) | ![Night market mode](docs/screenshots/night-mode.png) |
+
 ## Brand
 
 | Loading screen | Demo sellers |
@@ -118,8 +150,11 @@ deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overs
 | Release | Scope |
 | --- | --- |
 | **1 · The Scale** (done) | Design system, engine, Meera's data, five decision screens, Control Room, BA Lens |
-| **2 · The Market** (this) | Campaign builder (visual rules, caps, budgets), Cart Sandbox (stacking and leakage), season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
-| **3 · The Mind** | Six AI features (copilot, brief to plan, Watchtower alerts, sale debrief, offer copy, autonomy dial), story mode, interactive case study hub, dark mode |
+| **2 · The Market** (done) | Campaign builder, Cart Sandbox, season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
+| **3 · The Mind** (this) | Six AI features, story mode, Case Study hub, night mode, mobile |
+| **4 · The Launch** | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
+| **5 · The Reach** | Creators and influencer codes, affiliates, referral 2.0, reseller mode, community drops |
+| **6 · The Edge** | Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders and price-drop protection, proper experiments |
 
 ## Run it
 

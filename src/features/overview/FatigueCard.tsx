@@ -49,14 +49,14 @@ export function FatigueCard() {
         <Eyebrow>Promo fatigue · last 8 weeks</Eyebrow>
         <div className="mt-2 flex items-center gap-4">
           <svg viewBox="0 0 192 108" className="w-[150px] shrink-0" role="img" aria-label={`Promo dependency ${pct(now)}`}>
-            <path d={arc(0, 0.25)} stroke="#1e7b4f" strokeWidth="12" fill="none" strokeOpacity=".85" />
-            <path d={arc(0.25, 0.5)} stroke="#d97706" strokeWidth="12" fill="none" strokeOpacity=".85" />
-            <path d={arc(0.5, 1)} stroke="#c2421c" strokeWidth="12" fill="none" strokeOpacity=".85" />
+            <path d={arc(0, 0.25)} stroke="var(--color-gain)" strokeWidth="12" fill="none" strokeOpacity=".85" />
+            <path d={arc(0.25, 0.5)} stroke="var(--color-warn)" strokeWidth="12" fill="none" strokeOpacity=".85" />
+            <path d={arc(0.5, 1)} stroke="var(--color-loss)" strokeWidth="12" fill="none" strokeOpacity=".85" />
             <motion.g style={{ rotate: angle, originX: `${CX}px`, originY: `${CY}px` }}>
-              <line x1={CX} y1={CY} x2={CX} y2={CY - R + 8} stroke="#0b3d2e" strokeWidth="3" strokeLinecap="round" />
+              <line x1={CX} y1={CY} x2={CX} y2={CY - R + 8} stroke="var(--color-primary)" strokeWidth="3" strokeLinecap="round" />
             </motion.g>
-            <circle cx={CX} cy={CY} r="7" fill="#0b3d2e" />
-            <circle cx={CX} cy={CY} r="3" fill="#f59e0b" />
+            <circle cx={CX} cy={CY} r="7" fill="var(--color-primary)" />
+            <circle cx={CX} cy={CY} r="3" fill="var(--color-brass-2)" />
           </svg>
           <div>
             <div className="num text-[30px] leading-none font-semibold" style={{ color: band.color }}>{pct(now)}</div>

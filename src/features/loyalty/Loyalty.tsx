@@ -36,9 +36,9 @@ function Locked() {
       </PageHeader>
       <Spot id="loyalty-locked">
         <Card className="relative overflow-hidden p-6 md:p-8">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background:repeating-linear-gradient(135deg,#0b3d2e_0_2px,transparent_2px_14px)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background:repeating-linear-gradient(135deg,var(--color-primary)_0_2px,transparent_2px_14px)]" />
           <div className="relative grid gap-6 md:grid-cols-[auto_1fr]">
-            <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-brass-2"><Lock size={26} /></div>
+            <div className="grid h-16 w-16 place-items-center rounded-2xl bg-hero text-brass-2"><Lock size={26} /></div>
             <div>
               <h2 className="display text-[26px] text-ink">The opportunity Tarazu shows {seller.name}</h2>
               <div className="mt-4 grid gap-3 md:grid-cols-3">
@@ -131,12 +131,12 @@ function Program({ L }: { L: LoyaltyData }) {
                 <div className="mt-1 h-[210px]">
                   <ResponsiveContainer>
                     <AreaChart data={fc} margin={{ top: 8, right: 4, bottom: 0, left: -6 }}>
-                      <defs><linearGradient id="liab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c2421c" stopOpacity={0.28} /><stop offset="1" stopColor="#c2421c" stopOpacity={0.02} /></linearGradient></defs>
-                      <CartesianGrid vertical={false} stroke="#e2e8e4" />
-                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
-                      <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={false} tickLine={false} width={48} />
-                      <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Liability']} />
-                      <Area dataKey="liability" stroke="#c2421c" strokeWidth={2} fill="url(#liab)" isAnimationActive={false} />
+                      <defs><linearGradient id="liab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--color-loss)" stopOpacity={0.28} /><stop offset="1" stopColor="var(--color-loss)" stopOpacity={0.02} /></linearGradient></defs>
+                      <CartesianGrid vertical={false} stroke="var(--color-rule-2)" />
+                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: 'var(--color-ink-3)' }} axisLine={{ stroke: 'var(--color-rule)' }} tickLine={false} />
+                      <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10.5, fill: 'var(--color-ink-3)' }} axisLine={false} tickLine={false} width={48} />
+                      <Tooltip contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-rule)', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Liability']} />
+                      <Area dataKey="liability" stroke="var(--color-loss)" strokeWidth={2} fill="url(#liab)" isAnimationActive={false} />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>

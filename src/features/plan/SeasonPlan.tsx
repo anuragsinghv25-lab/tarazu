@@ -98,7 +98,7 @@ function Calendar() {
                 {events.map((e) => (
                   <div key={e.label} className={cn('absolute top-1.5 flex h-7 items-center overflow-hidden rounded-lg px-2 text-[11.5px] font-medium whitespace-nowrap', e.kind === 'event' ? 'bg-brass text-card' : e.kind === 'quiet' ? 'bg-loss-soft text-loss' : 'bg-gain-soft text-gain')} style={{ left: x(e.day), width: w(e.day, e.day + Math.max(e.length, 5)) }}>{e.label}</div>
                 ))}
-                {quiet && <div className="absolute top-1.5 flex h-7 items-center px-2 text-[11px] text-[#92400e]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }}>quiet week</div>}
+                {quiet && <div className="absolute top-1.5 flex h-7 items-center px-2 text-[11px] text-[var(--color-brass-ink)]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }}>quiet week</div>}
               </Row>
               <div className="py-1.5 pt-3 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Tarazu's recommended offers</div>
               {promos.map((r, i) => (
@@ -192,17 +192,17 @@ function Clearance() {
           <div className="mt-4 h-[280px]">
             <ResponsiveContainer>
               <ComposedChart data={data} margin={{ top: 10, right: 8, bottom: 0, left: 0 }}>
-                <defs><linearGradient id="lad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1e7b4f" stopOpacity={0.25} /><stop offset="1" stopColor="#1e7b4f" stopOpacity={0.02} /></linearGradient></defs>
-                <CartesianGrid vertical={false} stroke="#e2e8e4" />
-                <XAxis dataKey="week" tickFormatter={(v) => (v === 0 ? 'now' : `wk ${v}`)} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
-                <YAxis yAxisId="u" tickFormatter={(v) => units(v)} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={false} tickLine={false} width={46} />
-                <YAxis yAxisId="d" orientation="right" domain={[0, 80]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: '#b45309' }} axisLine={false} tickLine={false} width={36} />
-                <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => (v === 0 ? 'Now' : `Week ${v}`)}
+                <defs><linearGradient id="lad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--color-gain)" stopOpacity={0.25} /><stop offset="1" stopColor="var(--color-gain)" stopOpacity={0.02} /></linearGradient></defs>
+                <CartesianGrid vertical={false} stroke="var(--color-rule-2)" />
+                <XAxis dataKey="week" tickFormatter={(v) => (v === 0 ? 'now' : `wk ${v}`)} tick={{ fontSize: 11, fill: 'var(--color-ink-3)' }} axisLine={{ stroke: 'var(--color-rule)' }} tickLine={false} />
+                <YAxis yAxisId="u" tickFormatter={(v) => units(v)} tick={{ fontSize: 11, fill: 'var(--color-ink-3)' }} axisLine={false} tickLine={false} width={46} />
+                <YAxis yAxisId="d" orientation="right" domain={[0, 80]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: 'var(--color-brass)' }} axisLine={false} tickLine={false} width={36} />
+                <Tooltip contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-rule)', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => (v === 0 ? 'Now' : `Week ${v}`)}
                   formatter={(v, n) => (n === 'Discount' ? [`${v}%`, n] : [`${units(Number(v))} units left`, n])} />
-                <Bar yAxisId="d" dataKey="d" name="Discount" fill="#f59e0b" fillOpacity={0.35} radius={[4, 4, 0, 0]} barSize={22} />
-                <Line yAxisId="u" dataKey="nothing" name="Do nothing" stroke="#c2421c" strokeDasharray="4 3" dot={false} strokeWidth={1.8} />
-                <Line yAxisId="u" dataKey="flat" name={k.flat.label} stroke="#7a8580" dot={false} strokeWidth={1.8} />
-                <Area yAxisId="u" dataKey="ladder" name="Tarazu ladder" stroke="#1e7b4f" strokeWidth={2.5} fill="url(#lad)" dot={{ r: 3, fill: '#1e7b4f' }} isAnimationActive={false} />
+                <Bar yAxisId="d" dataKey="d" name="Discount" fill="var(--color-brass-2)" fillOpacity={0.35} radius={[4, 4, 0, 0]} barSize={22} />
+                <Line yAxisId="u" dataKey="nothing" name="Do nothing" stroke="var(--color-loss)" strokeDasharray="4 3" dot={false} strokeWidth={1.8} />
+                <Line yAxisId="u" dataKey="flat" name={k.flat.label} stroke="var(--color-ink-3)" dot={false} strokeWidth={1.8} />
+                <Area yAxisId="u" dataKey="ladder" name="Tarazu ladder" stroke="var(--color-gain)" strokeWidth={2.5} fill="url(#lad)" dot={{ r: 3, fill: 'var(--color-gain)' }} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -272,11 +272,11 @@ function Duel() {
               <div key={m.label} className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                 <div className="flex items-center justify-end gap-2">
                   <span className={cn('num text-[13px]', aWins ? 'font-semibold text-ink' : 'text-ink-3')}>{m.fmt(va)}</span>
-                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2 [direction:rtl]"><motion.div className="h-full rounded-full" style={{ background: va < 0 ? '#c2421c' : aWins ? '#1e7b4f' : '#a3b0aa' }} animate={{ width: `${(Math.abs(va) / max) * 100}%` }} /></div>
+                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2 [direction:rtl]"><motion.div className="h-full rounded-full" style={{ background: va < 0 ? 'var(--color-loss)' : aWins ? 'var(--color-gain)' : 'var(--color-ink-4)' }} animate={{ width: `${(Math.abs(va) / max) * 100}%` }} /></div>
                 </div>
                 <div className="w-[150px] text-center text-[11.5px] leading-tight text-ink-3 md:w-[210px]">{m.label}</div>
                 <div className="flex items-center gap-2">
-                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2"><motion.div className="h-full rounded-full" style={{ background: vb < 0 ? '#c2421c' : bWins ? '#1e7b4f' : '#a3b0aa' }} animate={{ width: `${(Math.abs(vb) / max) * 100}%` }} /></div>
+                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2"><motion.div className="h-full rounded-full" style={{ background: vb < 0 ? 'var(--color-loss)' : bWins ? 'var(--color-gain)' : 'var(--color-ink-4)' }} animate={{ width: `${(Math.abs(vb) / max) * 100}%` }} /></div>
                   <span className={cn('num text-[13px]', bWins ? 'font-semibold text-ink' : 'text-ink-3')}>{m.fmt(vb)}</span>
                 </div>
               </div>

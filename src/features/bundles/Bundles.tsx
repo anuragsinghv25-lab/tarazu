@@ -69,11 +69,11 @@ function Matchboard({ pairs, anchors, sel, onSel }: { pairs: Pair[]; anchors: Pa
       <div ref={wrap} className="relative grid grid-cols-2 gap-10 md:gap-24">
         <svg className="pointer-events-none absolute inset-0 overflow-visible" width={size.w} height={size.h} aria-hidden>
           <defs>
-            <linearGradient id="beam-g" x1="0" x2="1"><stop offset="0" stopColor="#d97706" /><stop offset="1" stopColor="#1e7b4f" /></linearGradient>
+            <linearGradient id="beam-g" x1="0" x2="1"><stop offset="0" stopColor="var(--color-warn)" /><stop offset="1" stopColor="var(--color-gain)" /></linearGradient>
           </defs>
           {paths.map(({ d, i }) => d && (
             <g key={i}>
-              <path d={d} fill="none" stroke={i === sel ? 'url(#beam-g)' : '#cbd5d1'} strokeWidth={i === sel ? 2.5 : 1.2} />
+              <path d={d} fill="none" stroke={i === sel ? 'url(#beam-g)' : 'var(--color-rule)'} strokeWidth={i === sel ? 2.5 : 1.2} />
               {i === sel && <path d={d} fill="none" stroke="#fff1d2" strokeWidth={3} strokeLinecap="round" strokeDasharray="10 220" className="[animation:dash_2.2s_linear_infinite]" />}
             </g>
           ))}

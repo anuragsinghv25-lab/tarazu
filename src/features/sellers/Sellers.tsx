@@ -117,7 +117,7 @@ function TiltCard({ seller: s, stats, onOpen }: { seller: SellerDef; stats: { st
       onMouseLeave={() => { mx.set(0.5); my.set(0.5) }}
       className="relative h-full overflow-hidden rounded-[var(--radius-card)] border border-rule bg-card p-6 shadow-[var(--shadow-card)]">
       <motion.div className="pointer-events-none absolute inset-0" style={{ background: glow }} />
-      <div className="relative -mx-6 -mt-6 mb-1 border-b px-6 pt-6 pb-5" style={{ background: `linear-gradient(160deg, ${b.color.soft}, ${b.color.tint} 65%)`, borderColor: `${b.color.primary}1a` }}>
+      <div className="relative -mx-6 -mt-6 mb-1 border-b px-6 pt-6 pb-5 [background:var(--s-bg)] dark:[background:var(--s-bg-dark)]" style={{ ['--s-bg' as string]: `linear-gradient(160deg, ${b.color.soft}, ${b.color.tint} 65%)`, ['--s-bg-dark' as string]: `linear-gradient(160deg, color-mix(in oklab, ${b.color.accent} 22%, var(--color-card)), var(--color-card) 70%)`, borderColor: `${b.color.primary}1a` }}>
         <SellerLogo id={s.id} size="lg" descriptor />
         <div className="mt-3.5 text-[13px] text-ink-2">Run by <span className="font-semibold text-ink">{s.name}</span> · {s.city}</div>
       </div>

@@ -101,7 +101,7 @@ function SkuInner({ rec }: { rec: Recommendation }) {
                 ]} />
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                <button onClick={() => setD(best.d)} className="inline-flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3 py-1.5 text-[12px] font-medium text-[#92400e] hover:bg-brass-soft/70"><Target size={13} /> Sweet spot · {pct(best.d)}</button>
+                <button onClick={() => setD(best.d)} className="inline-flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3 py-1.5 text-[12px] font-medium text-[var(--color-brass-ink)] hover:bg-brass-soft/70"><Target size={13} /> Sweet spot · {pct(best.d)}</button>
                 <button onClick={() => { setD(rec.discount); setWeeks(rec.weeks); setChannel('blended') }} className="inline-flex items-center gap-1.5 rounded-full border border-rule bg-card px-3 py-1.5 text-[12px] font-medium text-ink-2 hover:text-ink"><Wand2 size={13} /> Tarazu's pick</button>
                 <button onClick={() => setD(0.4)} className="inline-flex items-center gap-1.5 rounded-full border border-rule bg-card px-3 py-1.5 text-[12px] text-ink-3 hover:text-ink">Try "40% off"</button>
               </div>
@@ -130,9 +130,9 @@ function SkuInner({ rec }: { rec: Recommendation }) {
           <Card className="p-5">
             <Eyebrow>What happens in {weeks} weeks</Eyebrow>
             <div className="mt-3 space-y-3">
-              <UnitsBar label="Would sell anyway" value={r.baseUnits} max={Math.max(r.promoUnits, 1)} color="#a3b0aa" />
-              <UnitsBar label="Sell with this offer" value={r.promoUnits} max={Math.max(r.promoUnits, 1)} color="#0b3d2e" />
-              <UnitsBar label="Truly new buyers" value={r.incremental} max={Math.max(r.promoUnits, 1)} color="#1e7b4f" />
+              <UnitsBar label="Would sell anyway" value={r.baseUnits} max={Math.max(r.promoUnits, 1)} color="var(--color-ink-4)" />
+              <UnitsBar label="Sell with this offer" value={r.promoUnits} max={Math.max(r.promoUnits, 1)} color="var(--color-primary)" />
+              <UnitsBar label="Truly new buyers" value={r.incremental} max={Math.max(r.promoUnits, 1)} color="var(--color-gain)" />
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-y-2 border-t border-dashed border-rule pt-3 text-[12.5px]">
               <dt className="text-ink-3">Stock cleared</dt><dd className="num text-right text-ink">{pct(r.stockClearedPct)}</dd>

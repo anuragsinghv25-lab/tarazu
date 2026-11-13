@@ -3,10 +3,12 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Workflow, ShoppingCart, CalendarDays, Gift, Crown, Building2,
-  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2,
+  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2, Radar, FileText, PenLine, Bell, Moon, Sun,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SellerMark } from '@/brand/sellers'
+import { useMind } from '@/state/mind'
+import { useAlerts } from '@/features/mind/alerts'
 import { Kbd, Switch } from '@/components/ui'
 import { Spot } from '@/components/Spot'
 import { useStore } from '@/state/store'
@@ -14,10 +16,12 @@ import { useSeller } from '@/state/hooks'
 import { SELLERS, type SellerDef } from '@/data/sellers'
 import { cn } from '@/lib/cn'
 
-type Item = { to?: string; label: string; icon: typeof LayoutDashboard; match?: string; badge?: string }
+type Item = { to?: string; label: string; icon: typeof LayoutDashboard; match?: string; badge?: string; alert?: boolean; run?: () => void }
 
 function useNav(): { section: string; soon?: boolean; items: Item[] }[] {
   const seller = useSeller()
+  const alerts = useAlerts().filter((a) => a.status === 'open').length
+  const startStory = useMind((s) => s.startStory)
   return [
     { section: 'Decide', items: [
       { to: '/', label: 'Overview', icon: LayoutDashboard },
@@ -34,11 +38,17 @@ function useNav(): { section: string; soon?: boolean; items: Item[] }[] {
       { to: '/loyalty', label: 'Loyalty', icon: Crown, badge: seller.ownChannel ? undefined : 'locked' },
       { to: '/brand', label: 'Brand mode', icon: Building2, badge: seller.id === 'anaya' ? undefined : 'Anaya' },
     ] },
+    { section: 'Think', items: [
+      { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
+      { to: '/brief', label: 'Brief to plan', icon: Wand2 },
+      { to: '/watchtower', label: 'Watchtower', icon: Radar, badge: alerts ? String(alerts) : undefined, alert: true },
+      { to: '/debrief', label: 'Sale debrief', icon: FileText },
+      { to: '/copy', label: 'Offer copy', icon: PenLine },
+    ] },
     { section: 'Explore', items: [
       { to: '/sellers', label: 'Demo sellers', icon: Users },
-    ] },
-    { section: 'Think · Release 3', soon: true, items: [
-      { label: 'Ask Tarazu', icon: Sparkles }, { label: 'Story mode', icon: PlayCircle }, { label: 'Case Study', icon: BookOpen },
+      { label: 'Story mode', icon: PlayCircle, run: startStory },
+      { to: '/case-study', label: 'Case Study', icon: BookOpen },
     ] },
   ]
 }
@@ -58,8 +68,10 @@ function Sidebar() {
                 const Icon = it.icon
                 if (!it.to) {
                   return (
-                    <li key={it.label} className="flex cursor-not-allowed items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px] text-ink-3/70" title="Coming in Release 3">
-                      <Icon size={16} strokeWidth={1.75} /> {it.label}
+                    <li key={it.label}>
+                      <button onClick={it.run} className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-[13.5px] text-ink-2 transition-colors hover:bg-paper-2 hover:text-ink">
+                        <Icon size={16} strokeWidth={1.75} /> <span className="flex-1">{it.label}</span><span className="text-[10px] text-ink-3">▶</span>
+                      </button>
                     </li>
                   )
                 }
@@ -69,7 +81,7 @@ function Sidebar() {
                     <NavLink to={it.to} className={cn('group flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px] transition-colors', active ? 'bg-primary text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink')}>
                       <Icon size={16} strokeWidth={1.75} className={active ? 'text-brass-2' : ''} />
                       <span className="flex-1">{it.label}</span>
-                      {it.badge && <span className={cn('rounded-full px-1.5 py-px text-[9.5px] font-medium', active ? 'bg-paper/15 text-paper/70' : 'bg-paper-2 text-ink-3')}>{it.badge}</span>}
+                      {it.badge && <span className={cn('rounded-full px-1.5 py-px text-[9.5px] font-medium', it.alert ? 'num bg-loss text-white' : active ? 'bg-paper/15 text-paper/70' : 'bg-paper-2 text-ink-3')}>{it.badge}</span>}
                     </NavLink>
                   </li>
                 )
@@ -79,7 +91,7 @@ function Sidebar() {
         ))}
       </nav>
       <div className="mt-3 rounded-xl border border-dashed border-rule p-3 text-[11.5px] leading-snug text-ink-3">
-        Prototype · Release 2 of 3. All sellers, brands and data are fictional; fees are illustrative.
+        Prototype · Release 3 of 6. All sellers, brands and data are fictional; fees are illustrative; the AI is scripted on engine numbers.
       </div>
     </aside>
   )
@@ -106,7 +118,7 @@ function SellerSwitcher() {
           <Avatar s={seller} />
           <span className="leading-tight">
             <span className="block text-[13px] font-medium text-ink">{seller.name} · {seller.brand}</span>
-            <span className="block max-w-[220px] truncate text-[11px] text-ink-3">{seller.category}</span>
+            <span className="block max-w-[180px] truncate text-[11px] text-ink-3">{seller.category}</span>
           </span>
           <ChevronDown size={14} className="text-ink-3" />
         </Dropdown.Trigger>
@@ -161,21 +173,45 @@ function Header() {
         <EventChip />
         <div className="ml-auto flex items-center gap-2">
           <button onClick={() => setPalette(true)} className="hidden items-center gap-2 rounded-full border border-rule bg-card px-3 py-1.5 text-[12.5px] text-ink-3 transition-colors hover:text-ink md:flex">
-            <Search size={14} /> <span className="hidden lg:inline">Jump to anything</span> <Kbd>⌘K</Kbd>
+            <Search size={14} /> <span className="hidden whitespace-nowrap 2xl:inline">Jump to anything</span> <Kbd>⌘K</Kbd>
           </button>
-          <label className={cn('flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-[12.5px] transition-colors', lensOn ? 'border-brass/40 bg-brass-soft text-[#92400e]' : 'border-rule bg-card text-ink-2')}>
-            <Glasses size={15} /> <span className="hidden sm:inline">BA Lens</span>
+          <HeaderBell />
+          <ThemeToggle />
+          <label className={cn('flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-[12.5px] transition-colors', lensOn ? 'border-brass/40 bg-brass-soft text-[var(--color-brass-ink)]' : 'border-rule bg-card text-ink-2')}>
+            <Glasses size={15} /> <span className="hidden whitespace-nowrap xl:inline">BA Lens</span>
             <Switch checked={lensOn} onChange={toggleLens} label="BA Lens" />
             <span className="hidden md:inline"><Kbd>B</Kbd></span>
           </label>
           <button onClick={() => setRoom(true)} className="flex items-center gap-2 rounded-full bg-primary px-3.5 py-1.5 text-[12.5px] font-medium text-paper shadow-sm transition-transform hover:-translate-y-px">
-            <SlidersHorizontal size={14} className="text-brass-2" /> <span className="hidden sm:inline">Control Room</span>
+            <SlidersHorizontal size={14} className="text-brass-2" /> <span className="hidden whitespace-nowrap sm:inline">Control Room</span>
             <span className="hidden md:inline-flex"><kbd className="num rounded-[5px] border border-paper/20 px-1.5 text-[10.5px] text-paper/60">C</kbd></span>
           </button>
         </div>
       </div>
       <MobileNav />
     </header>
+  )
+}
+
+function HeaderBell() {
+  const open = useAlerts().filter((a) => a.status === 'open')
+  const urgent = open.some((a) => a.severity === 'urgent')
+  return (
+    <NavLink to="/watchtower" aria-label={`Watchtower: ${open.length} open alerts`} className="relative grid h-[34px] w-[34px] place-items-center rounded-full border border-rule bg-card text-ink-2 transition-colors hover:text-ink">
+      <Bell size={15} />
+      {open.length > 0 && <span className={cn('num absolute -top-1 -right-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[9.5px] font-semibold text-white', urgent ? 'bg-loss' : 'bg-warn')}>{open.length}</span>}
+    </NavLink>
+  )
+}
+
+function ThemeToggle() {
+  const { theme, setTheme } = useMind()
+  const dark = theme === 'dark'
+  return (
+    <button onClick={() => setTheme(dark ? 'light' : 'dark')} aria-label={dark ? 'Switch to light mode' : 'Switch to night market (dark) mode'} title={dark ? 'Light mode' : 'Night market mode'}
+      className="grid h-[34px] w-[34px] place-items-center rounded-full border border-rule bg-card text-ink-2 transition-colors hover:text-ink">
+      {dark ? <Sun size={15} /> : <Moon size={15} />}
+    </button>
   )
 }
 
