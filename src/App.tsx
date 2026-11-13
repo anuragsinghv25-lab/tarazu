@@ -34,6 +34,9 @@ const loaders = {
   CodeStudio: () => import('@/features/launch/CodeStudio'),
   Storefront: () => import('@/features/launch/Storefront'),
   EdgeLab: () => import('@/features/launch/EdgeLab'),
+  CreatorHub: () => import('@/features/reach/CreatorHub'),
+  Affiliates: () => import('@/features/reach/Affiliates'),
+  Community: () => import('@/features/reach/Community'),
 }
 const PRELOAD = Object.values(loaders) as (() => Promise<unknown>)[]
 const page = <K extends keyof typeof loaders>(name: K) =>
@@ -61,6 +64,9 @@ const Lifecycle = page('Lifecycle')
 const CodeStudio2 = page('CodeStudio')
 const Storefront = page('Storefront')
 const EdgeLab = page('EdgeLab')
+const CreatorHub = page('CreatorHub')
+const Affiliates = page('Affiliates')
+const Community = page('Community')
 
 export default function App() {
   return (
@@ -91,6 +97,9 @@ export default function App() {
           <Route path="/codes" element={<CodeStudio2 />} />
           <Route path="/storefront" element={<Storefront />} />
           <Route path="/edge-cases" element={<EdgeLab />} />
+          <Route path="/creators" element={<CreatorHub />} />
+          <Route path="/affiliates" element={<Affiliates />} />
+          <Route path="/community" element={<Community />} />
           <Route path="*" element={<Overview />} />
         </Routes>
       </Suspense>

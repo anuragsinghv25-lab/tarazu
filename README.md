@@ -72,6 +72,28 @@ Dotted-underlined terms explain themselves on hover, and every new element has a
 | **Season plan** | **Demo sellers** |
 | ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
 
+## Release 5 · "The Reach"
+
+Promotion beyond the discount: creators, affiliates, referring customers, resellers and a seller's own community.
+Every one of them earns a cut, so Tarazu asks the same question it asks of a discount: how much of this would have sold anyway?
+
+| Screen | What it does |
+| --- | --- |
+| **Creator hub** | Creators ranked by expected net, not followers, with fit, fake-follower risk and code-leak history. One celebrity vs ten micro creators for the same budget. A deal designer for flat fee, commission, seeding or hybrid, with single-use codes and a **true ROI peel**: orders minus fans who'd have bought anyway and leaked codes, cost per new buyer against the seller's ads CAC. One click drafts the creator campaign into the Launch flow. |
+| **Disclosure and rights** | Each caption checked against the ASCI influencer guidelines (a clear label, up front). A seeding tracker and content calendar with usage-rights expiry. |
+| **Affiliates** | Commission by category, higher where stock is at risk. Last-click vs first-click vs linear attribution on the same orders. A ledger that holds commission until the return window closes and pauses self-referring cashback apps and coupon sites. |
+| **Referral 2.0** | Two-sided and tiered rewards shared on WhatsApp, with net and cost per new buyer. A fraud queue flags the same device, address or payment, and sign-up bursts. |
+| **Resellers** | A reseller margin vs a sitewide sale, on weekly net (Farhan's 30% habit vs 340 WhatsApp resellers). |
+| **Community** | WhatsApp drop planner with a members-first window and a 48-hour sell-through forecast. Group buys: the smallest group that still makes money. Review rewards that never depend on the rating (BIS IS 19000:2022). |
+
+Creators, affiliates and handles are invented. Ads CAC, engagement and leak rates are illustrative.
+
+| Creator hub | Affiliates and attribution |
+| --- | --- |
+| ![Creator hub](docs/screenshots/creator-hub.png) | ![Affiliates](docs/screenshots/affiliates.png) |
+| **Referral fraud queue** | **Community** |
+| ![Referrals](docs/screenshots/referrals.png) | ![Community](docs/screenshots/community.png) |
+
 ## Release 4 · "The Launch"
 
 The builder half of a promotion engine: the journey of creating, checking, approving, launching and controlling an offer,
@@ -178,8 +200,8 @@ deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overs
 | **1 · The Scale** (done) | Design system, engine, Meera's data, five decision screens, Control Room, BA Lens |
 | **2 · The Market** (done) | Campaign builder, Cart Sandbox, season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
 | **3 · The Mind** (done) | Six AI features, story mode, Case Study hub, night mode, mobile |
-| **4 · The Launch** (this) | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
-| **5 · The Reach** | Creators and influencer codes, affiliates, referral 2.0, reseller mode, community drops |
+| **4 · The Launch** (done) | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
+| **5 · The Reach** (this) | Creator hub with a true ROI peel, affiliates and attribution, referral 2.0 with fraud signals, reseller mode, community drops, group buys and review rewards |
 | **6 · The Edge** | Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders and price-drop protection, proper experiments |
 
 ## Run it
