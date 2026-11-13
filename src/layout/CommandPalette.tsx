@@ -3,7 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Glasses, SlidersHorizontal, Zap, Package, Workflow, ShoppingCart,
-  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon, Rocket, KanbanSquare, KeyRound, FlaskConical,
+  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon, Rocket, KanbanSquare, KeyRound, FlaskConical, Megaphone, Handshake, MessagesSquare,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useMind } from '@/state/mind'
@@ -29,6 +29,10 @@ const SCREENS = [
   { to: '/codes', label: 'Code studio', icon: KeyRound },
   { to: '/storefront', label: 'Shopper preview', icon: Store },
   { to: '/edge-cases', label: 'Edge-case lab', icon: FlaskConical },
+  { to: '/creators', label: 'Creator hub: creators, codes and true ROI', icon: Megaphone },
+  { to: '/affiliates', label: 'Affiliates, referrals and resellers', icon: Handshake },
+  { to: '/affiliates?tab=referrals', label: 'Referral fraud queue', icon: Handshake },
+  { to: '/community', label: 'Community: drops, group buys, reviews', icon: MessagesSquare },
   { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
   { to: '/brief', label: 'Brief to plan', icon: Wand2 },
   { to: '/watchtower', label: 'Watchtower alerts and autonomy', icon: Radar },

@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Workflow, ShoppingCart, CalendarDays, Gift, Crown, Building2,
-  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2, Radar, FileText, PenLine, Bell, Moon, Sun, Rocket, KanbanSquare, KeyRound, FlaskConical,
+  Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2, Radar, FileText, PenLine, Bell, Moon, Sun, Rocket, KanbanSquare, KeyRound, FlaskConical, Megaphone, Handshake, MessagesSquare,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SellerMark } from '@/brand/sellers'
@@ -45,6 +45,11 @@ function useNav(): { section: string; soon?: boolean; items: Item[] }[] {
       { to: '/codes', label: 'Code studio', icon: KeyRound },
       { to: '/storefront', label: 'Shopper preview', icon: Store },
       { to: '/edge-cases', label: 'Edge-case lab', icon: FlaskConical },
+    ] },
+    { section: 'Reach', items: [
+      { to: '/creators', label: 'Creator hub', icon: Megaphone },
+      { to: '/affiliates', label: 'Affiliates & referrals', icon: Handshake },
+      { to: '/community', label: 'Community', icon: MessagesSquare },
     ] },
     { section: 'Think', items: [
       { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
@@ -99,7 +104,7 @@ function Sidebar() {
         ))}
       </nav>
       <div className="mt-2 rounded-lg border border-dashed border-rule px-2.5 py-2 text-[10.5px] leading-snug text-ink-3" title="All sellers, brands and data are fictional; fees are illustrative; the AI is scripted on engine numbers.">
-        Prototype · Release 4 of 6 · fictional sellers and data
+        Prototype · Release 5 of 6 · fictional sellers and data
       </div>
     </aside>
   )
