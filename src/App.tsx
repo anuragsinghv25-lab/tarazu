@@ -37,6 +37,11 @@ const loaders = {
   CreatorHub: () => import('@/features/reach/CreatorHub'),
   Affiliates: () => import('@/features/reach/Affiliates'),
   Community: () => import('@/features/reach/Community'),
+  Uplift: () => import('@/features/frontier/Uplift'),
+  AdsVsDiscount: () => import('@/features/frontier/AdsVsDiscount'),
+  Ondc: () => import('@/features/frontier/Ondc'),
+  Commitments: () => import('@/features/frontier/Commitments'),
+  Experiments: () => import('@/features/frontier/Experiments'),
 }
 const PRELOAD = Object.values(loaders) as (() => Promise<unknown>)[]
 const page = <K extends keyof typeof loaders>(name: K) =>
@@ -67,6 +72,11 @@ const EdgeLab = page('EdgeLab')
 const CreatorHub = page('CreatorHub')
 const Affiliates = page('Affiliates')
 const Community = page('Community')
+const Uplift = page('Uplift')
+const AdsVsDiscount = page('AdsVsDiscount')
+const Ondc = page('Ondc')
+const Commitments = page('Commitments')
+const Experiments = page('Experiments')
 
 export default function App() {
   return (
@@ -100,6 +110,11 @@ export default function App() {
           <Route path="/creators" element={<CreatorHub />} />
           <Route path="/affiliates" element={<Affiliates />} />
           <Route path="/community" element={<Community />} />
+          <Route path="/uplift" element={<Uplift />} />
+          <Route path="/ads-vs-discount" element={<AdsVsDiscount />} />
+          <Route path="/ondc" element={<Ondc />} />
+          <Route path="/commitments" element={<Commitments />} />
+          <Route path="/experiments" element={<Experiments />} />
           <Route path="*" element={<Overview />} />
         </Routes>
       </Suspense>

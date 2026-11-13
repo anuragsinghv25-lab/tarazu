@@ -3,7 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Glasses, SlidersHorizontal, Zap, Package, Workflow, ShoppingCart,
-  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon, Rocket, KanbanSquare, KeyRound, FlaskConical, Megaphone, Handshake, MessagesSquare,
+  CalendarDays, Gift, Crown, Building2, Users, Wand2, Sparkles, Radar, FileText, PenLine, BookOpen, PlayCircle, Moon, Rocket, KanbanSquare, KeyRound, FlaskConical, Megaphone, Handshake, MessagesSquare, Target, Coins, Network, Repeat, TestTubes,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useMind } from '@/state/mind'
@@ -33,6 +33,13 @@ const SCREENS = [
   { to: '/affiliates', label: 'Affiliates, referrals and resellers', icon: Handshake },
   { to: '/affiliates?tab=referrals', label: 'Referral fraud queue', icon: Handshake },
   { to: '/community', label: 'Community: drops, group buys, reviews', icon: MessagesSquare },
+  { to: '/uplift', label: 'Uplift targeting: persuadables vs sure things', icon: Target },
+  { to: '/ads-vs-discount', label: 'Ads vs discount: split the budget', icon: Coins },
+  { to: '/ondc', label: 'ONDC as a channel', icon: Network },
+  { to: '/commitments', label: 'Subscribe and save', icon: Repeat },
+  { to: '/commitments?tab=preorder', label: 'Pre-orders for a launch', icon: Repeat },
+  { to: '/commitments?tab=protect', label: 'Price-drop protection', icon: Repeat },
+  { to: '/experiments', label: 'Experiments: sample size and peeking', icon: TestTubes },
   { to: '/ask', label: 'Ask Tarazu', icon: Sparkles },
   { to: '/brief', label: 'Brief to plan', icon: Wand2 },
   { to: '/watchtower', label: 'Watchtower alerts and autonomy', icon: Radar },
