@@ -6,26 +6,44 @@ import { ControlRoom } from '@/layout/ControlRoom'
 import { CommandPalette } from '@/layout/CommandPalette'
 import { SellerQuiz } from '@/layout/SellerQuiz'
 import { Overview } from '@/features/overview/Overview'
+import { BootSplash } from '@/layout/BootSplash'
+import { RouteSkeleton } from '@/components/Skeleton'
 
-const page = <T extends Record<string, unknown>>(load: () => Promise<T>, name: keyof T) =>
-  lazy(() => load().then((m) => ({ default: m[name] as React.ComponentType })))
+/* Each screen is its own chunk. The loaders are kept so the boot splash can fetch them all up front. */
+const loaders = {
+  StockPulse: () => import('@/features/pulse/StockPulse'),
+  SkuDetail: () => import('@/features/sku/SkuDetail'),
+  TruthLens: () => import('@/features/truth/TruthLens'),
+  PlatformCompare: () => import('@/features/compare/PlatformCompare'),
+  CampaignBuilder: () => import('@/features/campaigns/CampaignBuilder'),
+  CartSandbox: () => import('@/features/sandbox/CartSandbox'),
+  SeasonPlan: () => import('@/features/plan/SeasonPlan'),
+  Bundles: () => import('@/features/bundles/Bundles'),
+  Loyalty: () => import('@/features/loyalty/Loyalty'),
+  BrandMode: () => import('@/features/brand/BrandMode'),
+  Sellers: () => import('@/features/sellers/Sellers'),
+}
+const PRELOAD = Object.values(loaders) as (() => Promise<unknown>)[]
+const page = <K extends keyof typeof loaders>(name: K) =>
+  lazy(() => loaders[name]().then((m) => ({ default: (m as Record<string, unknown>)[name] as React.ComponentType })))
 
-const StockPulse = page(() => import('@/features/pulse/StockPulse'), 'StockPulse')
-const SkuDetail = page(() => import('@/features/sku/SkuDetail'), 'SkuDetail')
-const TruthLens = page(() => import('@/features/truth/TruthLens'), 'TruthLens')
-const PlatformCompare = page(() => import('@/features/compare/PlatformCompare'), 'PlatformCompare')
-const CampaignBuilder = page(() => import('@/features/campaigns/CampaignBuilder'), 'CampaignBuilder')
-const CartSandbox = page(() => import('@/features/sandbox/CartSandbox'), 'CartSandbox')
-const SeasonPlan = page(() => import('@/features/plan/SeasonPlan'), 'SeasonPlan')
-const Bundles = page(() => import('@/features/bundles/Bundles'), 'Bundles')
-const Loyalty = page(() => import('@/features/loyalty/Loyalty'), 'Loyalty')
-const BrandMode = page(() => import('@/features/brand/BrandMode'), 'BrandMode')
-const Sellers = page(() => import('@/features/sellers/Sellers'), 'Sellers')
+const StockPulse = page('StockPulse')
+const SkuDetail = page('SkuDetail')
+const TruthLens = page('TruthLens')
+const PlatformCompare = page('PlatformCompare')
+const CampaignBuilder = page('CampaignBuilder')
+const CartSandbox = page('CartSandbox')
+const SeasonPlan = page('SeasonPlan')
+const Bundles = page('Bundles')
+const Loyalty = page('Loyalty')
+const BrandMode = page('BrandMode')
+const Sellers = page('Sellers')
 
 export default function App() {
   return (
+    <>
     <AppShell>
-      <Suspense fallback={<div className="h-[60vh]" />}>
+      <Suspense fallback={<RouteSkeleton />}>
         <Routes>
           <Route path="/" element={<Overview />} />
           <Route path="/pulse" element={<StockPulse />} />
@@ -45,7 +63,9 @@ export default function App() {
       <ControlRoom />
       <CommandPalette />
       <SellerQuiz />
-      <Toaster position="bottom-left" toastOptions={{ style: { background: '#1c1a17', color: '#f5efe3', border: '1px solid #2e2a24', fontFamily: 'var(--font-sans)' }, descriptionClassName: '!text-[#cfc6b4]' }} />
+      <Toaster position="bottom-left" toastOptions={{ style: { background: '#0b3d2e', color: '#fff7e9', border: '1px solid #164b3a', fontFamily: 'var(--font-sans)' }, descriptionClassName: '!text-[#c9d8d0]' }} />
     </AppShell>
+    <BootSplash preload={PRELOAD} />
+    </>
   )
 }

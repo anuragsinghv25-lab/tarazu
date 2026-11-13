@@ -69,12 +69,12 @@ function Matchboard({ pairs, anchors, sel, onSel }: { pairs: Pair[]; anchors: Pa
       <div ref={wrap} className="relative grid grid-cols-2 gap-10 md:gap-24">
         <svg className="pointer-events-none absolute inset-0 overflow-visible" width={size.w} height={size.h} aria-hidden>
           <defs>
-            <linearGradient id="beam-g" x1="0" x2="1"><stop offset="0" stopColor="#c48a12" /><stop offset="1" stopColor="#2e7a57" /></linearGradient>
+            <linearGradient id="beam-g" x1="0" x2="1"><stop offset="0" stopColor="#d97706" /><stop offset="1" stopColor="#1e7b4f" /></linearGradient>
           </defs>
           {paths.map(({ d, i }) => d && (
             <g key={i}>
-              <path d={d} fill="none" stroke={i === sel ? 'url(#beam-g)' : '#dcd2bf'} strokeWidth={i === sel ? 2.5 : 1.2} />
-              {i === sel && <path d={d} fill="none" stroke="#fff3d6" strokeWidth={3} strokeLinecap="round" strokeDasharray="10 220" className="[animation:dash_2.2s_linear_infinite]" />}
+              <path d={d} fill="none" stroke={i === sel ? 'url(#beam-g)' : '#cbd5d1'} strokeWidth={i === sel ? 2.5 : 1.2} />
+              {i === sel && <path d={d} fill="none" stroke="#fff1d2" strokeWidth={3} strokeLinecap="round" strokeDasharray="10 220" className="[animation:dash_2.2s_linear_infinite]" />}
             </g>
           ))}
         </svg>
@@ -83,7 +83,7 @@ function Matchboard({ pairs, anchors, sel, onSel }: { pairs: Pair[]; anchors: Pa
             const h = HEALTH_META[health(p.slow, c)]
             return (
               <button key={p.slow.id} ref={(el) => { left.current[i] = el }} onClick={() => onSel(i)}
-                className={cn('block w-full rounded-xl border p-3 text-left transition-all', i === sel ? 'border-ink bg-card shadow-[var(--shadow-lift)]' : 'border-rule bg-card/70 hover:bg-card')}>
+                className={cn('block w-full rounded-xl border p-3 text-left transition-all', i === sel ? 'border-primary bg-card shadow-[var(--shadow-lift)]' : 'border-rule bg-card/70 hover:bg-card')}>
                 <div className="flex items-center gap-2"><span className="h-2 w-2 shrink-0 rounded-full" style={{ background: h.color }} /><span className="line-clamp-1 text-[13px] font-medium text-ink">{p.slow.name}</span></div>
                 <div className="num mt-0.5 pl-4 text-[11px] text-ink-3">{inrShort(unitsAtRisk(p.slow, c) * p.slow.cost)} at risk · {Math.round(p.attach * 100)}% of buyers pair it</div>
               </button>
@@ -152,7 +152,7 @@ function Detail({ pair }: { pair: Pair }) {
         <Money value={r.net} signed className={cn('text-[24px] font-semibold', r.net >= 0 ? 'text-gain' : 'text-loss')} />
       </div>
       <p className="mt-3 text-[12px] leading-snug text-ink-3">Most bundle buyers would have bought the {pair.anchor.line.toLowerCase()} anyway, so the discount is only worth it while it clears stock that would otherwise be written off.</p>
-      <motion.button whileTap={{ scale: 0.98 }} onClick={create} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-2.5 text-[13px] font-medium text-paper">Create this bundle as a campaign <ArrowRight size={14} /></motion.button>
+      <motion.button whileTap={{ scale: 0.98 }} onClick={create} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-[13px] font-medium text-paper">Create this bundle as a campaign <ArrowRight size={14} /></motion.button>
     </Card>
   )
 }

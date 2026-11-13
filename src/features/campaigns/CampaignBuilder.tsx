@@ -58,13 +58,13 @@ export function CampaignBuilder() {
             <ul className="max-h-[66vh] space-y-0.5 overflow-y-auto">
               {[...campaigns].sort((a, b) => a.priority - b.priority).map((c) => (
                 <li key={c.id}>
-                  <button onClick={() => select(c.id)} className={cn('w-full rounded-xl px-2.5 py-2 text-left transition-colors', c.id === selected?.id ? 'bg-ink text-paper' : 'hover:bg-paper-2')}>
+                  <button onClick={() => select(c.id)} className={cn('w-full rounded-xl px-2.5 py-2 text-left transition-colors', c.id === selected?.id ? 'bg-primary text-paper' : 'hover:bg-paper-2')}>
                     <div className="flex items-center gap-2">
                       <span className={cn('num grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px]', c.id === selected?.id ? 'bg-paper/15 text-brass-2' : 'bg-paper-2 text-ink-3')}>{c.priority}</span>
                       <span className="line-clamp-1 flex-1 text-[12.5px] font-medium">{c.name}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-1.5 pl-7">
-                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : { live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[#7a5414]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[#8a5f07]' }[c.status])}>{c.status}</span>
+                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : { live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[#92400e]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[#92400e]' }[c.status])}>{c.status}</span>
                       <span className={cn('text-[10.5px]', c.id === selected?.id ? 'text-paper/60' : 'text-ink-3')}>{c.mechanic}</span>
                     </div>
                     <div className={cn('mt-1.5 ml-7 h-1 overflow-hidden rounded-full', c.id === selected?.id ? 'bg-paper/15' : 'bg-paper-2')}>
@@ -84,9 +84,9 @@ export function CampaignBuilder() {
               <Card className="p-4">
                 <div className="flex flex-wrap gap-2">
                   <button disabled={!dirty} onClick={() => { saveCampaign(draft); toast('Campaign saved', { description: draft.name }) }}
-                    className="flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-1.5 text-[12.5px] font-medium text-paper disabled:opacity-35"><Save size={13} /> Save{dirty ? '' : 'd'}</button>
+                    className="flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-[12.5px] font-medium text-paper disabled:opacity-35"><Save size={13} /> Save{dirty ? '' : 'd'}</button>
                   <button onClick={() => { if (dirty) saveCampaign(draft); nav(`/sandbox?preview=${draft.id}`) }}
-                    className="flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3.5 py-1.5 text-[12.5px] font-medium text-[#6b4a12]"><FlaskConical size={13} /> Test in Cart Sandbox</button>
+                    className="flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3.5 py-1.5 text-[12.5px] font-medium text-[#92400e]"><FlaskConical size={13} /> Test in Cart Sandbox</button>
                   <button onClick={() => { removeCampaign(draft.id); setParams({}, { replace: true }); toast('Campaign deleted') }} title="Delete"
                     className="ml-auto rounded-full p-2 text-ink-3 hover:bg-loss-soft hover:text-loss"><Trash2 size={14} /></button>
                 </div>
@@ -108,7 +108,7 @@ export function CampaignBuilder() {
 function NewMenu({ seller, onPick }: { seller: SellerDef; onPick: (m: string, p: Partial<Campaign>) => void }) {
   return (
     <Dropdown.Root>
-      <Dropdown.Trigger className="flex items-center gap-2 self-start rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper md:self-auto"><Plus size={15} className="text-brass-2" /> New campaign</Dropdown.Trigger>
+      <Dropdown.Trigger className="flex items-center gap-2 self-start rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-paper md:self-auto"><Plus size={15} className="text-brass-2" /> New campaign</Dropdown.Trigger>
       <Dropdown.Portal>
         <Dropdown.Content align="end" sideOffset={8} className="z-50 grid w-[440px] max-w-[92vw] grid-cols-2 gap-1 rounded-2xl border border-rule bg-card p-2 shadow-[var(--shadow-lift)]">
           <div className="col-span-2 px-2 pt-1 pb-1.5 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Start from a mechanic</div>
@@ -130,7 +130,7 @@ function Block({ tag, title, children, id, tone = 'ink' }: { tag: string; title:
   return (
     <Spot id={id}>
       <motion.div layout className="relative rounded-2xl border border-rule bg-card p-4 pl-[74px] shadow-[var(--shadow-card)]">
-        <div className={cn('display absolute top-4 left-4 grid h-10 w-12 place-items-center rounded-xl text-[15px] italic', tone === 'brass' ? 'bg-brass text-card' : 'bg-ink text-brass-2')}>{tag}</div>
+        <div className={cn('display absolute top-4 left-4 grid h-10 w-12 place-items-center rounded-xl text-[15px] italic', tone === 'brass' ? 'bg-brass text-card' : 'bg-primary text-brass-2')}>{tag}</div>
         <div className="mb-3 text-[13px] font-semibold text-ink">{title}</div>
         <div className="space-y-2.5">{children}</div>
       </motion.div>
@@ -141,7 +141,7 @@ function Block({ tag, title, children, id, tone = 'ink' }: { tag: string; title:
 function Beam() {
   return (
     <div className="relative ml-[39px] h-7 w-px bg-rule" aria-hidden>
-      <motion.span className="absolute left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-brass-2 shadow-[0_0_10px_2px_rgba(217,164,65,0.6)]"
+      <motion.span className="absolute left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-brass-2 shadow-[0_0_10px_2px_rgba(245,158,11,0.6)]"
         animate={{ top: ['-4px', '24px'], opacity: [0, 1, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }} />
     </div>
   )
@@ -231,9 +231,9 @@ function RuleCanvas({ c, seller, onChange }: { c: Campaign; seller: SellerDef; o
           <Segmented<Stacking> size="sm" value={c.stacking} onChange={(v) => set({ stacking: v })} options={[{ value: 'exclusive', label: 'Exclusive' }, { value: 'stackable', label: 'Stackable' }, { value: 'always', label: 'Always stacks' }]} />
           <div className="flex items-center gap-1.5 text-[12px] text-ink-3">
             Priority
-            <button onClick={() => set({ priority: Math.max(1, c.priority - 1) })} className="grid h-6 w-6 place-items-center rounded-full border border-rule bg-card hover:border-ink" aria-label="Raise priority"><Minus size={12} /></button>
+            <button onClick={() => set({ priority: Math.max(1, c.priority - 1) })} className="grid h-6 w-6 place-items-center rounded-full border border-rule bg-card hover:border-primary" aria-label="Raise priority"><Minus size={12} /></button>
             <span className="num w-5 text-center text-[14px] font-semibold text-ink">{c.priority}</span>
-            <button onClick={() => set({ priority: c.priority + 1 })} className="grid h-6 w-6 place-items-center rounded-full border border-rule bg-card hover:border-ink" aria-label="Lower priority"><Plus size={12} /></button>
+            <button onClick={() => set({ priority: c.priority + 1 })} className="grid h-6 w-6 place-items-center rounded-full border border-rule bg-card hover:border-primary" aria-label="Lower priority"><Plus size={12} /></button>
           </div>
         </div>
         <div className="text-[12px] leading-snug text-ink-3">
@@ -370,15 +370,15 @@ function BudgetCard({ c, seller }: { c: Campaign; seller: SellerDef }) {
         <ResponsiveContainer>
           <AreaChart data={data} margin={{ top: 8, right: 4, bottom: 0, left: -8 }}>
             <defs>
-              <linearGradient id="burn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={over ? '#c2421c' : '#b07d2b'} stopOpacity={0.35} /><stop offset="1" stopColor={over ? '#c2421c' : '#b07d2b'} stopOpacity={0.02} /></linearGradient>
+              <linearGradient id="burn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={over ? '#c2421c' : '#b45309'} stopOpacity={0.35} /><stop offset="1" stopColor={over ? '#c2421c' : '#b45309'} stopOpacity={0.02} /></linearGradient>
             </defs>
-            <CartesianGrid vertical={false} stroke="#e8e0cf" />
-            <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#8a8274' }} tickLine={false} axisLine={{ stroke: '#dcd2bf' }} interval="preserveStartEnd" minTickGap={30} />
-            <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10, fill: '#8a8274' }} axisLine={false} tickLine={false} width={48} />
-            <Tooltip contentStyle={{ background: '#fbf8f1', border: '1px solid #dcd2bf', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Spent by then']} />
-            <ReferenceLine y={c.budget} stroke="#1c1a17" strokeDasharray="4 3" label={{ value: 'budget', position: 'insideTopRight', fontSize: 10, fill: '#1c1a17' }} />
-            {c.startDay < 0 && <ReferenceLine x={fmtDay(0)} stroke="#8a8274" label={{ value: 'today', position: 'insideTopLeft', fontSize: 10, fill: '#8a8274' }} />}
-            <Area type="monotone" dataKey="spend" stroke={over ? '#c2421c' : '#b07d2b'} strokeWidth={2} fill="url(#burn)" isAnimationActive={false} />
+            <CartesianGrid vertical={false} stroke="#e2e8e4" />
+            <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#7a8580' }} tickLine={false} axisLine={{ stroke: '#cbd5d1' }} interval="preserveStartEnd" minTickGap={30} />
+            <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10, fill: '#7a8580' }} axisLine={false} tickLine={false} width={48} />
+            <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Spent by then']} />
+            <ReferenceLine y={c.budget} stroke="#0b3d2e" strokeDasharray="4 3" label={{ value: 'budget', position: 'insideTopRight', fontSize: 10, fill: '#0b3d2e' }} />
+            {c.startDay < 0 && <ReferenceLine x={fmtDay(0)} stroke="#7a8580" label={{ value: 'today', position: 'insideTopLeft', fontSize: 10, fill: '#7a8580' }} />}
+            <Area type="monotone" dataKey="spend" stroke={over ? '#c2421c' : '#b45309'} strokeWidth={2} fill="url(#burn)" isAnimationActive={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>

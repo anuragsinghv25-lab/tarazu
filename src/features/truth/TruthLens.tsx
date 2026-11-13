@@ -9,10 +9,10 @@ import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
 
 const LAYERS = [
-  { key: 'subsidized', label: 'Would have sold anyway', sub: 'Full-price buyers who got the discount for free', color: '#b9ae98', text: '#4a453d' },
+  { key: 'subsidized', label: 'Would have sold anyway', sub: 'Full-price buyers who got the discount for free', color: '#a3b0aa', text: '#4b5563' },
   { key: 'cannibalized', label: 'Stolen from your own products', sub: 'Bought this instead of your other SKUs', color: '#e7a487', text: '#8f2f12' },
-  { key: 'pulledForward', label: 'Only bought earlier', sub: 'Pantry-loaded; next month\'s sales will dip', color: '#e9c77a', text: '#7a5414' },
-  { key: 'incremental', label: 'Truly new sales', sub: 'The only part the sale actually created', color: '#2e7a57', text: '#ffffff' },
+  { key: 'pulledForward', label: 'Only bought earlier', sub: 'Pantry-loaded; next month\'s sales will dip', color: '#fbc56b', text: '#92400e' },
+  { key: 'incremental', label: 'Truly new sales', sub: 'The only part the sale actually created', color: '#1e7b4f', text: '#ffffff' },
 ] as const
 
 export function TruthLens() {
@@ -37,7 +37,7 @@ export function TruthLens() {
       </PageHeader>
 
       <Spot id="truth-headline">
-        <Card className="relative overflow-hidden bg-ink p-6 text-paper md:p-8">
+        <Card className="relative overflow-hidden bg-primary p-6 text-paper md:p-8">
           <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brass-2/20 blur-3xl" />
           <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
@@ -89,7 +89,7 @@ export function TruthLens() {
                     Only {units(t.incremental)} of {units(total)} units ({pct(t.incremental / total)}) were sales the discount actually created.
                   </p>
                   {stage < 5 && (
-                    <button onClick={() => setStage((s) => Math.min(5, s + 1))} className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper">
+                    <button onClick={() => setStage((s) => Math.min(5, s + 1))} className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-paper">
                       {stage < 4 ? `Peel layer ${stage + 1} of 4` : 'Show me the money'} <ChevronDown size={15} />
                     </button>
                   )}
@@ -111,15 +111,15 @@ export function TruthLens() {
                     {steps.map((s, i) => (
                       <li key={s.key} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 md:grid-cols-[230px_1fr_88px]">
                         <span className="text-[12.5px] text-ink-2">{s.label}</span>
-                        <span className="num text-right text-[13px] font-semibold md:order-3" style={{ color: s.value >= 0 ? '#2e7a57' : '#c2421c' }}>{s.value >= 0 ? '+' : ''}{inrShort(s.value)}</span>
+                        <span className="num text-right text-[13px] font-semibold md:order-3" style={{ color: s.value >= 0 ? '#1e7b4f' : '#c2421c' }}>{s.value >= 0 ? '+' : ''}{inrShort(s.value)}</span>
                         <div className="col-span-2 h-3 rounded-full bg-paper-2 md:order-2 md:col-span-1">
-                          <motion.div className="h-full rounded-full" style={{ background: s.value >= 0 ? '#2e7a57' : '#c2421c' }}
+                          <motion.div className="h-full rounded-full" style={{ background: s.value >= 0 ? '#1e7b4f' : '#c2421c' }}
                             initial={{ width: 0 }} animate={{ width: `${(Math.abs(s.value) / maxAbs) * 100}%` }} transition={{ delay: 0.15 + i * 0.12, type: 'spring', stiffness: 80, damping: 18 }} />
                         </div>
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-5 flex items-end justify-between border-t border-ink pt-4">
+                  <div className="mt-5 flex items-end justify-between border-t border-primary pt-4">
                     <span className="display text-[20px] text-ink">Net result of the sale</span>
                     <Money value={t.net} signed className={cn('text-[34px] leading-none font-semibold', t.net >= 0 ? 'text-gain' : 'text-loss')} />
                   </div>

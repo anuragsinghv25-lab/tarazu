@@ -75,7 +75,7 @@ export function ControlRoom() {
                   const on = c.scenario === s.id
                   return (
                     <motion.button key={s.id} whileTap={{ scale: 0.97 }} onClick={() => applyScenario(s.id)}
-                      className={cn('rounded-xl border p-2.5 text-left transition-colors', on ? 'border-ink bg-ink text-paper' : 'border-rule bg-card hover:border-ink-3/40')}>
+                      className={cn('rounded-xl border p-2.5 text-left transition-colors', on ? 'border-primary bg-primary text-paper' : 'border-rule bg-card hover:border-ink-3/40')}>
                       <div className="flex items-center gap-1.5 text-[12.5px] font-semibold">{on && <Zap size={12} className="text-brass-2" />}{s.label}</div>
                       <div className={cn('mt-0.5 text-[11px] leading-snug', on ? 'text-paper/70' : 'text-ink-3')}>{s.blurb}</div>
                     </motion.button>

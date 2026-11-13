@@ -26,7 +26,7 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
 
   useEffect(() => {
     if (!lensOn || !note || !ref.current) return
-    const a = annotate(ref.current, { type: 'box', color: '#b07d2b', padding: 5, strokeWidth: 1.4, animationDuration: 700, iterations: 1 })
+    const a = annotate(ref.current, { type: 'box', color: '#b45309', padding: 5, strokeWidth: 1.4, animationDuration: 700, iterations: 1 })
     const t = setTimeout(() => a.show(), 60)
     return () => { clearTimeout(t); a.remove() }
   }, [lensOn, note])
@@ -54,7 +54,7 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
           className="z-50 w-[340px] origin-[var(--radix-hover-card-content-transform-origin)] rounded-2xl border border-rule bg-card p-4 shadow-[var(--shadow-lift)] data-[state=open]:animate-[fadeIn_.18s_ease-out]">
           <div className="flex items-start justify-between gap-3">
             <div className="display text-[19px] leading-tight text-ink">{note.title}</div>
-            <span className="rounded-full border border-brass/30 bg-brass-soft px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-[#7a5414] uppercase">{note.scope}-have</span>
+            <span className="rounded-full border border-brass/30 bg-brass-soft px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-[#92400e] uppercase">{note.scope}-have</span>
           </div>
           <dl className="mt-3 space-y-2.5 text-[12.5px] leading-snug">
             <Row k="Pain point">{note.pain}</Row>

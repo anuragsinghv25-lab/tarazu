@@ -31,11 +31,11 @@ export function PageHeader({ eyebrow, title, children, aside }: { eyebrow: strin
 
 type Tone = 'ink' | 'gain' | 'loss' | 'warn' | 'brass' | 'quiet'
 const TONES: Record<Tone, string> = {
-  ink: 'bg-ink text-paper border-ink',
+  ink: 'bg-primary text-paper border-primary',
   gain: 'bg-gain-soft text-gain border-gain/20',
   loss: 'bg-loss-soft text-loss border-loss/20',
-  warn: 'bg-warn-soft text-[#8a5f07] border-warn/25',
-  brass: 'bg-brass-soft text-[#7a5414] border-brass/25',
+  warn: 'bg-warn-soft text-[#92400e] border-warn/25',
+  brass: 'bg-brass-soft text-[#92400e] border-brass/25',
   quiet: 'bg-paper-2 text-ink-2 border-rule',
 }
 export function Chip({ tone = 'quiet', className, children }: { tone?: Tone; className?: string; children: ReactNode }) {
@@ -81,7 +81,7 @@ export function Slider({ value, min, max, step, onChange, onCommit, className, l
       <RSlider.Track className="relative h-[5px] grow overflow-hidden rounded-full bg-paper-2 shadow-[inset_0_1px_1px_rgba(0,0,0,0.06)]">
         <RSlider.Range className="absolute h-full rounded-full bg-gradient-to-r from-brass to-brass-2" />
       </RSlider.Track>
-      <RSlider.Thumb className="block h-[18px] w-[18px] cursor-grab rounded-full border-[2.5px] border-brass-2 bg-ink shadow-[0_2px_8px_rgba(28,26,23,0.35)] transition-transform hover:scale-110 active:cursor-grabbing active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brass-2/30" />
+      <RSlider.Thumb className="block h-[18px] w-[18px] cursor-grab rounded-full border-[2.5px] border-brass-2 bg-primary shadow-[0_2px_8px_rgba(11,61,46,0.35)] transition-transform hover:scale-110 active:cursor-grabbing active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brass-2/30" />
     </RSlider.Root>
   )
 }
@@ -109,7 +109,7 @@ export function Segmented<T extends string | number>({ value, options, onChange,
           className={cn(
             'rounded-full font-medium transition-all',
             size === 'sm' ? 'px-2.5 py-0.5 text-[11.5px]' : 'px-3 py-1 text-[12.5px]',
-            o.value === value ? 'bg-ink text-paper shadow-sm' : 'text-ink-2 hover:text-ink',
+            o.value === value ? 'bg-primary text-paper shadow-sm' : 'text-ink-2 hover:text-ink',
           )}
         >
           {o.label}
@@ -120,8 +120,8 @@ export function Segmented<T extends string | number>({ value, options, onChange,
 }
 
 export const HEALTH_META = {
-  'at-risk': { label: 'At risk', tone: 'loss' as Tone, color: '#c2421c', soft: '#f5dccf', speed: '1.1s' },
-  slow: { label: 'Slow mover', tone: 'warn' as Tone, color: '#c48a12', soft: '#f6e6c0', speed: '2.2s' },
-  healthy: { label: 'Healthy', tone: 'quiet' as Tone, color: '#8a8274', soft: '#ede5d4', speed: '0s' },
-  fast: { label: 'Fast mover', tone: 'gain' as Tone, color: '#2e7a57', soft: '#d9ead9', speed: '0s' },
+  'at-risk': { label: 'At risk', tone: 'loss' as Tone, color: '#c2421c', soft: '#f9e0d4', speed: '1.1s' },
+  slow: { label: 'Slow mover', tone: 'warn' as Tone, color: '#d97706', soft: '#fcebc7', speed: '2.2s' },
+  healthy: { label: 'Healthy', tone: 'quiet' as Tone, color: '#7a8580', soft: '#f6ecd9', speed: '0s' },
+  fast: { label: 'Fast mover', tone: 'gain' as Tone, color: '#1e7b4f', soft: '#e7f3ec', speed: '0s' },
 }

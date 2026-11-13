@@ -7,6 +7,7 @@ import { usePortfolio, useTruth, useSeller } from '@/state/hooks'
 import { FatigueCard } from './FatigueCard'
 import { inrShort, pct } from '@/lib/format'
 import type { Health } from '@/engine/types'
+import { SellerLogo, sellerBrand } from '@/brand/sellers'
 
 const ORDER: Health[] = ['at-risk', 'slow', 'healthy', 'fast']
 
@@ -22,6 +23,7 @@ export function Overview() {
     <div>
       <PageHeader
         eyebrow={`Overview · ${seller.brand}, ${seller.city}`}
+        aside={<div className="hidden shrink-0 rounded-2xl border bg-card/70 px-4 py-3 md:block" style={{ borderColor: `${sellerBrand(seller.id).color.primary}26` }}><SellerLogo id={seller.id} size="md" descriptor /></div>}
         title={<>Namaste, {seller.name}.<br /><span className="text-ink-3">{inrShort(p.stuck)} is waiting in your godown.</span></>}
       >
         Here's where your money is before the {seller.event}, and the few promotions worth running. Everything below is weighed after

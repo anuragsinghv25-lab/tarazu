@@ -6,6 +6,7 @@ import {
   Sparkles, PlayCircle, BookOpen, ChevronDown, Search, SlidersHorizontal, Glasses, Check, Users, Wand2,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import { SellerMark } from '@/brand/sellers'
 import { Kbd, Switch } from '@/components/ui'
 import { Spot } from '@/components/Spot'
 import { useStore } from '@/state/store'
@@ -65,7 +66,7 @@ function Sidebar() {
                 const active = it.match ? pathname.startsWith(it.match) : pathname === it.to
                 return (
                   <li key={it.label}>
-                    <NavLink to={it.to} className={cn('group flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px] transition-colors', active ? 'bg-ink text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink')}>
+                    <NavLink to={it.to} className={cn('group flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[13.5px] transition-colors', active ? 'bg-primary text-paper' : 'text-ink-2 hover:bg-paper-2 hover:text-ink')}>
                       <Icon size={16} strokeWidth={1.75} className={active ? 'text-brass-2' : ''} />
                       <span className="flex-1">{it.label}</span>
                       {it.badge && <span className={cn('rounded-full px-1.5 py-px text-[9.5px] font-medium', active ? 'bg-paper/15 text-paper/70' : 'bg-paper-2 text-ink-3')}>{it.badge}</span>}
@@ -78,18 +79,15 @@ function Sidebar() {
         ))}
       </nav>
       <div className="mt-3 rounded-xl border border-dashed border-rule p-3 text-[11.5px] leading-snug text-ink-3">
-        Prototype · Release 2 of 3. All sellers and data are fictional; fees are illustrative.
+        Prototype · Release 2 of 3. All sellers, brands and data are fictional; fees are illustrative.
       </div>
     </aside>
   )
 }
 
+/** A seller's avatar is their brand mark on its soft tile (see src/brand/sellers). */
 export function Avatar({ s, size = 28 }: { s: SellerDef; size?: number }) {
-  return (
-    <span className="display grid shrink-0 place-items-center rounded-full text-ink-2" style={{ width: size, height: size, background: s.avatar, fontSize: size * 0.5 }}>
-      {s.name[0]}
-    </span>
-  )
+  return <SellerMark id={s.id} size={size} />
 }
 
 function SellerSwitcher() {
@@ -158,19 +156,19 @@ function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-rule bg-paper/85 backdrop-blur-md">
       <div className="flex items-center gap-3 px-4 py-2.5 md:px-8">
-        <div className="lg:hidden"><Logo /></div>
+        <div className="lg:hidden"><Logo compact /></div>
         <div className="hidden sm:block"><SellerSwitcher /></div>
         <EventChip />
         <div className="ml-auto flex items-center gap-2">
           <button onClick={() => setPalette(true)} className="hidden items-center gap-2 rounded-full border border-rule bg-card px-3 py-1.5 text-[12.5px] text-ink-3 transition-colors hover:text-ink md:flex">
             <Search size={14} /> <span className="hidden lg:inline">Jump to anything</span> <Kbd>⌘K</Kbd>
           </button>
-          <label className={cn('flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-[12.5px] transition-colors', lensOn ? 'border-brass/40 bg-brass-soft text-[#6b4a12]' : 'border-rule bg-card text-ink-2')}>
+          <label className={cn('flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-[12.5px] transition-colors', lensOn ? 'border-brass/40 bg-brass-soft text-[#92400e]' : 'border-rule bg-card text-ink-2')}>
             <Glasses size={15} /> <span className="hidden sm:inline">BA Lens</span>
             <Switch checked={lensOn} onChange={toggleLens} label="BA Lens" />
             <span className="hidden md:inline"><Kbd>B</Kbd></span>
           </label>
-          <button onClick={() => setRoom(true)} className="flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[12.5px] font-medium text-paper shadow-sm transition-transform hover:-translate-y-px">
+          <button onClick={() => setRoom(true)} className="flex items-center gap-2 rounded-full bg-primary px-3.5 py-1.5 text-[12.5px] font-medium text-paper shadow-sm transition-transform hover:-translate-y-px">
             <SlidersHorizontal size={14} className="text-brass-2" /> <span className="hidden sm:inline">Control Room</span>
             <span className="hidden md:inline-flex"><kbd className="num rounded-[5px] border border-paper/20 px-1.5 text-[10.5px] text-paper/60">C</kbd></span>
           </button>
@@ -191,7 +189,7 @@ function MobileNav() {
       {items.map((it) => {
         const active = it.match ? pathname.startsWith(it.match) : pathname === it.to
         return (
-          <NavLink key={it.label} to={it.to!} className={cn('shrink-0 rounded-full px-3 py-1 text-[12.5px]', active ? 'bg-ink text-paper' : 'text-ink-2')}>
+          <NavLink key={it.label} to={it.to!} className={cn('shrink-0 rounded-full px-3 py-1 text-[12.5px]', active ? 'bg-primary text-paper' : 'text-ink-2')}>
             {it.label}
           </NavLink>
         )

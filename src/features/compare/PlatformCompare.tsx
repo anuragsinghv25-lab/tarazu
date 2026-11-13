@@ -8,6 +8,7 @@ import { channelsOf, simulate, feeFor } from '@/engine/engine'
 import { skuOf } from '@/data/sellers'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import { ChannelTitle } from '@/brand/channels'
 
 export function PlatformCompare() {
   const c = useControls()
@@ -41,7 +42,7 @@ export function PlatformCompare() {
             <Eyebrow>Product</Eyebrow>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {picks.map((p) => (
-                <button key={p.id} onClick={() => setSkuId(p.id)} className={cn('rounded-full border px-3 py-1 text-[12.5px] transition-colors', skuId === p.id ? 'border-ink bg-ink text-paper' : 'border-rule bg-card text-ink-2 hover:text-ink')}>{p.label}</button>
+                <button key={p.id} onClick={() => setSkuId(p.id)} className={cn('rounded-full border px-3 py-1 text-[12.5px] transition-colors', skuId === p.id ? 'border-primary bg-primary text-paper' : 'border-rule bg-card text-ink-2 hover:text-ink')}>{p.label}</button>
               ))}
             </div>
           </div>
@@ -64,9 +65,9 @@ export function PlatformCompare() {
             return (
               <motion.div key={x.ch} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                 <Card className={cn('flex h-full flex-col p-5', win && 'border-beam border-brass/40')}>
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-wrap-reverse items-start justify-between gap-2">
                     <div>
-                      <div className="display text-[22px] text-ink">{x.f.label}</div>
+                      <div className="display text-[22px] text-ink"><ChannelTitle id={x.ch} label={x.f.label} height={22} /></div>
                       <div className="text-[11.5px] text-ink-3">{pct(x.f.share)} of {seller.name}'s buyers</div>
                     </div>
                     {win ? <Chip tone="brass"><Trophy size={11} /> Run it here</Chip> : x.r.net < 0 ? <Chip tone="loss">Loses money</Chip> : null}
@@ -74,7 +75,7 @@ export function PlatformCompare() {
                   <Money value={x.r.net} signed className={cn('mt-4 text-[34px] leading-none font-medium', x.r.net >= 0 ? 'text-gain' : 'text-loss')} />
                   <div className="mt-1 text-[11.5px] text-ink-3">net impact vs no deal</div>
                   <div className="mt-3 h-1.5 rounded-full bg-paper-2">
-                    <motion.div className="h-full rounded-full" style={{ background: x.r.net >= 0 ? '#2e7a57' : '#c2421c' }} animate={{ width: `${(Math.abs(x.r.net) / maxAbs) * 100}%` }} />
+                    <motion.div className="h-full rounded-full" style={{ background: x.r.net >= 0 ? '#1e7b4f' : '#c2421c' }} animate={{ width: `${(Math.abs(x.r.net) / maxAbs) * 100}%` }} />
                   </div>
                   <dl className="mt-4 grid grid-cols-2 gap-y-1.5 text-[12px]">
                     <dt className="text-ink-3">Units sold</dt><dd className="num text-right text-ink">{units(x.r.promoUnits)}</dd>

@@ -15,8 +15,8 @@ export function promoDependency(share: number[], strategy: keyof typeof STRATEGY
 }
 
 export const fatigueBand = (v: number) =>
-  v < 0.25 ? { label: 'Healthy', note: 'Most buyers pay full price.', color: '#2e7a57' }
-    : v < 0.5 ? { label: 'Watch it', note: 'A growing share only buys on offer.', color: '#c48a12' }
+  v < 0.25 ? { label: 'Healthy', note: 'Most buyers pay full price.', color: '#1e7b4f' }
+    : v < 0.5 ? { label: 'Watch it', note: 'A growing share only buys on offer.', color: '#d97706' }
       : { label: 'Trained to wait', note: 'Buyers have learned to hold out for the next sale.', color: '#c2421c' }
 
 const R = 74, CX = 96, CY = 92
@@ -49,14 +49,14 @@ export function FatigueCard() {
         <Eyebrow>Promo fatigue · last 8 weeks</Eyebrow>
         <div className="mt-2 flex items-center gap-4">
           <svg viewBox="0 0 192 108" className="w-[150px] shrink-0" role="img" aria-label={`Promo dependency ${pct(now)}`}>
-            <path d={arc(0, 0.25)} stroke="#2e7a57" strokeWidth="12" fill="none" strokeOpacity=".85" />
-            <path d={arc(0.25, 0.5)} stroke="#c48a12" strokeWidth="12" fill="none" strokeOpacity=".85" />
+            <path d={arc(0, 0.25)} stroke="#1e7b4f" strokeWidth="12" fill="none" strokeOpacity=".85" />
+            <path d={arc(0.25, 0.5)} stroke="#d97706" strokeWidth="12" fill="none" strokeOpacity=".85" />
             <path d={arc(0.5, 1)} stroke="#c2421c" strokeWidth="12" fill="none" strokeOpacity=".85" />
             <motion.g style={{ rotate: angle, originX: `${CX}px`, originY: `${CY}px` }}>
-              <line x1={CX} y1={CY} x2={CX} y2={CY - R + 8} stroke="#1c1a17" strokeWidth="3" strokeLinecap="round" />
+              <line x1={CX} y1={CY} x2={CX} y2={CY - R + 8} stroke="#0b3d2e" strokeWidth="3" strokeLinecap="round" />
             </motion.g>
-            <circle cx={CX} cy={CY} r="7" fill="#1c1a17" />
-            <circle cx={CX} cy={CY} r="3" fill="#d9a441" />
+            <circle cx={CX} cy={CY} r="7" fill="#0b3d2e" />
+            <circle cx={CX} cy={CY} r="3" fill="#f59e0b" />
           </svg>
           <div>
             <div className="num text-[30px] leading-none font-semibold" style={{ color: band.color }}>{pct(now)}</div>
