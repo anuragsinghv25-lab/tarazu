@@ -40,7 +40,7 @@ export const farhan: SellerDef = {
   brand: 'Rangreza Weaves',
   city: 'Surat',
   category: 'Sarees & ethnic wear · marketplace-only',
-  avatar: '#f5dccf',
+  avatar: '#fbe9e4',
   channels: ['Meesho', 'Flipkart', 'Amazon'],
   problem: 'A rival undercuts his bestseller every other day, season-end stock is stuck in broken sizes, and buyers only order on sale.',
   pitch: 'Lives on marketplaces with thin margins and high returns: the clearest case for flash deals, fee compare, co-funding and promo fatigue.',

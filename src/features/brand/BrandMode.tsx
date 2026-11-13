@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion } from 'motion/react'
 import { Bar, CartesianGrid, ComposedChart, Line, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis, Area } from 'recharts'
 import { toast } from 'sonner'
-import { ArrowRight, Building2, MoveRight, Scale as ScaleIcon } from 'lucide-react'
+import { ArrowRight, MoveRight, Scale as ScaleIcon } from 'lucide-react'
 import { Card, Chip, Eyebrow, Money, PageHeader, Slider } from '@/components/ui'
 import { Select } from '@/components/ui/form'
 import { Spot } from '@/components/Spot'
@@ -13,6 +13,7 @@ import { bestMove, forwardBuying, grossToNet, MECHANISM, reallocate, roi } from 
 import type { Deduction, TradeData } from '@/data/sellers/types'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import { SellerMark } from '@/brand/sellers'
 
 export function BrandMode() {
   const seller = useSeller()
@@ -25,12 +26,12 @@ export function BrandMode() {
           fund promotions differently: as <Term k="trade spend" />, paid to the shop, not the shopper. Brand mode is built for them.
         </PageHeader>
         <Card className="flex flex-col items-start gap-4 p-6 md:flex-row md:items-center">
-          <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-ink text-brass-2"><Building2 size={24} /></div>
+          <SellerMark id="anaya" size={56} />
           <div className="flex-1">
             <div className="display text-[22px] text-ink">Anaya · Malwa Bites, Indore</div>
             <p className="mt-1 text-[13px] text-ink-2">Snacks and chai through distributors, modern trade and quick commerce: <Term k="gross-to-net" />, <Term k="off-invoice" /> vs <Term k="scan-based" />, <Term k="slotting" /> fees, <Term k="forward buying" /> and <Term k="deduction">deductions</Term>.</p>
           </div>
-          <button onClick={() => setSeller('anaya')} className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper">Open as Anaya <ArrowRight size={14} /></button>
+          <button onClick={() => setSeller('anaya')} className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-paper">Open as Anaya <ArrowRight size={14} /></button>
         </Card>
       </div>
     )
@@ -94,10 +95,10 @@ function Waterfall({ g }: { g: ReturnType<typeof grossToNet> }) {
         <div className="grid min-w-[760px] gap-2" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
           {cols.map((col, i) => (
             <div key={col.label} className="flex flex-col items-center">
-              <div className="num mb-1 h-4 text-[11.5px] font-medium" style={{ color: col.kind === 'step' ? '#c2421c' : col.kind === 'net' ? '#2e7a57' : '#1c1a17', marginTop: col.top }}>{col.kind === 'step' ? `−${inrShort(-col.v)}` : inrShort(col.v)}</div>
+              <div className="num mb-1 h-4 text-[11.5px] font-medium" style={{ color: col.kind === 'step' ? '#c2421c' : col.kind === 'net' ? '#1e7b4f' : '#0b3d2e', marginTop: col.top }}>{col.kind === 'step' ? `−${inrShort(-col.v)}` : inrShort(col.v)}</div>
               <div className="relative w-full" style={{ height: H - col.top }}>
                 <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: i * 0.07, type: 'spring', stiffness: 120, damping: 20 }}
-                  className={cn('absolute inset-x-1.5 top-0 origin-top rounded-md', col.kind === 'total' ? 'bg-ink' : col.kind === 'net' ? 'bg-gain' : 'bg-loss/85')} style={{ height: col.h }} />
+                  className={cn('absolute inset-x-1.5 top-0 origin-top rounded-md', col.kind === 'total' ? 'bg-primary' : col.kind === 'net' ? 'bg-gain' : 'bg-loss/85')} style={{ height: col.h }} />
                 {i < cols.length - 1 && <div className="absolute top-0 left-full z-10 w-2 border-t border-dashed border-ink-3" style={{ top: cols[i + 1].top - col.top + (col.kind === 'step' ? col.h : 0) - (col.kind === 'total' ? 0 : col.h) + (col.kind === 'step' ? 0 : 0) }} />}
               </div>
               <div className="mt-2 min-h-[30px] text-center text-[11px] leading-tight text-ink-2">{col.label}</div>
@@ -175,7 +176,7 @@ function Tpo({ t }: { t: TradeData }) {
       </div>
       <div className="mt-3 flex items-end justify-between"><span className="text-[12.5px] text-ink-2">Same budget, more profit</span><Money value={r.gain} signed className={cn('text-[24px] font-semibold', r.gain >= 0 ? 'text-gain' : 'text-loss')} /></div>
       <p className="mt-2 text-[11.5px] leading-snug text-ink-3">Each deal shows diminishing returns: the more you spend on it, the less each extra rupee earns. Past a point, moving more stops paying.</p>
-      <button onClick={() => toast('Added to the Q4 trade plan', { description: `Move ${inrShort(amount)} from "${from.label}" to "${to.label}" for ${r.gain >= 0 ? '+' : ''}${inrShort(r.gain)}.` })} className="mt-4 w-full rounded-full bg-ink py-2 text-[13px] font-medium text-paper">Add to the trade review</button>
+      <button onClick={() => toast('Added to the Q4 trade plan', { description: `Move ${inrShort(amount)} from "${from.label}" to "${to.label}" for ${r.gain >= 0 ? '+' : ''}${inrShort(r.gain)}.` })} className="mt-4 w-full rounded-full bg-primary py-2 text-[13px] font-medium text-paper">Add to the trade review</button>
     </Card>
   )
 }
@@ -190,19 +191,19 @@ function Forward({ t }: { t: TradeData }) {
       <div className="mt-4 h-[260px]">
         <ResponsiveContainer>
           <ComposedChart data={f.weeks} margin={{ top: 10, right: 8, bottom: 0, left: -4 }}>
-            <CartesianGrid vertical={false} stroke="#e8e0cf" />
-            <XAxis dataKey="week" tickFormatter={(v) => `wk ${v}`} tick={{ fontSize: 10.5, fill: '#8a8274' }} axisLine={{ stroke: '#dcd2bf' }} tickLine={false} />
-            <YAxis tickFormatter={(v) => units(v)} tick={{ fontSize: 10.5, fill: '#8a8274' }} axisLine={false} tickLine={false} width={44} />
-            <Tooltip contentStyle={{ background: '#fbf8f1', border: '1px solid #dcd2bf', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => `Week ${v}`} formatter={(v, n) => [`${units(Number(v))} cases`, n]} />
-            <ReferenceArea x1={a + 1} x2={b + 1} fill="#d9a441" fillOpacity={0.15} label={{ value: 'Buy 10 get 1 scheme', position: 'insideTop', fontSize: 10.5, fill: '#7a5414' }} />
+            <CartesianGrid vertical={false} stroke="#e2e8e4" />
+            <XAxis dataKey="week" tickFormatter={(v) => `wk ${v}`} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
+            <YAxis tickFormatter={(v) => units(v)} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={false} tickLine={false} width={44} />
+            <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => `Week ${v}`} formatter={(v, n) => [`${units(Number(v))} cases`, n]} />
+            <ReferenceArea x1={a + 1} x2={b + 1} fill="#f59e0b" fillOpacity={0.15} label={{ value: 'Buy 10 get 1 scheme', position: 'insideTop', fontSize: 10.5, fill: '#92400e' }} />
             <Area dataKey="pipeline" name="Extra stock at distributor" fill="#c2421c" fillOpacity={0.1} stroke="#c2421c" strokeOpacity={0.5} strokeDasharray="3 3" isAnimationActive={false} />
-            <Bar dataKey="sellIn" name="Sell-in (shipped to distributor)" fill="#1c1a17" radius={[3, 3, 0, 0]} barSize={18} />
-            <Line dataKey="sellOut" name="Sell-out (bought by shoppers)" stroke="#2e7a57" strokeWidth={2.5} dot={{ r: 2.5, fill: '#2e7a57' }} />
+            <Bar dataKey="sellIn" name="Sell-in (shipped to distributor)" fill="#0b3d2e" radius={[3, 3, 0, 0]} barSize={18} />
+            <Line dataKey="sellOut" name="Sell-out (bought by shoppers)" stroke="#1e7b4f" strokeWidth={2.5} dot={{ r: 2.5, fill: '#1e7b4f' }} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
       <div className="mt-2 flex flex-wrap gap-4 text-[11.5px] text-ink-3">
-        <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-ink" /> <Term k="sell-in">Sell-in</Term></span>
+        <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-primary" /> <Term k="sell-in">Sell-in</Term></span>
         <span className="flex items-center gap-1.5"><span className="h-0.5 w-3 bg-gain" /> <Term k="sell-out">Sell-out</Term></span>
         <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-loss/20" /> Extra stock sitting at the distributor</span>
       </div>

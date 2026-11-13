@@ -47,7 +47,7 @@ export const meera: SellerDef = {
   brand: 'Saanjh Botanicals',
   city: 'Jaipur',
   category: 'Ayurvedic skincare & wellness',
-  avatar: '#f1e2bf',
+  avatar: '#eef4e2',
   channels: ['Amazon', 'Flipkart', 'Nykaa', 'Own website', 'WhatsApp community'],
   problem: 'Overstocked lip balm, expiring serum batches and leftover Diwali gift sets, three weeks before a sale.',
   pitch: 'Sells everywhere, including her own site, so she can use every consumer mechanic from loyalty to referrals.',

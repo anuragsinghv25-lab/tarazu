@@ -34,7 +34,7 @@ export const kabir: SellerDef = {
   brand: 'VoltLane',
   city: 'Delhi',
   category: 'Mobile accessories',
-  avatar: '#d9ead9',
+  avatar: '#e6effb',
   channels: ['Amazon', 'Flipkart', 'Own website', 'Quick commerce'],
   problem: 'A new 65W charger launches in six weeks, 2,400 old chargers must clear first, and competitors match prices daily.',
   pitch: 'Electronics with model changes and returns: the case for bank offers, bundles, cannibalization between models and open-to-buy.',

@@ -1,0 +1,32 @@
+{
+  "name": "Tarazu · Promotion intelligence for sellers",
+  "short_name": "Tarazu",
+  "description": "Weigh every discount: what a promotion costs against what it truly earns.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7e9",
+  "theme_color": "#0b3d2e",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-dark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

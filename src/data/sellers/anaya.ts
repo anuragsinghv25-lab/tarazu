@@ -34,7 +34,7 @@ export const anaya: SellerDef = {
   brand: 'Malwa Bites',
   city: 'Indore',
   category: 'Snacks & chai brand · Brand mode',
-  avatar: '#e8e0f0',
+  avatar: '#fdeedd',
   channels: ['Distributors → kiranas', 'Modern trade', 'Quick commerce', 'Amazon'],
   problem: 'Trade spend is a quarter of gross sales, retailers short-pay invoices, and nobody knows which deals pay back.',
   pitch: 'A brand selling through retailers: trade promotions, off-invoice vs scan-based, slotting, deductions and gross-to-net.',
@@ -107,10 +107,10 @@ export const anaya: SellerDef = {
   trade: {
     quarter: 'Q3 FY27 (Oct–Dec 2026)',
     accounts: [
-      { id: 'malwa-dist', name: 'Malwa Distributors', kind: 'Distributor · 2,400 kiranas', gross: 8000000, color: '#b07d2b' },
-      { id: 'bazaar', name: 'Bazaar Mart', kind: 'Modern trade · 120 stores', gross: 4000000, color: '#2e7a57' },
+      { id: 'malwa-dist', name: 'Malwa Distributors', kind: 'Distributor · 2,400 kiranas', gross: 8000000, color: '#b45309' },
+      { id: 'bazaar', name: 'Bazaar Mart', kind: 'Modern trade · 120 stores', gross: 4000000, color: '#1e7b4f' },
       { id: 'quick', name: 'Quick commerce', kind: '3 apps · 9 cities', gross: 2700000, color: '#5b6fb5' },
-      { id: 'amazon', name: 'Amazon', kind: 'Marketplace', gross: 1200000, color: '#8a8274' },
+      { id: 'amazon', name: 'Amazon', kind: 'Marketplace', gross: 1200000, color: '#7a8580' },
     ],
     lines: [
       { id: 'd-oi', account: 'malwa-dist', mechanism: 'off-invoice', label: 'Off-invoice 6% on all SKUs', spend: 1104000, incGP: 420000 },

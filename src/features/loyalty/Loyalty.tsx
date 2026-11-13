@@ -36,9 +36,9 @@ function Locked() {
       </PageHeader>
       <Spot id="loyalty-locked">
         <Card className="relative overflow-hidden p-6 md:p-8">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background:repeating-linear-gradient(135deg,#1c1a17_0_2px,transparent_2px_14px)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background:repeating-linear-gradient(135deg,#0b3d2e_0_2px,transparent_2px_14px)]" />
           <div className="relative grid gap-6 md:grid-cols-[auto_1fr]">
-            <div className="grid h-16 w-16 place-items-center rounded-2xl bg-ink text-brass-2"><Lock size={26} /></div>
+            <div className="grid h-16 w-16 place-items-center rounded-2xl bg-primary text-brass-2"><Lock size={26} /></div>
             <div>
               <h2 className="display text-[26px] text-ink">The opportunity Tarazu shows {seller.name}</h2>
               <div className="mt-4 grid gap-3 md:grid-cols-3">
@@ -58,7 +58,7 @@ function Locked() {
                   </div>
                 ))}
               </div>
-              <button onClick={() => setSeller('meera')} className="mt-6 flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper">See a live programme as {meera.name} <ArrowRight size={14} /></button>
+              <button onClick={() => setSeller('meera')} className="mt-6 flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-paper">See a live programme as {meera.name} <ArrowRight size={14} /></button>
             </div>
           </div>
         </Card>
@@ -132,10 +132,10 @@ function Program({ L }: { L: LoyaltyData }) {
                   <ResponsiveContainer>
                     <AreaChart data={fc} margin={{ top: 8, right: 4, bottom: 0, left: -6 }}>
                       <defs><linearGradient id="liab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c2421c" stopOpacity={0.28} /><stop offset="1" stopColor="#c2421c" stopOpacity={0.02} /></linearGradient></defs>
-                      <CartesianGrid vertical={false} stroke="#e8e0cf" />
-                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: '#8a8274' }} axisLine={{ stroke: '#dcd2bf' }} tickLine={false} />
-                      <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10.5, fill: '#8a8274' }} axisLine={false} tickLine={false} width={48} />
-                      <Tooltip contentStyle={{ background: '#fbf8f1', border: '1px solid #dcd2bf', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Liability']} />
+                      <CartesianGrid vertical={false} stroke="#e2e8e4" />
+                      <XAxis dataKey="label" tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
+                      <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={false} tickLine={false} width={48} />
+                      <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Liability']} />
                       <Area dataKey="liability" stroke="#c2421c" strokeWidth={2} fill="url(#liab)" isAnimationActive={false} />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -163,7 +163,7 @@ function Program({ L }: { L: LoyaltyData }) {
               </div>
             </div>
             <p className="mt-3 text-[12px] leading-snug text-ink-3">Returns flatten after about 20%: deeper offers mostly pay people who were coming back anyway.</p>
-            <button onClick={makeWinBack} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-ink py-2 text-[13px] font-medium text-paper">Draft this win-back campaign <ArrowRight size={14} /></button>
+            <button onClick={makeWinBack} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2 text-[13px] font-medium text-paper">Draft this win-back campaign <ArrowRight size={14} /></button>
           </Card>
         </Spot>
       </div>

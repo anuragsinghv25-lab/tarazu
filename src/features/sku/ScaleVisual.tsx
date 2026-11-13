@@ -28,44 +28,44 @@ export function ScaleVisual({ given, earned }: { given: number; earned: number }
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label={`Scale: given away ${Math.round(given)}, earned ${Math.round(earned)}`}>
       <defs>
         <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#e6b85a" /><stop offset="0.55" stopColor="#b07d2b" /><stop offset="1" stopColor="#7d5717" />
+          <stop offset="0" stopColor="#fbbf4d" /><stop offset="0.55" stopColor="#b45309" /><stop offset="1" stopColor="#92400e" />
         </linearGradient>
         <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fbf8f1" /><stop offset="1" stopColor="#e9dfc9" />
+          <stop offset="0" stopColor="#fffcf6" /><stop offset="1" stopColor="#eee6d3" />
         </linearGradient>
-        <radialGradient id="shadow"><stop offset="0" stopColor="#1c1a17" stopOpacity=".18" /><stop offset="1" stopColor="#1c1a17" stopOpacity="0" /></radialGradient>
+        <radialGradient id="shadow"><stop offset="0" stopColor="#0b3d2e" stopOpacity=".18" /><stop offset="1" stopColor="#0b3d2e" stopOpacity="0" /></radialGradient>
       </defs>
 
       {/* dial behind the needle */}
       <g opacity="0.9">
-        <path d={`M ${CX - 62} ${CY - 12} A 64 64 0 0 1 ${CX + 62} ${CY - 12}`} fill="none" stroke="#dcd2bf" strokeWidth="1.2" />
+        <path d={`M ${CX - 62} ${CY - 12} A 64 64 0 0 1 ${CX + 62} ${CY - 12}`} fill="none" stroke="#cbd5d1" strokeWidth="1.2" />
         {[-24, -12, 0, 12, 24].map((a) => {
           const r = (a * Math.PI) / 180
-          return <line key={a} x1={CX + 60 * Math.sin(r)} y1={CY - 60 * Math.cos(r)} x2={CX + 68 * Math.sin(r)} y2={CY - 68 * Math.cos(r)} stroke={a === 0 ? '#1c1a17' : '#b9ae98'} strokeWidth={a === 0 ? 1.6 : 1} />
+          return <line key={a} x1={CX + 60 * Math.sin(r)} y1={CY - 60 * Math.cos(r)} x2={CX + 68 * Math.sin(r)} y2={CY - 68 * Math.cos(r)} stroke={a === 0 ? '#0b3d2e' : '#a3b0aa'} strokeWidth={a === 0 ? 1.6 : 1} />
         })}
         <text x={CX - 70} y={CY - 26} fontSize="10" fill="#c2421c" textAnchor="end" fontFamily="var(--font-sans)">loss</text>
-        <text x={CX + 70} y={CY - 26} fontSize="10" fill="#2e7a57" fontFamily="var(--font-sans)">profit</text>
+        <text x={CX + 70} y={CY - 26} fontSize="10" fill="#1e7b4f" fontFamily="var(--font-sans)">profit</text>
       </g>
 
       {/* stand */}
       <ellipse cx={CX} cy={H - 16} rx="150" ry="10" fill="url(#shadow)" />
-      <path d={`M ${CX - 84} ${H - 18} L ${CX + 84} ${H - 18} L ${CX + 64} ${H - 38} L ${CX - 64} ${H - 38} Z`} fill="#1c1a17" />
+      <path d={`M ${CX - 84} ${H - 18} L ${CX + 84} ${H - 18} L ${CX + 64} ${H - 38} L ${CX - 64} ${H - 38} Z`} fill="#0b3d2e" />
       <rect x={CX - 64} y={H - 42} width="128" height="5" rx="2" fill="url(#brass)" />
-      <rect x={CX - 5} y={CY} width="10" height={H - 42 - CY} rx="3" fill="#1c1a17" />
-      <rect x={CX - 2} y={CY + 6} width="2" height={H - 56 - CY} fill="#4a453d" />
+      <rect x={CX - 5} y={CY} width="10" height={H - 42 - CY} rx="3" fill="#0b3d2e" />
+      <rect x={CX - 2} y={CY + 6} width="2" height={H - 56 - CY} fill="#4b5563" />
 
       {/* needle */}
-      <motion.line x1={CX} y1={CY} x2={nx} y2={ny} stroke="#1c1a17" strokeWidth="2" strokeLinecap="round" />
+      <motion.line x1={CX} y1={CY} x2={nx} y2={ny} stroke="#0b3d2e" strokeWidth="2" strokeLinecap="round" />
 
       {/* beam */}
       <motion.line x1={lx} y1={ly} x2={rx} y2={ry} stroke="url(#brass)" strokeWidth="9" strokeLinecap="round" />
-      <motion.line x1={lx} y1={ly} x2={rx} y2={ry} stroke="#fff3d6" strokeOpacity=".5" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx={CX} cy={CY} r="13" fill="#1c1a17" />
+      <motion.line x1={lx} y1={ly} x2={rx} y2={ry} stroke="#fff1d2" strokeOpacity=".5" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx={CX} cy={CY} r="13" fill="#0b3d2e" />
       <circle cx={CX} cy={CY} r="7" fill="url(#brass)" />
       <path d={`M ${CX} ${CY - 34} l 6 10 h -12 Z`} fill="url(#brass)" />
 
       <Pan x={lx} y={ly} label="GIVEN AWAY" color="#c2421c" coinFill="#e7a487" coins={coins(given)} side="l" />
-      <Pan x={rx} y={ry} label="EARNED" color="#2e7a57" coinFill="#e6c06a" coins={coins(earned)} side="r" />
+      <Pan x={rx} y={ry} label="EARNED" color="#1e7b4f" coinFill="#fbc56b" coins={coins(earned)} side="r" />
     </svg>
   )
 }
@@ -73,10 +73,10 @@ export function ScaleVisual({ given, earned }: { given: number; earned: number }
 function Pan({ x, y, label, color, coinFill, coins, side }: { x: MotionValue<number>; y: MotionValue<number>; label: string; color: string; coinFill: string; coins: number; side: 'l' | 'r' }) {
   return (
     <motion.g style={{ x, y }}>
-      <circle r="4.5" fill="#1c1a17" />
-      <line x1="0" y1="0" x2="-62" y2="96" stroke="#4a453d" strokeWidth="1.1" />
-      <line x1="0" y1="0" x2="62" y2="96" stroke="#4a453d" strokeWidth="1.1" />
-      <line x1="0" y1="0" x2="0" y2="99" stroke="#4a453d" strokeWidth="0.8" strokeOpacity=".55" />
+      <circle r="4.5" fill="#0b3d2e" />
+      <line x1="0" y1="0" x2="-62" y2="96" stroke="#4b5563" strokeWidth="1.1" />
+      <line x1="0" y1="0" x2="62" y2="96" stroke="#4b5563" strokeWidth="1.1" />
+      <line x1="0" y1="0" x2="0" y2="99" stroke="#4b5563" strokeWidth="0.8" strokeOpacity=".55" />
       <g>
         <AnimatePresence>
           {Array.from({ length: coins }).map((_, i) => (
@@ -86,7 +86,7 @@ function Pan({ x, y, label, color, coinFill, coins, side }: { x: MotionValue<num
           ))}
         </AnimatePresence>
       </g>
-      <path d="M -76 96 Q 0 146 76 96 Z" fill="url(#bowl)" stroke="#1c1a17" strokeWidth="1.4" />
+      <path d="M -76 96 Q 0 146 76 96 Z" fill="url(#bowl)" stroke="#0b3d2e" strokeWidth="1.4" />
       <path d="M -76 96 L 76 96" stroke="url(#brass)" strokeWidth="3" strokeLinecap="round" />
       <text y="111" textAnchor="middle" fontSize="9" letterSpacing="1.5" fontWeight="600" fill={color} fontFamily="var(--font-sans)">{label}</text>
     </motion.g>

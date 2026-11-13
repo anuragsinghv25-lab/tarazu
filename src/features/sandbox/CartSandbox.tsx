@@ -16,6 +16,7 @@ import type { SellerDef, SellerId } from '@/data/sellers'
 import { skuOf } from '@/data/sellers'
 import { inr, inrShort, pct } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import { SellerLogo } from '@/brand/sellers'
 
 const MAX_ORDER: Record<SellerId, number> = { meera: 0.25, farhan: 0.35, kabir: 0.22, anaya: 0.2 }
 
@@ -102,7 +103,7 @@ function SandboxInner({ seller }: { seller: SellerDef }) {
       </PageHeader>
 
       {previewC && (
-        <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-brass/40 bg-brass-soft px-4 py-2.5 text-[13px] text-[#6b4a12]">
+        <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-brass/40 bg-brass-soft px-4 py-2.5 text-[13px] text-[#92400e]">
           <FlaskConical size={15} /> Testing <b className="font-semibold">{previewC.name}</b> as if it were live. Nothing changes for real customers.
           <button onClick={() => { params.delete('preview'); setParams(params) }} className="ml-auto text-[12px] underline">Stop testing</button>
         </div>
@@ -111,7 +112,7 @@ function SandboxInner({ seller }: { seller: SellerDef }) {
       <div className="mb-5 flex flex-wrap items-center gap-1.5">
         <span className="mr-1 text-[11.5px] text-ink-3">Preset carts:</span>
         {presets.map((p) => (
-          <button key={p.label} onClick={() => setCart({ ...start, ...p.cart })} className="rounded-full border border-rule bg-card px-3 py-1 text-[12px] text-ink-2 transition-colors hover:border-ink hover:text-ink">{p.label}</button>
+          <button key={p.label} onClick={() => setCart({ ...start, ...p.cart })} className="rounded-full border border-rule bg-card px-3 py-1 text-[12px] text-ink-2 transition-colors hover:border-primary hover:text-ink">{p.label}</button>
         ))}
       </div>
 
@@ -142,9 +143,9 @@ function SandboxInner({ seller }: { seller: SellerDef }) {
                           <div className="num text-[11px] text-ink-3">₹{l.sku.price} · {l.sku.category}</div>
                         </div>
                         <div className="flex items-center gap-1">
-                          <button onClick={() => add(l.sku.id, -1)} className="grid h-6 w-6 place-items-center rounded-full border border-rule hover:border-ink" aria-label="Fewer"><Minus size={11} /></button>
+                          <button onClick={() => add(l.sku.id, -1)} className="grid h-6 w-6 place-items-center rounded-full border border-rule hover:border-primary" aria-label="Fewer"><Minus size={11} /></button>
                           <span className="num w-5 text-center text-[13px] font-semibold">{l.qty}</span>
-                          <button onClick={() => add(l.sku.id, 1)} className="grid h-6 w-6 place-items-center rounded-full border border-rule hover:border-ink" aria-label="More"><Plus size={11} /></button>
+                          <button onClick={() => add(l.sku.id, 1)} className="grid h-6 w-6 place-items-center rounded-full border border-rule hover:border-primary" aria-label="More"><Plus size={11} /></button>
                         </div>
                         <span className="num w-16 text-right text-[13px] text-ink">{inr(l.gross)}</span>
                       </motion.li>
@@ -172,7 +173,7 @@ function SandboxInner({ seller }: { seller: SellerDef }) {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="w-[74px] text-[12px] text-ink-3">Code</span>
                 <TextInput label="Coupon code" mono value={cart.code} placeholder="none" onChange={(v) => setCart((x) => ({ ...x, code: v.toUpperCase().replace(/\s/g, '') }))} className="w-[130px]" />
-                {codes.map((k) => <button key={k} onClick={() => setCart((x) => ({ ...x, code: x.code === k ? '' : k }))} className={cn('num rounded-full border px-2 py-0.5 text-[11px]', cart.code === k ? 'border-ink bg-ink text-paper' : 'border-dashed border-rule text-ink-3 hover:text-ink')}>{k}</button>)}
+                {codes.map((k) => <button key={k} onClick={() => setCart((x) => ({ ...x, code: x.code === k ? '' : k }))} className={cn('num rounded-full border px-2 py-0.5 text-[11px]', cart.code === k ? 'border-primary bg-primary text-paper' : 'border-dashed border-rule text-ink-3 hover:text-ink')}>{k}</button>)}
               </div>
             </Card>
           </div>
@@ -214,7 +215,7 @@ function ShelfItem({ sku, onAdd }: { sku: Sku; onAdd: () => void }) {
         <div className="line-clamp-2 text-[12px] leading-snug text-ink">{sku.name}</div>
         <div className="num mt-0.5 text-[11px] text-ink-3">₹{sku.price}</div>
       </div>
-      <button onClick={onAdd} className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-ink text-paper opacity-80 transition-opacity hover:opacity-100" aria-label={`Add ${sku.name}`}><Plus size={12} /></button>
+      <button onClick={onAdd} className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary text-paper opacity-80 transition-opacity hover:opacity-100" aria-label={`Add ${sku.name}`}><Plus size={12} /></button>
     </div>
   )
 }
@@ -234,8 +235,8 @@ function Receipt({ r, seller, channel }: { r: ReturnType<typeof evaluateCart>; s
   return (
     <div className="relative rounded-t-2xl bg-card px-5 pt-5 pb-8 shadow-[var(--shadow-card)] [mask:radial-gradient(circle_7px_at_7px_100%,transparent_6.5px,#000_7px)_0_0/14px_100%_repeat-x]">
       <div className="text-center">
-        <div className="display text-[18px] text-ink">{seller.brand}</div>
-        <div className="text-[11px] tracking-wider text-ink-3 uppercase">Order preview · {channel}</div>
+        <SellerLogo id={seller.id} size="sm" className="justify-center" />
+        <div className="mt-1.5 text-[11px] tracking-wider text-ink-3 uppercase">Order preview · {channel}</div>
       </div>
       <div className="my-3 border-t border-dashed border-rule" />
       {r.lines.length === 0 ? <div className="py-4 text-center text-[12.5px] text-ink-3">Empty cart</div> : (
@@ -252,7 +253,7 @@ function Receipt({ r, seller, channel }: { r: ReturnType<typeof evaluateCart>; s
             ))}
           </AnimatePresence>
           {row(<span className="flex items-center gap-1"><Truck size={11} /> Shipping</span>, r.shipping ? inr(r.shipping) : <span className="text-gain">Free</span>)}
-          <div className="my-2 border-t border-ink" />
+          <div className="my-2 border-t border-primary" />
           {row(<span className="display text-[17px] text-ink">You pay</span>, <span className="text-[20px] font-semibold text-ink">{inr(r.total)}</span>)}
           {r.saved > 0 && <div className="mt-1 text-right text-[12px] font-medium text-gain">You saved {inr(r.saved)}</div>}
           {r.cashback > 0 && row(<span className="flex items-center gap-1"><Coins size={11} /> Cashback after delivery</span>, inr(r.cashback), 'text-ink-3')}
@@ -311,7 +312,7 @@ function Pipeline({ evals, seller }: { evals: Eval[]; seller: SellerDef }) {
             {evals.map((e, i) => {
               const on = e.stopAt === null
               return (
-                <motion.tr key={e.campaign.id} layout initial={false} animate={{ backgroundColor: on ? 'rgba(217,234,217,0.45)' : 'rgba(0,0,0,0)' }} className="border-b border-rule-2 last:border-0">
+                <motion.tr key={e.campaign.id} layout initial={false} animate={{ backgroundColor: on ? 'rgba(231,243,236,0.45)' : 'rgba(0,0,0,0)' }} className="border-b border-rule-2 last:border-0">
                   <td className="num px-4 py-2.5 text-ink-3">{e.campaign.priority}</td>
                   <td className="px-2 py-2.5">
                     <div className="flex items-center gap-1.5">

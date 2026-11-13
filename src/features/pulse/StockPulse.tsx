@@ -39,7 +39,7 @@ export function StockPulse() {
           const m = HEALTH_META[h]
           const on = filter === h
           return (
-            <button key={h} onClick={() => setFilter(on ? 'all' : h)} className={cn('rounded-2xl border p-3.5 text-left transition-all', on ? 'border-ink bg-card shadow-[var(--shadow-card)]' : 'border-rule bg-card/60 hover:bg-card')}>
+            <button key={h} onClick={() => setFilter(on ? 'all' : h)} className={cn('rounded-2xl border p-3.5 text-left transition-all', on ? 'border-primary bg-card shadow-[var(--shadow-card)]' : 'border-rule bg-card/60 hover:bg-card')}>
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full" style={{ background: m.color }} />
                 <span className="text-[12.5px] font-medium text-ink-2">{m.label}</span>
@@ -57,7 +57,7 @@ export function StockPulse() {
         <Segmented<Filter> size="sm" value={filter} onChange={setFilter} options={[{ value: 'all', label: 'All' }, ...ORDER.map((h) => ({ value: h, label: HEALTH_META[h].label }))]} />
         <div className="flex gap-1 overflow-x-auto">
           {cats.map((k) => (
-            <button key={k} onClick={() => setCat(k)} className={cn('shrink-0 rounded-full px-2.5 py-1 text-[11.5px] transition-colors', cat === k ? 'bg-ink text-paper' : 'text-ink-3 hover:text-ink')}>{k}</button>
+            <button key={k} onClick={() => setCat(k)} className={cn('shrink-0 rounded-full px-2.5 py-1 text-[11.5px] transition-colors', cat === k ? 'bg-primary text-paper' : 'text-ink-3 hover:text-ink')}>{k}</button>
           ))}
         </div>
       </div>
@@ -84,7 +84,7 @@ export function StockPulse() {
                     >
                       <span className="leading-tight"><span className="line-clamp-2 text-[10px] text-ink-2">{r.sku.line}</span>{r.sku.variant !== 'regular' && r.sku.variant !== 'set' && r.sku.variant !== 'single' && <span className="block truncate text-[9px] text-ink-3">{r.sku.variant}</span>}</span>
                       <span className="flex items-end justify-between">
-                        <span className="num text-[17px] leading-none font-semibold" style={{ color: r.health === 'healthy' ? '#4a453d' : m.color }}>{wos >= 99 ? '99+' : wos.toFixed(wos < 10 ? 1 : 0)}</span>
+                        <span className="num text-[17px] leading-none font-semibold" style={{ color: r.health === 'healthy' ? '#4b5563' : m.color }}>{wos >= 99 ? '99+' : wos.toFixed(wos < 10 ? 1 : 0)}</span>
                         {breathe && <span className="mb-0.5 h-2 w-2 animate-breathe rounded-full" style={{ background: m.color, ['--breathe' as string]: m.speed }} />}
                       </span>
                     </motion.button>
@@ -122,7 +122,7 @@ function Inspector({ r }: { r: Recommendation | null }) {
         <div className="flex justify-between text-[11.5px] text-ink-3"><span>Stock cover</span><span>Sell window {window} wks</span></div>
         <div className="relative h-2.5 rounded-full bg-paper-2">
           <motion.div className="absolute inset-y-0 left-0 rounded-full" style={{ background: m.color }} animate={{ width: `${Math.min(100, (wos / (window * 2)) * 100)}%` }} />
-          <div className="absolute inset-y-[-3px] w-px bg-ink" style={{ left: '50%' }} />
+          <div className="absolute inset-y-[-3px] w-px bg-primary" style={{ left: '50%' }} />
         </div>
       </div>
       <dl className="mt-4 grid grid-cols-2 gap-y-2.5 text-[12.5px]">
@@ -138,7 +138,7 @@ function Inspector({ r }: { r: Recommendation | null }) {
         <div className="mt-1 text-[13px] font-medium text-ink">{r.mechanic}{r.discount ? ` · ${pct(r.discount)}` : ''}</div>
         <div className="mt-1 text-[12px] leading-snug text-ink-2">{r.why}</div>
       </div>
-      <button onClick={() => nav(`/sku/${r.sku.id}`)} className="mt-3 w-full rounded-full bg-ink py-2 text-[12.5px] font-medium text-paper hover:bg-ink-2">Weigh it on the Scale</button>
+      <button onClick={() => nav(`/sku/${r.sku.id}`)} className="mt-3 w-full rounded-full bg-primary py-2 text-[12.5px] font-medium text-paper hover:bg-ink-2">Weigh it on the Scale</button>
     </Card>
   )
 }

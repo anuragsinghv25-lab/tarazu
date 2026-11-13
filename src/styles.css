@@ -4,38 +4,46 @@
 @import '@fontsource-variable/geist-mono';
 
 /* ───────── Tarazu design tokens ─────────
-   Paper and ink, a brass accent for the one number that matters,
-   green for gain and vermilion for loss. Nothing else gets colour. */
+   Brand palette: deep scale-green for structure, amber for the one number that matters,
+   warm cream paper, a pale-green surface, sage borders and slate text.
+   Green-for-gain and vermilion-for-loss stay semantic. */
 @theme {
   --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
 
-  --color-paper: #f5efe3;
-  --color-paper-2: #ede5d4;
-  --color-card: #fbf8f1;
-  --color-ink: #1c1a17;
-  --color-ink-2: #4a453d;
-  --color-ink-3: #8a8274;
-  --color-rule: #dcd2bf;
-  --color-rule-2: #e8e0cf;
+  /* Brand palette (06-tarazu-colour-palette) */
+  --color-primary: #0b3d2e;
+  --color-primary-2: #145a43;
+  --color-amber: #f59e0b;
+  --color-surface: #e7f3ec;
 
-  --color-brass: #b07d2b;
-  --color-brass-2: #d9a441;
-  --color-brass-soft: #f1e2bf;
+  --color-paper: #fff7e9;
+  --color-paper-2: #f6ecd9;
+  --color-card: #fffcf6;
+  --color-ink: #1f2937;
+  --color-ink-2: #4b5563;
+  --color-ink-3: #7a8580;
+  --color-rule: #cbd5d1;
+  --color-rule-2: #e2e8e4;
 
-  --color-gain: #2e7a57;
-  --color-gain-soft: #d9ead9;
+  /* Amber accent: brass is the text-safe shade (4.8:1 on cream), brass-2 the brand amber for fills. */
+  --color-brass: #b45309;
+  --color-brass-2: #f59e0b;
+  --color-brass-soft: #fde9c3;
+
+  --color-gain: #1e7b4f;
+  --color-gain-soft: #e7f3ec;
   --color-loss: #c2421c;
-  --color-loss-soft: #f5dccf;
-  --color-warn: #c48a12;
-  --color-warn-soft: #f6e6c0;
+  --color-loss-soft: #f9e0d4;
+  --color-warn: #d97706;
+  --color-warn-soft: #fcebc7;
 
-  --color-night: #15130f;
+  --color-night: #062a1f;
 
   --radius-card: 14px;
-  --shadow-card: 0 1px 0 rgba(28, 26, 23, 0.04), 0 8px 24px -12px rgba(28, 26, 23, 0.18);
-  --shadow-lift: 0 2px 0 rgba(28, 26, 23, 0.05), 0 18px 40px -16px rgba(28, 26, 23, 0.3);
+  --shadow-card: 0 1px 0 rgba(11, 61, 46, 0.04), 0 8px 24px -12px rgba(11, 61, 46, 0.18);
+  --shadow-lift: 0 2px 0 rgba(11, 61, 46, 0.05), 0 18px 40px -16px rgba(11, 61, 46, 0.28);
 
   --animate-glow: glow 1.4s ease-out;
   --animate-breathe: breathe var(--breathe, 3s) ease-in-out infinite;
@@ -44,9 +52,9 @@
 }
 
 @keyframes glow {
-  0% { box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.65); }
-  35% { box-shadow: 0 0 0 6px rgba(217, 164, 65, 0.28); }
-  100% { box-shadow: 0 0 0 14px rgba(217, 164, 65, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.65); }
+  35% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.28); }
+  100% { box-shadow: 0 0 0 14px rgba(245, 158, 11, 0); }
 }
 @keyframes breathe {
   0%, 100% { transform: scale(1); filter: saturate(1); }
@@ -69,7 +77,7 @@
     min-height: 100vh;
     /* fine paper grain */
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.14 0 0 0 0 0.08 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   ::selection { background: var(--color-brass-soft); }
   .tnum { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
@@ -110,3 +118,18 @@
 @keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
 @keyframes slideOut { from { transform: none; } to { transform: translateX(100%); } }
 @keyframes dash { from { stroke-dashoffset: 230; } to { stroke-dashoffset: 0; } }
+
+/* Brand motion (the swinging scale) and the boot splash styles live in index.html, so they paint before the app loads. */
+
+/* ───────── Skeletons ───────── */
+.skeleton {
+  position: relative; overflow: hidden; border-radius: 8px;
+  background: color-mix(in oklab, var(--color-rule-2) 80%, var(--color-paper));
+}
+.skeleton::after {
+  content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 252, 246, 0.75), transparent);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .skeleton::after { animation: none; } }

@@ -72,6 +72,27 @@ Dotted-underlined terms explain themselves on hover, and every new element has a
 | **Season plan** | **Demo sellers** |
 | ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
 
+## Brand
+
+| Loading screen | Demo sellers |
+| --- | --- |
+| ![Loading screen](docs/screenshots/loading.png) | ![Demo sellers](docs/screenshots/sellers.png) |
+
+- **Mark.** A balance scale with a price tag in one pan and rising bars in the other: the discount, weighed against what it truly
+  earns. One geometry ([`src/brand/mark.ts`](src/brand/mark.ts)) drives the in-app logo, the loader and every icon file.
+  `node scripts/brand-icons.ts` regenerates the favicon (`.svg`, `.ico`), app icons (light and dark), Apple touch icon,
+  maskable icon and web manifest in `public/`.
+- **Palette.** Primary `#0B3D2E` · Accent `#F59E0B` · Background `#FFF7E9` · Surface `#E7F3EC` · Border `#CBD5D1` · Text `#1F2937`.
+  Amber text uses a darker shade (`#B45309`) to stay readable on cream; gain green and loss vermilion remain for numbers.
+- **Loading.** A splash painted straight from `index.html` (before any JavaScript), then driven by the app: it loads every
+  screen's code, waits for the fonts and lets the first screen render, with the scale swinging less as each step finishes.
+  It plays in full once per session. Screens that are still loading show skeletons shaped like the screen.
+- **Demo sellers.** Saanjh Botanicals, Rangreza Weaves, VoltLane and Malwa Bites each have an original mark, wordmark and
+  colours ([`src/brand/sellers.tsx`](src/brand/sellers.tsx)), used in the switcher, seller cards, receipts and Brand mode.
+- **Marketplace logos.** Amazon, Flipkart, Nykaa and Meesho logos are their owners' trademarks and are never redrawn here.
+  Official files go in [`src/assets/marketplaces`](src/assets/marketplaces/README.md) and appear automatically; until then
+  the app shows the platform name with a neutral icon.
+
 ## How the numbers work
 
 Every figure comes from a small, tested engine in [`src/engine`](src/engine):

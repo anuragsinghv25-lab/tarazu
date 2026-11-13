@@ -11,6 +11,7 @@ import { unitsAtRisk } from '@/engine/engine'
 import { fmtDay, fmtWeekday } from '@/lib/dates'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import { ChannelLabel } from '@/brand/channels'
 
 type Tab = 'calendar' | 'clearance' | 'duel'
 
@@ -88,16 +89,16 @@ function Calendar() {
               {/* week lines, quiet band and today */}
               <div className="pointer-events-none absolute inset-y-0 right-0 left-[150px] md:left-[210px]">
                 {weeks.map((d) => <div key={d} className="absolute inset-y-0 w-px bg-rule-2" style={{ left: x(d) }} />)}
-                {quiet && <div className="absolute inset-y-0 bg-[repeating-linear-gradient(135deg,transparent_0_6px,rgba(196,138,18,0.13)_6px_8px)]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }} />}
+                {quiet && <div className="absolute inset-y-0 bg-[repeating-linear-gradient(135deg,transparent_0_6px,rgba(217,119,6,0.13)_6px_8px)]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }} />}
                 {events.map((e) => <div key={e.label} className={cn('absolute inset-y-0', e.kind === 'event' ? 'bg-brass-2/12' : e.kind === 'quiet' ? 'bg-loss/8' : 'bg-gain/6')} style={{ left: x(e.day), width: w(e.day, e.day + e.length) }} />)}
-                <div className="absolute inset-y-0 w-0.5 bg-ink" style={{ left: 0 }} />
+                <div className="absolute inset-y-0 w-0.5 bg-primary" style={{ left: 0 }} />
               </div>
 
               <Row label="Events" sub="Festivals and sale days">
                 {events.map((e) => (
                   <div key={e.label} className={cn('absolute top-1.5 flex h-7 items-center overflow-hidden rounded-lg px-2 text-[11.5px] font-medium whitespace-nowrap', e.kind === 'event' ? 'bg-brass text-card' : e.kind === 'quiet' ? 'bg-loss-soft text-loss' : 'bg-gain-soft text-gain')} style={{ left: x(e.day), width: w(e.day, e.day + Math.max(e.length, 5)) }}>{e.label}</div>
                 ))}
-                {quiet && <div className="absolute top-1.5 flex h-7 items-center px-2 text-[11px] text-[#8a5f07]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }}>quiet week</div>}
+                {quiet && <div className="absolute top-1.5 flex h-7 items-center px-2 text-[11px] text-[#92400e]" style={{ left: x(quiet.start), width: w(quiet.start, quiet.end) }}>quiet week</div>}
               </Row>
               <div className="py-1.5 pt-3 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Tarazu's recommended offers</div>
               {promos.map((r, i) => (
@@ -113,8 +114,8 @@ function Calendar() {
               <div className="py-1.5 pt-3 text-[10.5px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Live and scheduled campaigns</div>
               {live.map((k) => (
                 <Row key={k.id} label={k.name} sub={`${k.mechanic} · ${k.status}`}>
-                  <Link to={`/campaigns?id=${k.id}`} className={cn('absolute top-2 flex h-6 items-center truncate rounded-md px-2 text-[11px] font-medium', k.status === 'live' ? 'bg-ink text-paper' : 'border border-dashed border-ink-3 text-ink-2')} style={{ left: x(k.startDay), width: w(k.startDay, k.endDay) }}>
-                    {k.channel === 'all' ? 'all channels' : seller.market.channels[k.channel]?.label}
+                  <Link to={`/campaigns?id=${k.id}`} className={cn('absolute top-2 flex h-6 items-center truncate rounded-md px-2 text-[11px] font-medium', k.status === 'live' ? 'bg-primary text-paper' : 'border border-dashed border-ink-3 text-ink-2')} style={{ left: x(k.startDay), width: w(k.startDay, k.endDay) }}>
+                    {k.channel === 'all' ? 'all channels' : <ChannelLabel id={k.channel} label={seller.market.channels[k.channel]?.label} size={12} />}
                   </Link>
                 </Row>
               ))}
@@ -168,7 +169,7 @@ function Clearance() {
       <Card className="p-2 lg:self-start">
         <div className="px-2.5 pt-2 pb-1"><Eyebrow>Most money at risk</Eyebrow></div>
         {candidates.map((r) => (
-          <button key={r.sku.id} onClick={() => setId(r.sku.id)} className={cn('w-full rounded-xl px-2.5 py-2 text-left transition-colors', r.sku.id === sku.id ? 'bg-ink text-paper' : 'hover:bg-paper-2')}>
+          <button key={r.sku.id} onClick={() => setId(r.sku.id)} className={cn('w-full rounded-xl px-2.5 py-2 text-left transition-colors', r.sku.id === sku.id ? 'bg-primary text-paper' : 'hover:bg-paper-2')}>
             <div className="line-clamp-1 text-[12.5px] font-medium">{r.sku.name}</div>
             <div className={cn('num text-[11px]', r.sku.id === sku.id ? 'text-paper/60' : 'text-ink-3')}>{inrShort(unitsAtRisk(r.sku, c) * r.sku.cost)} at risk · {r.sku.sellWindowWeeks} wks left</div>
           </button>
@@ -184,24 +185,24 @@ function Clearance() {
             </div>
             <div className="flex flex-wrap gap-1.5">
               {k.ladder.steps.map((d, i) => (
-                <motion.span key={`${d}-${i}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="num rounded-full bg-ink px-2.5 py-1 text-[12px] font-semibold text-brass-2">{Math.round(d * 100)}%</motion.span>
+                <motion.span key={`${d}-${i}`} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="num rounded-full bg-primary px-2.5 py-1 text-[12px] font-semibold text-brass-2">{Math.round(d * 100)}%</motion.span>
               ))}
             </div>
           </div>
           <div className="mt-4 h-[280px]">
             <ResponsiveContainer>
               <ComposedChart data={data} margin={{ top: 10, right: 8, bottom: 0, left: 0 }}>
-                <defs><linearGradient id="lad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2e7a57" stopOpacity={0.25} /><stop offset="1" stopColor="#2e7a57" stopOpacity={0.02} /></linearGradient></defs>
-                <CartesianGrid vertical={false} stroke="#e8e0cf" />
-                <XAxis dataKey="week" tickFormatter={(v) => (v === 0 ? 'now' : `wk ${v}`)} tick={{ fontSize: 11, fill: '#8a8274' }} axisLine={{ stroke: '#dcd2bf' }} tickLine={false} />
-                <YAxis yAxisId="u" tickFormatter={(v) => units(v)} tick={{ fontSize: 11, fill: '#8a8274' }} axisLine={false} tickLine={false} width={46} />
-                <YAxis yAxisId="d" orientation="right" domain={[0, 80]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: '#b07d2b' }} axisLine={false} tickLine={false} width={36} />
-                <Tooltip contentStyle={{ background: '#fbf8f1', border: '1px solid #dcd2bf', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => (v === 0 ? 'Now' : `Week ${v}`)}
+                <defs><linearGradient id="lad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#1e7b4f" stopOpacity={0.25} /><stop offset="1" stopColor="#1e7b4f" stopOpacity={0.02} /></linearGradient></defs>
+                <CartesianGrid vertical={false} stroke="#e2e8e4" />
+                <XAxis dataKey="week" tickFormatter={(v) => (v === 0 ? 'now' : `wk ${v}`)} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
+                <YAxis yAxisId="u" tickFormatter={(v) => units(v)} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={false} tickLine={false} width={46} />
+                <YAxis yAxisId="d" orientation="right" domain={[0, 80]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: '#b45309' }} axisLine={false} tickLine={false} width={36} />
+                <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => (v === 0 ? 'Now' : `Week ${v}`)}
                   formatter={(v, n) => (n === 'Discount' ? [`${v}%`, n] : [`${units(Number(v))} units left`, n])} />
-                <Bar yAxisId="d" dataKey="d" name="Discount" fill="#d9a441" fillOpacity={0.35} radius={[4, 4, 0, 0]} barSize={22} />
+                <Bar yAxisId="d" dataKey="d" name="Discount" fill="#f59e0b" fillOpacity={0.35} radius={[4, 4, 0, 0]} barSize={22} />
                 <Line yAxisId="u" dataKey="nothing" name="Do nothing" stroke="#c2421c" strokeDasharray="4 3" dot={false} strokeWidth={1.8} />
-                <Line yAxisId="u" dataKey="flat" name={k.flat.label} stroke="#8a8274" dot={false} strokeWidth={1.8} />
-                <Area yAxisId="u" dataKey="ladder" name="Tarazu ladder" stroke="#2e7a57" strokeWidth={2.5} fill="url(#lad)" dot={{ r: 3, fill: '#2e7a57' }} isAnimationActive={false} />
+                <Line yAxisId="u" dataKey="flat" name={k.flat.label} stroke="#7a8580" dot={false} strokeWidth={1.8} />
+                <Area yAxisId="u" dataKey="ladder" name="Tarazu ladder" stroke="#1e7b4f" strokeWidth={2.5} fill="url(#lad)" dot={{ r: 3, fill: '#1e7b4f' }} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -252,7 +253,7 @@ function Duel() {
       <Card className="p-5">
         <div className="grid items-start gap-4 md:grid-cols-[1fr_auto_1fr]">
           <Side tag="A" value={a} onChange={setA} r={ra} win={winner === 'a'} />
-          <div className="display grid h-12 w-12 place-items-center self-center rounded-full bg-ink text-[16px] text-brass-2 italic">vs</div>
+          <div className="display grid h-12 w-12 place-items-center self-center rounded-full bg-primary text-[16px] text-brass-2 italic">vs</div>
           <Side tag="B" value={b} onChange={setB} r={rb} win={winner === 'b'} />
         </div>
         {(a === 'blanket' || a === 'risky-only' || b === 'blanket' || b === 'risky-only') && (
@@ -271,11 +272,11 @@ function Duel() {
               <div key={m.label} className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                 <div className="flex items-center justify-end gap-2">
                   <span className={cn('num text-[13px]', aWins ? 'font-semibold text-ink' : 'text-ink-3')}>{m.fmt(va)}</span>
-                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2 [direction:rtl]"><motion.div className="h-full rounded-full" style={{ background: va < 0 ? '#c2421c' : aWins ? '#2e7a57' : '#b9ae98' }} animate={{ width: `${(Math.abs(va) / max) * 100}%` }} /></div>
+                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2 [direction:rtl]"><motion.div className="h-full rounded-full" style={{ background: va < 0 ? '#c2421c' : aWins ? '#1e7b4f' : '#a3b0aa' }} animate={{ width: `${(Math.abs(va) / max) * 100}%` }} /></div>
                 </div>
                 <div className="w-[150px] text-center text-[11.5px] leading-tight text-ink-3 md:w-[210px]">{m.label}</div>
                 <div className="flex items-center gap-2">
-                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2"><motion.div className="h-full rounded-full" style={{ background: vb < 0 ? '#c2421c' : bWins ? '#2e7a57' : '#b9ae98' }} animate={{ width: `${(Math.abs(vb) / max) * 100}%` }} /></div>
+                  <div className="h-2.5 w-[45%] overflow-hidden rounded-full bg-paper-2"><motion.div className="h-full rounded-full" style={{ background: vb < 0 ? '#c2421c' : bWins ? '#1e7b4f' : '#a3b0aa' }} animate={{ width: `${(Math.abs(vb) / max) * 100}%` }} /></div>
                   <span className={cn('num text-[13px]', bWins ? 'font-semibold text-ink' : 'text-ink-3')}>{m.fmt(vb)}</span>
                 </div>
               </div>

@@ -3,11 +3,70 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarazu · Promotion intelligence for sellers</title>
+    <meta name="description" content="Tarazu weighs every discount: what a promotion costs against what it truly earns, after fees, cannibalisation and pulled-forward demand." />
+    <meta name="theme-color" content="#0b3d2e" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content="Tarazu — weigh every discount. Promotion intelligence for Indian sellers." />
-    <title>Tarazu · Weigh every discount</title>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:title" content="Tarazu · Promotion intelligence for sellers" />
+    <meta property="og:description" content="Weigh every discount: what a promotion costs against what it truly earns." />
+    <meta property="og:image" content="/icon-512.png" />
+    <style>
+      /* Critical styles: the boot splash paints from this block alone, before the app's CSS and JS arrive. */
+      .tz-beam { transform-box: view-box; transform-origin: 60px 29px; animation: tz-beam 2.6s ease-in-out infinite; }
+      .tz-pan-l { animation: tz-pan-l 2.6s ease-in-out infinite; }
+      .tz-pan-r { animation: tz-pan-r 2.6s ease-in-out infinite; }
+      .tz-spark { transform-box: fill-box; transform-origin: center; animation: tz-twinkle 2.6s ease-in-out infinite; }
+      @keyframes tz-beam { 0%, 100% { transform: rotate(calc(var(--tz-amp, 5) * -1deg)); } 50% { transform: rotate(calc(var(--tz-amp, 5) * 1deg)); } }
+      @keyframes tz-pan-l { 0%, 100% { transform: translateY(calc(var(--tz-amp, 5) * 0.66px)); } 50% { transform: translateY(calc(var(--tz-amp, 5) * -0.66px)); } }
+      @keyframes tz-pan-r { 0%, 100% { transform: translateY(calc(var(--tz-amp, 5) * -0.66px)); } 50% { transform: translateY(calc(var(--tz-amp, 5) * 0.66px)); } }
+      @keyframes tz-twinkle { 0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); } 50% { opacity: .55; transform: scale(.8) rotate(45deg); } }
+
+      html { background: #fff7e9; }
+      .boot { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; padding: 24px 16px 140px;
+        background: radial-gradient(70% 55% at 50% 30%, #fffdf7 0%, #fff7e9 55%, #f4efe0 100%); color: #1f2937;
+        font-family: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif; transition: opacity .45s ease, visibility .45s; }
+      .boot.is-done { opacity: 0; visibility: hidden; }
+      .boot-inner { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; width: min(420px, 100%); }
+      .boot-halo { position: absolute; top: -40px; left: 50%; width: 360px; height: 260px; transform: translateX(-50%); pointer-events: none; }
+      .boot-mark { position: relative; width: 150px; height: 130px; }
+      .boot-mark svg { width: 100%; height: 100%; display: block; }
+      .boot-word { margin-top: 14px; font-size: 46px; line-height: 1; font-weight: 700; letter-spacing: -0.035em; color: #0b3d2e; }
+      .boot-tag { margin-top: 8px; font-size: 15px; color: #4b5563; }
+      .boot-seller { height: 26px; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12.5px; color: #4b5563; }
+      .boot-bar { margin-top: 18px; width: min(300px, 80vw); height: 9px; border-radius: 99px; background: #e6e2d8; overflow: hidden; }
+      .boot-bar > span { display: block; height: 100%; width: 4%; border-radius: inherit; background: linear-gradient(90deg, #f59e0b, #f7b230); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+      .boot-msg { margin-top: 14px; min-height: 44px; max-width: 340px; font-size: 15.5px; font-weight: 500; color: #1f2937; }
+      .boot-steps { margin: 26px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 100%; min-height: 72px; }
+      .boot-steps li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 12.5px; line-height: 1.25; color: #7a8580; transition: color .3s; }
+      .boot-steps li + li::before { content: ''; position: absolute; top: 14px; right: calc(50% + 22px); width: calc(100% - 44px); height: 1px; background: #cbd5d1; }
+      .boot-steps .ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; color: #7a8580; transition: all .3s; }
+      .boot-steps li.is-active { color: #1f2937; }
+      .boot-steps li.is-active .ico { color: #0b3d2e; background: #e7f3ec; box-shadow: 0 0 0 1px #0b3d2e22; }
+      .boot-steps li.is-done { color: #4b5563; }
+      .boot-steps li.is-done .ico { color: #1e7b4f; }
+      .boot-waves { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 150px; pointer-events: none; }
+      @media (max-height: 640px) { .boot { padding-bottom: 90px; } .boot-waves { height: 90px; } .boot-steps { margin-top: 16px; } }
+      @media (prefers-reduced-motion: reduce) { .tz-beam, .tz-pan-l, .tz-pan-r, .tz-spark { animation: none !important; } .boot, .boot-bar > span { transition: none; } }
+    </style>
   </head>
   <body>
+    <div id="boot" class="boot" role="status" aria-live="polite" aria-busy="true">
+      <div class="boot-inner">
+        <svg class="boot-halo" viewBox="0 0 360 260" aria-hidden="true"><defs><radialGradient id="bh" cx="50%" cy="45%" r="50%"><stop offset="0" stop-color="#f59e0b" stop-opacity=".16"/><stop offset="1" stop-color="#f59e0b" stop-opacity="0"/></radialGradient></defs><circle cx="180" cy="120" r="120" fill="url(#bh)"/><path d="M40 210 A150 150 0 0 1 120 40" fill="none" stroke="#0b3d2e" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/><path d="M320 210 A150 150 0 0 0 240 40" fill="none" stroke="#0b3d2e" stroke-opacity=".12" stroke-width="2" stroke-linecap="round"/><path d="M60 228 A170 170 0 0 1 150 28" fill="none" stroke="#f59e0b" stroke-opacity=".25" stroke-width="1.5" stroke-linecap="round"/><path d="M300 228 A170 170 0 0 0 210 28" fill="none" stroke="#f59e0b" stroke-opacity=".25" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div class="boot-mark" style="--tz-amp: 6"><!--tz:mark--></div>
+        <div class="boot-word">Tarazu</div>
+        <div class="boot-tag">Promotion Intelligence for Sellers</div>
+        <div class="boot-seller"></div>
+        <div class="boot-bar" role="progressbar" aria-label="Loading Tarazu" aria-valuemin="0" aria-valuemax="100" aria-valuenow="4"><span></span></div>
+        <div class="boot-msg">Opening Tarazu…</div>
+        <ol class="boot-steps" aria-hidden="true"></ol>
+      </div>
+      <svg class="boot-waves" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 C240 20 420 40 640 66 C900 96 1120 30 1440 52 V150 H0Z" fill="#0b3d2e" fill-opacity=".14"/><path d="M0 96 C260 58 520 64 760 90 C1000 116 1220 70 1440 84 V150 H0Z" fill="#0b3d2e"/><path d="M0 96 C260 58 520 64 760 90 C1000 116 1220 70 1440 84" fill="none" stroke="#f59e0b" stroke-width="2.5"/><path d="M0 124 C300 104 560 112 820 128 C1060 142 1260 118 1440 122 V150 H0Z" fill="#062a1f" fill-opacity=".55"/></svg>
+    </div>
+    <noscript><style>#boot { display: none; }</style><p style="padding: 24px; font-family: system-ui">Tarazu needs JavaScript to run.</p></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

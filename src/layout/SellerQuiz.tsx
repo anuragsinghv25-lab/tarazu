@@ -71,7 +71,7 @@ export function SellerQuiz() {
                   <div className="mt-5 space-y-2">
                     {Q[step].options.map((o, i) => (
                       <button key={o.label} onClick={() => choose(i)}
-                        className={cn('group flex w-full items-center justify-between rounded-2xl border bg-card px-4 py-3 text-left text-[14px] text-ink transition-all hover:-translate-y-px hover:border-ink hover:shadow-[var(--shadow-card)]', answers[step] === i ? 'border-ink' : 'border-rule')}>
+                        className={cn('group flex w-full items-center justify-between rounded-2xl border bg-card px-4 py-3 text-left text-[14px] text-ink transition-all hover:-translate-y-px hover:border-primary hover:shadow-[var(--shadow-card)]', answers[step] === i ? 'border-primary' : 'border-rule')}>
                         {o.label}<ArrowRight size={15} className="text-ink-3 transition-transform group-hover:translate-x-0.5 group-hover:text-ink" />
                       </button>
                     ))}
@@ -90,7 +90,7 @@ export function SellerQuiz() {
                   </div>
                   <p className="mt-4 text-[13.5px] leading-relaxed text-ink-2">Like you, {w.name} {reasons.join(', ')}. {w.problem}</p>
                   <div className="mt-6 flex flex-wrap gap-2">
-                    <button onClick={() => { setSeller(winner); close(false); nav('/') }} className="flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper">Open Tarazu as {w.name} <ArrowRight size={14} /></button>
+                    <button onClick={() => { setSeller(winner); close(false); nav('/') }} className="flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-[13px] font-medium text-paper">Open Tarazu as {w.name} <ArrowRight size={14} /></button>
                     <button onClick={() => { setStep(0); setAnswers([]) }} className="rounded-full border border-rule bg-card px-4 py-2 text-[13px] text-ink-2 hover:text-ink">Start again</button>
                   </div>
                 </motion.div>
