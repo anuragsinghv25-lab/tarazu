@@ -3,28 +3,23 @@ import { motion } from 'motion/react'
 import { Trophy } from 'lucide-react'
 import { Card, Chip, Eyebrow, Money, PageHeader, Segmented, Slider } from '@/components/ui'
 import { Spot } from '@/components/Spot'
-import { useControls } from '@/state/hooks'
-import { CHANNELS, simulate, feeFor } from '@/engine/engine'
-import { getSku } from '@/data/meera'
+import { useControls, useSeller } from '@/state/hooks'
+import { channelsOf, simulate, feeFor } from '@/engine/engine'
+import { skuOf } from '@/data/sellers'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
 
-const PICKS = [
-  { id: 'mineral-sunscreen-spf-50-50-g', label: 'Sunscreen' },
-  { id: 'beetroot-lip-balm-regular', label: 'Lip balm' },
-  { id: 'vitamin-c-saffron-serum-30-ml', label: 'Vitamin C serum' },
-  { id: 'diwali-glow-box-set', label: 'Diwali gift box' },
-  { id: 'kumkumadi-glow-serum-30-ml', label: 'Bestselling serum' },
-]
-
 export function PlatformCompare() {
   const c = useControls()
-  const [skuId, setSkuId] = useState(PICKS[0].id)
+  const seller = useSeller()
+  const picks = seller.comparePicks
+  const [chosen, setSkuId] = useState(picks[0].id)
+  const skuId = picks.some((p) => p.id === chosen) ? chosen : picks[0].id
   const [d, setD] = useState(0.15)
   const [weeks, setWeeks] = useState(1)
-  const s = getSku(skuId)!
+  const s = skuOf(seller, skuId)!
 
-  const rows = useMemo(() => CHANNELS.map((ch) => {
+  const rows = useMemo(() => channelsOf(c).map((ch) => {
     const r = simulate(s, c, { discount: d, weeks, channel: ch })
     const f = feeFor(ch, c)
     const commission = r.promoUnits * r.promoPrice * (f.commission + f.payment)
@@ -37,7 +32,7 @@ export function PlatformCompare() {
   return (
     <div>
       <PageHeader eyebrow="Platform compare" title="Same deal. Four very different profits.">
-        A promotion is priced on every channel Meera sells on, with that channel's share of her buyers, its commission, deal fee and shipping. Fees are illustrative, not official rate cards.
+        A promotion is priced on every channel {seller.name} sells on, with that channel's share of buyers, its commission, deal fee and shipping. Fees are illustrative, not official rate cards.
       </PageHeader>
 
       <Card className="mb-6 p-5">
@@ -45,7 +40,7 @@ export function PlatformCompare() {
           <div>
             <Eyebrow>Product</Eyebrow>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {PICKS.map((p) => (
+              {picks.map((p) => (
                 <button key={p.id} onClick={() => setSkuId(p.id)} className={cn('rounded-full border px-3 py-1 text-[12.5px] transition-colors', skuId === p.id ? 'border-ink bg-ink text-paper' : 'border-rule bg-card text-ink-2 hover:text-ink')}>{p.label}</button>
               ))}
             </div>
@@ -63,7 +58,7 @@ export function PlatformCompare() {
       </Card>
 
       <Spot id="compare-cards">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className={cn('grid gap-4 md:grid-cols-2', rows.length === 3 ? 'xl:grid-cols-3' : 'xl:grid-cols-4')}>
           {rows.map((x, i) => {
             const win = x === best && x.r.net > 0
             return (
@@ -72,7 +67,7 @@ export function PlatformCompare() {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="display text-[22px] text-ink">{x.f.label}</div>
-                      <div className="text-[11.5px] text-ink-3">{pct(x.f.share)} of Meera's buyers</div>
+                      <div className="text-[11.5px] text-ink-3">{pct(x.f.share)} of {seller.name}'s buyers</div>
                     </div>
                     {win ? <Chip tone="brass"><Trophy size={11} /> Run it here</Chip> : x.r.net < 0 ? <Chip tone="loss">Loses money</Chip> : null}
                   </div>
@@ -84,11 +79,12 @@ export function PlatformCompare() {
                   <dl className="mt-4 grid grid-cols-2 gap-y-1.5 text-[12px]">
                     <dt className="text-ink-3">Units sold</dt><dd className="num text-right text-ink">{units(x.r.promoUnits)}</dd>
                     <dt className="text-ink-3">Revenue</dt><dd className="num text-right text-ink">{inrShort(x.r.revenue)}</dd>
-                    <dt className="text-ink-3">Commission & payment</dt><dd className="num text-right text-loss">−{inrShort(x.commission)}</dd>
+                    <dt className="text-ink-3">{seller.id === 'anaya' ? 'Trade margin' : 'Commission & payment'}</dt><dd className="num text-right text-loss">−{inrShort(x.commission)}</dd>
                     <dt className="text-ink-3">Deal fee</dt><dd className="num text-right text-loss">{x.r.dealFees ? `−${inrShort(x.r.dealFees)}` : '—'}</dd>
-                    <dt className="text-ink-3">Free shipping you fund</dt><dd className="num text-right text-loss">{x.shipping ? `−${inrShort(x.shipping)}` : '—'}</dd>
+                    <dt className="text-ink-3">{seller.id === 'anaya' ? 'Freight you fund' : 'Shipping you fund'}</dt><dd className="num text-right text-loss">{x.shipping ? `−${inrShort(x.shipping)}` : '—'}</dd>
+                    {x.r.returnsCost > 1 && <><dt className="text-ink-3">Extra returns</dt><dd className="num text-right text-loss">−{inrShort(x.r.returnsCost)}</dd></>}
                   </dl>
-                  <p className="mt-auto pt-4 text-[11.5px] leading-snug text-ink-3">{x.f.note}</p>
+                  <p className="mt-auto pt-4 text-[11.5px] leading-snug text-ink-3">{x.f.note}{x.f.funding && <><br /><span className="text-ink-2">{x.f.funding}</span></>}</p>
                 </Card>
               </motion.div>
             )

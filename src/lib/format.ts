@@ -9,6 +9,11 @@ export function inrShort(n: number) {
   const s = a >= 1e7 ? `₹${(a / 1e7).toFixed(1)} Cr` : a >= 1e5 ? `₹${(a / 1e5).toFixed(1)} L` : a >= 1e3 ? `₹${(a / 1e3).toFixed(1)} K` : `₹${Math.round(a)}`
   return n < 0 ? `−${s}` : s
 }
+/** Compact axis labels: ₹50 K, ₹1 L. */
+export const inrAxis = (v: number) => {
+  const a = Math.abs(v), s = a >= 1e7 ? `₹${+(a / 1e7).toFixed(1)} Cr` : a >= 1e5 ? `₹${+(a / 1e5).toFixed(1)} L` : a >= 1e3 ? `₹${Math.round(a / 1e3)} K` : `₹${Math.round(a)}`
+  return v < 0 ? `−${s}` : s
+}
 export const units = (n: number) => plain.format(Math.round(n))
 export const pct = (d: number, digits = 0) => `${(d * 100).toFixed(digits)}%`
 export const signed = (n: number, f: (n: number) => string = inrShort) => (n > 0 ? '+' : '') + f(n)

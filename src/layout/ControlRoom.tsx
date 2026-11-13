@@ -1,10 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { X, RotateCcw, Zap } from 'lucide-react'
+import { X, RotateCcw, Zap, Lock } from 'lucide-react'
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
 import { useStore, AFFECTS } from '@/state/store'
-import { SCENARIOS } from '@/engine/scenarios'
-import type { Controls, Goal, FeeLevel } from '@/engine/types'
+import type { Knobs, Goal, FeeLevel, Strategy, DataQuality } from '@/engine/types'
+import { useSeller } from '@/state/hooks'
 import { Segmented, Slider, Eyebrow } from '@/components/ui'
 import { Spot } from '@/components/Spot'
 import { cn } from '@/lib/cn'
@@ -14,7 +14,7 @@ const WIDGET_NAME: Record<string, string> = {
   why: 'Why card', truth: 'Truth Lens', compare: 'Platform compare', 'event-chip': 'Event chip',
 }
 
-function Affects({ k }: { k: keyof Controls }) {
+function Affects({ k }: { k: keyof Knobs }) {
   return (
     <div className="mt-1.5 flex flex-wrap gap-1">
       {AFFECTS[k].slice(0, 5).map((id) => (
@@ -24,7 +24,7 @@ function Affects({ k }: { k: keyof Controls }) {
   )
 }
 
-function Row({ k, label, value, hint, children }: { k: keyof Controls; label: string; value: ReactNode; hint?: string; children: ReactNode }) {
+function Row({ k, label, value, hint, children }: { k: keyof Knobs; label: string; value: ReactNode; hint?: string; children: ReactNode }) {
   return (
     <div className="py-3">
       <div className="flex items-baseline justify-between gap-3">
@@ -40,12 +40,13 @@ function Row({ k, label, value, hint, children }: { k: keyof Controls; label: st
 
 export function ControlRoom() {
   const { roomOpen, setRoom, controls: c, setControl, commit, applyScenario, reset, log } = useStore()
-  const num = <K extends keyof Controls>(k: K) => ({
+  const seller = useSeller()
+  const num = <K extends keyof Knobs>(k: K) => ({
     value: c[k] as number,
-    onChange: (v: number) => setControl(k, v as Controls[K]),
+    onChange: (v: number) => setControl(k, v as Knobs[K]),
     onCommit: () => commit(k),
   })
-  const pick = <K extends keyof Controls>(k: K) => (v: Controls[K]) => { setControl(k, v); setTimeout(() => commit(k), 0) }
+  const pick = <K extends keyof Knobs>(k: K) => (v: Knobs[K]) => { setControl(k, v); setTimeout(() => commit(k), 0) }
 
   return (
     <Dialog.Root open={roomOpen} onOpenChange={setRoom}>
@@ -57,7 +58,7 @@ export function ControlRoom() {
               <div>
                 <Eyebrow>Prototype controls</Eyebrow>
                 <Dialog.Title className="display mt-1 text-[26px] leading-none text-ink">Control Room</Dialog.Title>
-                <Dialog.Description className="mt-1.5 text-[12.5px] text-ink-2">Change Meera's market. Every screen that depends on a control glows when it changes.</Dialog.Description>
+                <Dialog.Description className="mt-1.5 text-[12.5px] text-ink-2">Change {seller.name}'s market. Every screen that depends on a control glows when it changes.</Dialog.Description>
               </div>
             </Spot>
             <Dialog.Close className="rounded-full p-1.5 text-ink-3 hover:bg-paper-2 hover:text-ink" aria-label="Close"><X size={18} /></Dialog.Close>
@@ -70,11 +71,10 @@ export function ControlRoom() {
                 <button onClick={reset} className="flex items-center gap-1 text-[11.5px] text-ink-3 hover:text-ink"><RotateCcw size={12} /> Reset</button>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {(Object.keys(SCENARIOS) as (keyof typeof SCENARIOS)[]).map((id) => {
-                  const s = SCENARIOS[id]
-                  const on = c.scenario === id
+                {seller.presets.map((s) => {
+                  const on = c.scenario === s.id
                   return (
-                    <motion.button key={id} whileTap={{ scale: 0.97 }} onClick={() => applyScenario(id)}
+                    <motion.button key={s.id} whileTap={{ scale: 0.97 }} onClick={() => applyScenario(s.id)}
                       className={cn('rounded-xl border p-2.5 text-left transition-colors', on ? 'border-ink bg-ink text-paper' : 'border-rule bg-card hover:border-ink-3/40')}>
                       <div className="flex items-center gap-1.5 text-[12.5px] font-semibold">{on && <Zap size={12} className="text-brass-2" />}{s.label}</div>
                       <div className={cn('mt-0.5 text-[11px] leading-snug', on ? 'text-paper/70' : 'text-ink-3')}>{s.blurb}</div>
@@ -127,6 +127,16 @@ export function ControlRoom() {
                 <Row k="goal" label="Seller goal" value={c.goal}>
                   <Segmented<Goal> size="sm" value={c.goal} onChange={pick('goal')} options={[{ value: 'clear', label: 'Clear stock' }, { value: 'grow', label: 'Grow' }, { value: 'margin', label: 'Protect margin' }]} />
                 </Row>
+                <Row k="strategy" label="Pricing strategy" value={c.strategy === 'hilo' ? 'Hi-Lo' : c.strategy === 'edlp' ? 'EDLP' : 'Balanced'} hint="Hi-Lo trains buyers to wait for sales; EDLP keeps prices steady">
+                  <Segmented<Strategy> size="sm" value={c.strategy} onChange={pick('strategy')} options={[{ value: 'edlp', label: 'EDLP' }, { value: 'balanced', label: 'Balanced' }, { value: 'hilo', label: 'Hi-Lo' }]} />
+                </Row>
+                <Row k="dataQuality" label="Sales data quality" value={c.dataQuality} hint="Messy feeds lower confidence on every recommendation">
+                  <Segmented<DataQuality> size="sm" value={c.dataQuality} onChange={pick('dataQuality')} options={[{ value: 'clean', label: 'Clean' }, { value: 'messy', label: 'Messy' }]} />
+                </Row>
+                <div className="py-3 opacity-60">
+                  <div className="flex items-center justify-between text-[13px] font-medium text-ink"><span>AI autonomy</span><span className="flex items-center gap-1 text-[11px] text-ink-3"><Lock size={11} /> Release 3</span></div>
+                  <div className="text-[11.5px] text-ink-3">Suggest only → ask before acting → act within guardrails</div>
+                </div>
               </div>
             </section>
 
