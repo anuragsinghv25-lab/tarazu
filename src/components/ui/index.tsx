@@ -34,8 +34,8 @@ const TONES: Record<Tone, string> = {
   ink: 'bg-primary text-paper border-primary',
   gain: 'bg-gain-soft text-gain border-gain/20',
   loss: 'bg-loss-soft text-loss border-loss/20',
-  warn: 'bg-warn-soft text-[#92400e] border-warn/25',
-  brass: 'bg-brass-soft text-[#92400e] border-brass/25',
+  warn: 'bg-warn-soft text-[var(--color-brass-ink)] border-warn/25',
+  brass: 'bg-brass-soft text-[var(--color-brass-ink)] border-brass/25',
   quiet: 'bg-paper-2 text-ink-2 border-rule',
 }
 export function Chip({ tone = 'quiet', className, children }: { tone?: Tone; className?: string; children: ReactNode }) {
@@ -120,8 +120,8 @@ export function Segmented<T extends string | number>({ value, options, onChange,
 }
 
 export const HEALTH_META = {
-  'at-risk': { label: 'At risk', tone: 'loss' as Tone, color: '#c2421c', soft: '#f9e0d4', speed: '1.1s' },
-  slow: { label: 'Slow mover', tone: 'warn' as Tone, color: '#d97706', soft: '#fcebc7', speed: '2.2s' },
-  healthy: { label: 'Healthy', tone: 'quiet' as Tone, color: '#7a8580', soft: '#f6ecd9', speed: '0s' },
-  fast: { label: 'Fast mover', tone: 'gain' as Tone, color: '#1e7b4f', soft: '#e7f3ec', speed: '0s' },
+  'at-risk': { label: 'At risk', tone: 'loss' as Tone, color: '#c2421c', soft: 'var(--color-loss-soft)', speed: '1.1s' },
+  slow: { label: 'Slow mover', tone: 'warn' as Tone, color: '#d97706', soft: 'var(--color-warn-soft)', speed: '2.2s' },
+  healthy: { label: 'Healthy', tone: 'quiet' as Tone, color: '#7a8580', soft: 'var(--color-paper-2)', speed: '0s' },
+  fast: { label: 'Fast mover', tone: 'gain' as Tone, color: '#1e7b4f', soft: 'var(--color-gain-soft)', speed: '0s' },
 }

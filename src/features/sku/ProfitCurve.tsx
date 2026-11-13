@@ -23,29 +23,29 @@ export function ProfitCurve({ pts, current, sweet, cliff, floorMax, onPick }: {
           onClick={(e) => { const l = (e as { activeLabel?: string | number } | null)?.activeLabel; if (l !== undefined) onPick(Number(l) / 100) }}>
           <defs>
             <linearGradient id="netFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset={0} stopColor="#1e7b4f" stopOpacity={0.32} />
-              <stop offset={zero} stopColor="#1e7b4f" stopOpacity={0.04} />
-              <stop offset={zero} stopColor="#c2421c" stopOpacity={0.04} />
-              <stop offset={1} stopColor="#c2421c" stopOpacity={0.3} />
+              <stop offset={0} stopColor="var(--color-gain)" stopOpacity={0.32} />
+              <stop offset={zero} stopColor="var(--color-gain)" stopOpacity={0.04} />
+              <stop offset={zero} stopColor="var(--color-loss)" stopOpacity={0.04} />
+              <stop offset={1} stopColor="var(--color-loss)" stopOpacity={0.3} />
             </linearGradient>
             <linearGradient id="netLine" x1="0" y1="0" x2="0" y2="1">
-              <stop offset={zero} stopColor="#1e7b4f" /><stop offset={zero} stopColor="#c2421c" />
+              <stop offset={zero} stopColor="var(--color-gain)" /><stop offset={zero} stopColor="var(--color-loss)" />
             </linearGradient>
             <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <line x1="0" y1="0" x2="0" y2="6" stroke="#c2421c" strokeOpacity=".22" strokeWidth="2" />
+              <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-loss)" strokeOpacity=".22" strokeWidth="2" />
             </pattern>
           </defs>
-          <CartesianGrid vertical={false} stroke="#e2e8e4" />
-          <XAxis dataKey="d" type="number" domain={[0, 60]} ticks={[0, 10, 20, 30, 40, 50, 60]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
-          <YAxis tickFormatter={axisInr} tick={{ fontSize: 11, fill: '#7a8580' }} axisLine={false} tickLine={false} width={64} />
-          {floorMax < 0.6 && <ReferenceArea x1={Math.round(floorMax * 100)} x2={60} fill="url(#hatch)" label={{ value: 'below margin floor', position: 'insideTopRight', fontSize: 10.5, fill: '#c2421c' }} />}
-          <ReferenceLine y={0} stroke="#7a8580" strokeDasharray="3 3" />
-          {cliff !== null && <ReferenceLine x={Math.round(cliff * 100)} stroke="#c2421c" strokeDasharray="4 3" label={{ value: 'profit cliff', position: 'insideBottomLeft', fontSize: 10.5, fill: '#c2421c' }} />}
-          <Tooltip cursor={{ stroke: '#0b3d2e', strokeOpacity: 0.25 }} contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }}
+          <CartesianGrid vertical={false} stroke="var(--color-rule-2)" />
+          <XAxis dataKey="d" type="number" domain={[0, 60]} ticks={[0, 10, 20, 30, 40, 50, 60]} tickFormatter={(v) => `${v}%`} tick={{ fontSize: 11, fill: 'var(--color-ink-3)' }} axisLine={{ stroke: 'var(--color-rule)' }} tickLine={false} />
+          <YAxis tickFormatter={axisInr} tick={{ fontSize: 11, fill: 'var(--color-ink-3)' }} axisLine={false} tickLine={false} width={64} />
+          {floorMax < 0.6 && <ReferenceArea x1={Math.round(floorMax * 100)} x2={60} fill="url(#hatch)" label={{ value: 'below margin floor', position: 'insideTopRight', fontSize: 10.5, fill: 'var(--color-loss)' }} />}
+          <ReferenceLine y={0} stroke="var(--color-ink-3)" strokeDasharray="3 3" />
+          {cliff !== null && <ReferenceLine x={Math.round(cliff * 100)} stroke="var(--color-loss)" strokeDasharray="4 3" label={{ value: 'profit cliff', position: 'insideBottomLeft', fontSize: 10.5, fill: 'var(--color-loss)' }} />}
+          <Tooltip cursor={{ stroke: 'var(--color-primary)', strokeOpacity: 0.25 }} contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-rule)', borderRadius: 10, fontSize: 12 }}
             labelFormatter={(v) => `${v}% off`} formatter={(v) => [inrShort(Number(v)), 'Net impact']} />
           <Area type="monotone" dataKey="net" stroke="url(#netLine)" strokeWidth={2.2} fill="url(#netFill)" isAnimationActive={false} />
-          <ReferenceLine x={Math.round(current * 100)} stroke="#0b3d2e" strokeWidth={1.5} label={{ value: 'you', position: 'top', fontSize: 11, fill: '#0b3d2e', fontWeight: 600 }} />
-          {sweetPt && sweet > 0 && <ReferenceDot x={sweetPt.d} y={sweetPt.net} r={6} fill="#f59e0b" stroke="#0b3d2e" strokeWidth={1.5} label={{ value: 'sweet spot', position: 'top', fontSize: 10.5, fill: '#92400e', offset: 10 }} />}
+          <ReferenceLine x={Math.round(current * 100)} stroke="var(--color-primary)" strokeWidth={1.5} label={{ value: 'you', position: 'top', fontSize: 11, fill: 'var(--color-primary)', fontWeight: 600 }} />
+          {sweetPt && sweet > 0 && <ReferenceDot x={sweetPt.d} y={sweetPt.net} r={6} fill="var(--color-brass-2)" stroke="var(--color-primary)" strokeWidth={1.5} label={{ value: 'sweet spot', position: 'top', fontSize: 10.5, fill: 'var(--color-brass-ink)', offset: 10 }} />}
         </AreaChart>
       </ResponsiveContainer>
     </div>

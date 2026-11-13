@@ -3,6 +3,9 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 
+/* Night market (dark) mode: html[data-theme=dark]. `dark:` utilities follow the same switch. */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 /* ───────── Tarazu design tokens ─────────
    Brand palette: deep scale-green for structure, amber for the one number that matters,
    warm cream paper, a pale-green surface, sage borders and slate text.
@@ -40,6 +43,14 @@
   --color-warn-soft: #fcebc7;
 
   --color-night: #062a1f;
+  --color-brass-ink: #92400e;
+  --color-ink-4: #a3b0aa;
+  --color-loss-ink: #8f2f12;
+  --color-toast: #0b3d2e;
+  --color-toast-ink: #fff7e9;
+  --color-toast-sub: #c9d8d0;
+  --color-hero: #0b3d2e;
+  --color-hero-ink: #fff7e9;
 
   --radius-card: 14px;
   --shadow-card: 0 1px 0 rgba(11, 61, 46, 0.04), 0 8px 24px -12px rgba(11, 61, 46, 0.18);
@@ -133,3 +144,52 @@
 }
 @keyframes shimmer { to { transform: translateX(100%); } }
 @media (prefers-reduced-motion: reduce) { .skeleton::after { animation: none; } }
+
+/* Focus ring: story mode, the Case Study and AI answers point at an element. */
+.tz-focus { box-shadow: 0 0 0 2.5px var(--color-brass-2), 0 0 0 9px color-mix(in oklab, var(--color-brass-2) 22%, transparent); animation: tz-focus 1.6s ease-in-out infinite; }
+@keyframes tz-focus { 50% { box-shadow: 0 0 0 2.5px var(--color-brass-2), 0 0 0 14px color-mix(in oklab, var(--color-brass-2) 8%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .tz-focus { animation: none; } }
+
+/* ───────── Night market: the dark theme ─────────
+   Deep green-black paper, mint for structure (the brand green, lifted for contrast), the same amber.
+   Every colour in the app reads from these tokens, so charts and the Scale switch with it. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-primary: #8fd6b1;
+  --color-primary-2: #a9e2c4;
+  --color-surface: #13261d;
+  --color-paper: #0b1310;
+  --color-paper-2: #15211c;
+  --color-card: #111b17;
+  --color-ink: #e8eee9;
+  --color-ink-2: #b6c3bc;
+  --color-ink-3: #82938a;
+  --color-ink-4: #4f5f57;
+  --color-rule: #283832;
+  --color-rule-2: #1c2a25;
+  --color-brass: #f6b440;
+  --color-brass-2: #f59e0b;
+  --color-brass-soft: #3a2a0d;
+  --color-brass-ink: #fbc56b;
+  --color-gain: #52c98f;
+  --color-gain-soft: #12301f;
+  --color-loss: #f2764f;
+  --color-loss-soft: #3a1b12;
+  --color-loss-ink: #f6a98e;
+  --color-warn: #f0a630;
+  --color-warn-soft: #34260b;
+  --color-night: #050b09;
+  --color-toast: #1b2b25;
+  --color-toast-ink: #e8eee9;
+  --color-toast-sub: #9fb0a7;
+  --color-hero: #15382b;
+  --color-hero-ink: #eef4ef;
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.3), 0 10px 26px -14px rgba(0, 0, 0, 0.7);
+  --shadow-lift: 0 2px 0 rgba(0, 0, 0, 0.35), 0 20px 44px -16px rgba(0, 0, 0, 0.8);
+}
+:root[data-theme='dark'] body { background-image: none; }
+:root[data-theme='dark'] .skeleton::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent); }
+
+/* Grid and flex children shrink below their content width, so wide tables and charts scroll inside
+   their card instead of pushing the page sideways on phones. */
+@layer base { main :where(.grid) > *, main :where(.flex) > :where(.flex-1) { min-width: 0; } }

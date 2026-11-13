@@ -8,6 +8,7 @@ import { SellerQuiz } from '@/layout/SellerQuiz'
 import { Overview } from '@/features/overview/Overview'
 import { BootSplash } from '@/layout/BootSplash'
 import { RouteSkeleton } from '@/components/Skeleton'
+import { StoryMode } from '@/features/case/StoryMode'
 
 /* Each screen is its own chunk. The loaders are kept so the boot splash can fetch them all up front. */
 const loaders = {
@@ -22,6 +23,12 @@ const loaders = {
   Loyalty: () => import('@/features/loyalty/Loyalty'),
   BrandMode: () => import('@/features/brand/BrandMode'),
   Sellers: () => import('@/features/sellers/Sellers'),
+  Ask: () => import('@/features/mind/Ask'),
+  Brief: () => import('@/features/mind/Brief'),
+  Watchtower: () => import('@/features/mind/Watchtower'),
+  Debrief: () => import('@/features/mind/Debrief'),
+  CopyStudio: () => import('@/features/mind/CopyStudio'),
+  CaseStudy: () => import('@/features/case/CaseStudy'),
 }
 const PRELOAD = Object.values(loaders) as (() => Promise<unknown>)[]
 const page = <K extends keyof typeof loaders>(name: K) =>
@@ -38,6 +45,12 @@ const Bundles = page('Bundles')
 const Loyalty = page('Loyalty')
 const BrandMode = page('BrandMode')
 const Sellers = page('Sellers')
+const Ask = page('Ask')
+const Brief = page('Brief')
+const Watchtower = page('Watchtower')
+const Debrief = page('Debrief')
+const CopyStudio = page('CopyStudio')
+const CaseStudy = page('CaseStudy')
 
 export default function App() {
   return (
@@ -57,13 +70,20 @@ export default function App() {
           <Route path="/loyalty" element={<Loyalty />} />
           <Route path="/brand" element={<BrandMode />} />
           <Route path="/sellers" element={<Sellers />} />
+          <Route path="/ask" element={<Ask />} />
+          <Route path="/brief" element={<Brief />} />
+          <Route path="/watchtower" element={<Watchtower />} />
+          <Route path="/debrief" element={<Debrief />} />
+          <Route path="/copy" element={<CopyStudio />} />
+          <Route path="/case-study" element={<CaseStudy />} />
           <Route path="*" element={<Overview />} />
         </Routes>
       </Suspense>
       <ControlRoom />
       <CommandPalette />
       <SellerQuiz />
-      <Toaster position="bottom-left" toastOptions={{ style: { background: '#0b3d2e', color: '#fff7e9', border: '1px solid #164b3a', fontFamily: 'var(--font-sans)' }, descriptionClassName: '!text-[#c9d8d0]' }} />
+      <StoryMode />
+      <Toaster position="bottom-left" toastOptions={{ style: { background: 'var(--color-toast)', color: 'var(--color-toast-ink)', border: '1px solid var(--color-rule)', fontFamily: 'var(--font-sans)' }, descriptionClassName: '!text-[var(--color-toast-sub)]' }} />
     </AppShell>
     <BootSplash preload={PRELOAD} />
     </>

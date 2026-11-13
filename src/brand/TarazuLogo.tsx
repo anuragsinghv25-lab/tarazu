@@ -4,7 +4,9 @@ import { cn } from '@/lib/cn'
 /** The Tarazu balance-scale mark. `swing` animates the beam and pans (used by the loader);
  *  `--tz-amp` (degrees) on any ancestor sets how far it swings. */
 export function TarazuMark({ size = 32, tone = 'brand', simple, swing, className, title }: { size?: number; tone?: MarkTone; simple?: boolean; swing?: boolean; className?: string; title?: string }) {
-  const c = toneColors(tone)
+  const base = toneColors(tone)
+  // In the app the brand tone reads the theme tokens, so the mark turns mint on the night theme.
+  const c = tone === 'brand' ? { ...base, structure: 'var(--color-primary)', knock: 'var(--color-paper)' } : base
   const sw = simple ? 3.6 : 2.4
   const line = { fill: 'none', stroke: c.structure, strokeWidth: sw, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
   return (

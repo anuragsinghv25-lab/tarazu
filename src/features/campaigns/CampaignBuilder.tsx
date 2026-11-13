@@ -64,7 +64,7 @@ export function CampaignBuilder() {
                       <span className="line-clamp-1 flex-1 text-[12.5px] font-medium">{c.name}</span>
                     </div>
                     <div className="mt-1 flex items-center gap-1.5 pl-7">
-                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : { live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[#92400e]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[#92400e]' }[c.status])}>{c.status}</span>
+                      <span className={cn('rounded-full px-1.5 py-px text-[10px] font-medium', c.id === selected?.id ? 'bg-paper/10 text-paper/70' : { live: 'bg-gain-soft text-gain', scheduled: 'bg-brass-soft text-[var(--color-brass-ink)]', draft: 'bg-paper-2 text-ink-3', paused: 'bg-warn-soft text-[var(--color-brass-ink)]' }[c.status])}>{c.status}</span>
                       <span className={cn('text-[10.5px]', c.id === selected?.id ? 'text-paper/60' : 'text-ink-3')}>{c.mechanic}</span>
                     </div>
                     <div className={cn('mt-1.5 ml-7 h-1 overflow-hidden rounded-full', c.id === selected?.id ? 'bg-paper/15' : 'bg-paper-2')}>
@@ -86,7 +86,7 @@ export function CampaignBuilder() {
                   <button disabled={!dirty} onClick={() => { saveCampaign(draft); toast('Campaign saved', { description: draft.name }) }}
                     className="flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-[12.5px] font-medium text-paper disabled:opacity-35"><Save size={13} /> Save{dirty ? '' : 'd'}</button>
                   <button onClick={() => { if (dirty) saveCampaign(draft); nav(`/sandbox?preview=${draft.id}`) }}
-                    className="flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3.5 py-1.5 text-[12.5px] font-medium text-[#92400e]"><FlaskConical size={13} /> Test in Cart Sandbox</button>
+                    className="flex items-center gap-1.5 rounded-full border border-brass/40 bg-brass-soft px-3.5 py-1.5 text-[12.5px] font-medium text-[var(--color-brass-ink)]"><FlaskConical size={13} /> Test in Cart Sandbox</button>
                   <button onClick={() => { removeCampaign(draft.id); setParams({}, { replace: true }); toast('Campaign deleted') }} title="Delete"
                     className="ml-auto rounded-full p-2 text-ink-3 hover:bg-loss-soft hover:text-loss"><Trash2 size={14} /></button>
                 </div>
@@ -370,15 +370,15 @@ function BudgetCard({ c, seller }: { c: Campaign; seller: SellerDef }) {
         <ResponsiveContainer>
           <AreaChart data={data} margin={{ top: 8, right: 4, bottom: 0, left: -8 }}>
             <defs>
-              <linearGradient id="burn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={over ? '#c2421c' : '#b45309'} stopOpacity={0.35} /><stop offset="1" stopColor={over ? '#c2421c' : '#b45309'} stopOpacity={0.02} /></linearGradient>
+              <linearGradient id="burn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={over ? 'var(--color-loss)' : 'var(--color-brass)'} stopOpacity={0.35} /><stop offset="1" stopColor={over ? 'var(--color-loss)' : 'var(--color-brass)'} stopOpacity={0.02} /></linearGradient>
             </defs>
-            <CartesianGrid vertical={false} stroke="#e2e8e4" />
-            <XAxis dataKey="label" tick={{ fontSize: 10, fill: '#7a8580' }} tickLine={false} axisLine={{ stroke: '#cbd5d1' }} interval="preserveStartEnd" minTickGap={30} />
-            <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10, fill: '#7a8580' }} axisLine={false} tickLine={false} width={48} />
-            <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Spent by then']} />
-            <ReferenceLine y={c.budget} stroke="#0b3d2e" strokeDasharray="4 3" label={{ value: 'budget', position: 'insideTopRight', fontSize: 10, fill: '#0b3d2e' }} />
-            {c.startDay < 0 && <ReferenceLine x={fmtDay(0)} stroke="#7a8580" label={{ value: 'today', position: 'insideTopLeft', fontSize: 10, fill: '#7a8580' }} />}
-            <Area type="monotone" dataKey="spend" stroke={over ? '#c2421c' : '#b45309'} strokeWidth={2} fill="url(#burn)" isAnimationActive={false} />
+            <CartesianGrid vertical={false} stroke="var(--color-rule-2)" />
+            <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--color-ink-3)' }} tickLine={false} axisLine={{ stroke: 'var(--color-rule)' }} interval="preserveStartEnd" minTickGap={30} />
+            <YAxis tickFormatter={inrAxis} tick={{ fontSize: 10, fill: 'var(--color-ink-3)' }} axisLine={false} tickLine={false} width={48} />
+            <Tooltip contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-rule)', borderRadius: 10, fontSize: 12 }} formatter={(v) => [inrShort(Number(v)), 'Spent by then']} />
+            <ReferenceLine y={c.budget} stroke="var(--color-primary)" strokeDasharray="4 3" label={{ value: 'budget', position: 'insideTopRight', fontSize: 10, fill: 'var(--color-primary)' }} />
+            {c.startDay < 0 && <ReferenceLine x={fmtDay(0)} stroke="var(--color-ink-3)" label={{ value: 'today', position: 'insideTopLeft', fontSize: 10, fill: 'var(--color-ink-3)' }} />}
+            <Area type="monotone" dataKey="spend" stroke={over ? 'var(--color-loss)' : 'var(--color-brass)'} strokeWidth={2} fill="url(#burn)" isAnimationActive={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>

@@ -95,7 +95,7 @@ function Waterfall({ g }: { g: ReturnType<typeof grossToNet> }) {
         <div className="grid min-w-[760px] gap-2" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)` }}>
           {cols.map((col, i) => (
             <div key={col.label} className="flex flex-col items-center">
-              <div className="num mb-1 h-4 text-[11.5px] font-medium" style={{ color: col.kind === 'step' ? '#c2421c' : col.kind === 'net' ? '#1e7b4f' : '#0b3d2e', marginTop: col.top }}>{col.kind === 'step' ? `−${inrShort(-col.v)}` : inrShort(col.v)}</div>
+              <div className="num mb-1 h-4 text-[11.5px] font-medium" style={{ color: col.kind === 'step' ? 'var(--color-loss)' : col.kind === 'net' ? 'var(--color-gain)' : 'var(--color-primary)', marginTop: col.top }}>{col.kind === 'step' ? `−${inrShort(-col.v)}` : inrShort(col.v)}</div>
               <div className="relative w-full" style={{ height: H - col.top }}>
                 <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: i * 0.07, type: 'spring', stiffness: 120, damping: 20 }}
                   className={cn('absolute inset-x-1.5 top-0 origin-top rounded-md', col.kind === 'total' ? 'bg-primary' : col.kind === 'net' ? 'bg-gain' : 'bg-loss/85')} style={{ height: col.h }} />
@@ -191,14 +191,14 @@ function Forward({ t }: { t: TradeData }) {
       <div className="mt-4 h-[260px]">
         <ResponsiveContainer>
           <ComposedChart data={f.weeks} margin={{ top: 10, right: 8, bottom: 0, left: -4 }}>
-            <CartesianGrid vertical={false} stroke="#e2e8e4" />
-            <XAxis dataKey="week" tickFormatter={(v) => `wk ${v}`} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={{ stroke: '#cbd5d1' }} tickLine={false} />
-            <YAxis tickFormatter={(v) => units(v)} tick={{ fontSize: 10.5, fill: '#7a8580' }} axisLine={false} tickLine={false} width={44} />
-            <Tooltip contentStyle={{ background: '#fffcf6', border: '1px solid #cbd5d1', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => `Week ${v}`} formatter={(v, n) => [`${units(Number(v))} cases`, n]} />
-            <ReferenceArea x1={a + 1} x2={b + 1} fill="#f59e0b" fillOpacity={0.15} label={{ value: 'Buy 10 get 1 scheme', position: 'insideTop', fontSize: 10.5, fill: '#92400e' }} />
-            <Area dataKey="pipeline" name="Extra stock at distributor" fill="#c2421c" fillOpacity={0.1} stroke="#c2421c" strokeOpacity={0.5} strokeDasharray="3 3" isAnimationActive={false} />
-            <Bar dataKey="sellIn" name="Sell-in (shipped to distributor)" fill="#0b3d2e" radius={[3, 3, 0, 0]} barSize={18} />
-            <Line dataKey="sellOut" name="Sell-out (bought by shoppers)" stroke="#1e7b4f" strokeWidth={2.5} dot={{ r: 2.5, fill: '#1e7b4f' }} />
+            <CartesianGrid vertical={false} stroke="var(--color-rule-2)" />
+            <XAxis dataKey="week" tickFormatter={(v) => `wk ${v}`} tick={{ fontSize: 10.5, fill: 'var(--color-ink-3)' }} axisLine={{ stroke: 'var(--color-rule)' }} tickLine={false} />
+            <YAxis tickFormatter={(v) => units(v)} tick={{ fontSize: 10.5, fill: 'var(--color-ink-3)' }} axisLine={false} tickLine={false} width={44} />
+            <Tooltip contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-rule)', borderRadius: 10, fontSize: 12 }} labelFormatter={(v) => `Week ${v}`} formatter={(v, n) => [`${units(Number(v))} cases`, n]} />
+            <ReferenceArea x1={a + 1} x2={b + 1} fill="var(--color-brass-2)" fillOpacity={0.15} label={{ value: 'Buy 10 get 1 scheme', position: 'insideTop', fontSize: 10.5, fill: 'var(--color-brass-ink)' }} />
+            <Area dataKey="pipeline" name="Extra stock at distributor" fill="var(--color-loss)" fillOpacity={0.1} stroke="var(--color-loss)" strokeOpacity={0.5} strokeDasharray="3 3" isAnimationActive={false} />
+            <Bar dataKey="sellIn" name="Sell-in (shipped to distributor)" fill="var(--color-primary)" radius={[3, 3, 0, 0]} barSize={18} />
+            <Line dataKey="sellOut" name="Sell-out (bought by shoppers)" stroke="var(--color-gain)" strokeWidth={2.5} dot={{ r: 2.5, fill: 'var(--color-gain)' }} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

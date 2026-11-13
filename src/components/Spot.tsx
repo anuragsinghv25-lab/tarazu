@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import * as HoverCard from '@radix-ui/react-hover-card'
 import { annotate } from 'rough-notation'
 import { useStore, AFFECTS, CONTROL_LABEL } from '@/state/store'
+import { useMind } from '@/state/mind'
 import { LENS } from '@/content/lens'
 import { cn } from '@/lib/cn'
 
@@ -19,6 +20,15 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
   const pulse = useStore((s) => s.pulse)
   const [glow, setGlow] = useState(0)
   const note = LENS[id]
+  const focused = useMind((s) => s.focus === id)
+
+  // Focus: story mode, the Case Study and AI answers point at an element by its spot id.
+  useEffect(() => {
+    if (!focused || !ref.current) return
+    const el = ref.current
+    const t = setTimeout(() => el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }), 120)
+    return () => clearTimeout(t)
+  }, [focused])
 
   useEffect(() => {
     if (pulse.n && pulse.ids.includes(id)) setGlow((g) => g + 1)
@@ -26,7 +36,7 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
 
   useEffect(() => {
     if (!lensOn || !note || !ref.current) return
-    const a = annotate(ref.current, { type: 'box', color: '#b45309', padding: 5, strokeWidth: 1.4, animationDuration: 700, iterations: 1 })
+    const a = annotate(ref.current, { type: 'box', color: 'var(--color-brass)', padding: 5, strokeWidth: 1.4, animationDuration: 700, iterations: 1 })
     const t = setTimeout(() => a.show(), 60)
     return () => { clearTimeout(t); a.remove() }
   }, [lensOn, note])
@@ -35,6 +45,7 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
     <div ref={ref} className={cn('relative rounded-[var(--radius-card)]', className)} data-spot={id}>
       {children}
       {glow > 0 && <span key={glow} aria-hidden className="pointer-events-none absolute inset-0 animate-glow rounded-[inherit]" />}
+      {focused && <span aria-hidden className="tz-focus pointer-events-none absolute -inset-1.5 z-10 rounded-[calc(var(--radius-card)+6px)]" />}
       {lensOn && note && (
         <span aria-hidden className="pointer-events-none absolute -top-2 -right-2 z-20 grid h-5 w-5 place-items-center">
           <span className="absolute inset-0 animate-marker rounded-full bg-brass-2/50" />
@@ -54,7 +65,7 @@ export function Spot({ id, children, className }: { id: string; children: ReactN
           className="z-50 w-[340px] origin-[var(--radix-hover-card-content-transform-origin)] rounded-2xl border border-rule bg-card p-4 shadow-[var(--shadow-lift)] data-[state=open]:animate-[fadeIn_.18s_ease-out]">
           <div className="flex items-start justify-between gap-3">
             <div className="display text-[19px] leading-tight text-ink">{note.title}</div>
-            <span className="rounded-full border border-brass/30 bg-brass-soft px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-[#92400e] uppercase">{note.scope}-have</span>
+            <span className="rounded-full border border-brass/30 bg-brass-soft px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-[var(--color-brass-ink)] uppercase">{note.scope}-have</span>
           </div>
           <dl className="mt-3 space-y-2.5 text-[12.5px] leading-snug">
             <Row k="Pain point">{note.pain}</Row>

@@ -37,23 +37,23 @@ export function TruthLens() {
       </PageHeader>
 
       <Spot id="truth-headline">
-        <Card className="relative overflow-hidden bg-primary p-6 text-paper md:p-8">
+        <Card className="relative overflow-hidden border-transparent bg-hero p-6 text-hero-ink md:p-8">
           <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-brass-2/20 blur-3xl" />
           <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <div className="text-[11px] font-medium tracking-[0.14em] text-paper/55 uppercase">{t.label}</div>
+              <div className="text-[11px] font-medium tracking-[0.14em] text-hero-ink/55 uppercase">{t.label}</div>
               <div className="mt-3 flex items-center gap-3">
                 <TrendingUp className="text-brass-2" size={30} />
                 <div className="display text-[44px] leading-none md:text-[56px]">Sales up {pct(liftPct)}</div>
               </div>
-              <div className="num mt-3 text-[15px] text-paper/70">{units(t.promoUnits)} units sold vs {units(t.baseUnits)} expected · revenue +{inrShort(t.headlineRevenueGain)}</div>
+              <div className="num mt-3 text-[15px] text-hero-ink/70">{units(t.promoUnits)} units sold vs {units(t.baseUnits)} expected · revenue +{inrShort(t.headlineRevenueGain)}</div>
             </div>
             {stage === 0 ? (
               <motion.button whileHover={{ y: 2 }} onClick={() => setStage(1)} className="flex items-center gap-2 self-start rounded-full bg-brass-2 px-5 py-2.5 text-[14px] font-semibold text-ink md:self-auto">
                 Peel it apart <ChevronDown size={16} />
               </motion.button>
             ) : (
-              <button onClick={() => setStage(0)} className="flex items-center gap-1.5 self-start text-[12.5px] text-paper/60 hover:text-paper md:self-auto"><RotateCcw size={13} /> Put the headline back</button>
+              <button onClick={() => setStage(0)} className="flex items-center gap-1.5 self-start text-[12.5px] text-hero-ink/60 hover:text-hero-ink md:self-auto"><RotateCcw size={13} /> Put the headline back</button>
             )}
           </div>
         </Card>
@@ -111,9 +111,9 @@ export function TruthLens() {
                     {steps.map((s, i) => (
                       <li key={s.key} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 md:grid-cols-[230px_1fr_88px]">
                         <span className="text-[12.5px] text-ink-2">{s.label}</span>
-                        <span className="num text-right text-[13px] font-semibold md:order-3" style={{ color: s.value >= 0 ? '#1e7b4f' : '#c2421c' }}>{s.value >= 0 ? '+' : ''}{inrShort(s.value)}</span>
+                        <span className="num text-right text-[13px] font-semibold md:order-3" style={{ color: s.value >= 0 ? 'var(--color-gain)' : 'var(--color-loss)' }}>{s.value >= 0 ? '+' : ''}{inrShort(s.value)}</span>
                         <div className="col-span-2 h-3 rounded-full bg-paper-2 md:order-2 md:col-span-1">
-                          <motion.div className="h-full rounded-full" style={{ background: s.value >= 0 ? '#1e7b4f' : '#c2421c' }}
+                          <motion.div className="h-full rounded-full" style={{ background: s.value >= 0 ? 'var(--color-gain)' : 'var(--color-loss)' }}
                             initial={{ width: 0 }} animate={{ width: `${(Math.abs(s.value) / maxAbs) * 100}%` }} transition={{ delay: 0.15 + i * 0.12, type: 'spring', stiffness: 80, damping: 18 }} />
                         </div>
                       </li>
