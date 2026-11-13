@@ -1,6 +1,8 @@
 import type {
-  Channel, ChannelOrBlend, Controls, CurvePoint, Health, Recommendation, SimInput, SimResult, Sku,
+  ChannelOrBlend, Confidence, Controls, CurvePoint, FeeModel, Health, Recommendation, SimInput, SimResult, Sku,
 } from './types'
+
+export type { FeeModel } from './types'
 
 /* ─────────────────────────────────────────────────────────────
    Tarazu engine — every number on screen comes from here.
@@ -9,42 +11,21 @@ import type {
                 − pull-forward + halo + write-off avoided.
    ───────────────────────────────────────────────────────────── */
 
-export interface FeeModel {
-  label: string
-  commission: number
-  payment: number
-  /** ₹ per unit the seller absorbs (e.g. free shipping on own site). */
-  shipSubsidy: number
-  /** ₹ per day for a featured deal placement. */
-  dealPerDay: number
-  /** Share of the SKU's demand that comes through this channel. */
-  share: number
-  /** Extra traffic a featured deal placement brings on top of the price effect. */
-  boost: number
-  note: string
-}
-
-/** Illustrative fee models, not official rate cards. */
-export const FEES: Record<Channel, FeeModel> = {
-  amazon: { label: 'Amazon', commission: 0.14, payment: 0, shipSubsidy: 0, dealPerDay: 350, share: 0.38, boost: 1.9, note: 'Referral fee + Lightning Deal placement' },
-  flipkart: { label: 'Flipkart', commission: 0.11, payment: 0, shipSubsidy: 0, dealPerDay: 200, share: 0.27, boost: 1.5, note: 'Commission + deal slot during sale events' },
-  nykaa: { label: 'Nykaa', commission: 0.22, payment: 0, shipSubsidy: 0, dealPerDay: 0, share: 0.2, boost: 1, note: 'Higher commission, no deal fee' },
-  website: { label: 'Own website', commission: 0, payment: 0.02, shipSubsidy: 55, dealPerDay: 0, share: 0.15, boost: 1, note: 'Payment gateway + free shipping you fund' },
-}
-export const CHANNELS = Object.keys(FEES) as Channel[]
-
 const FEE_LEVEL = { low: 0.75, current: 1, high: 1.3 } as const
-const SALVAGE = 0.35
+export const SALVAGE = 0.35
+
+export const channelsOf = (c: Controls) => Object.keys(c.market.channels)
 
 export function feeFor(channel: ChannelOrBlend, c: Controls): FeeModel {
   const k = FEE_LEVEL[c.feeLevel]
+  const fees = c.market.channels
   if (channel !== 'blended') {
-    const f = FEES[channel]
+    const f = fees[channel] ?? Object.values(fees)[0]
     return { ...f, commission: f.commission * k, dealPerDay: f.dealPerDay * k }
   }
-  const blend = CHANNELS.reduce(
+  const blend = Object.keys(fees).reduce(
     (a, ch) => {
-      const f = FEES[ch]
+      const f = fees[ch]
       a.commission += f.commission * f.share
       a.payment += f.payment * f.share
       a.shipSubsidy += f.shipSubsidy * f.share
@@ -52,10 +33,19 @@ export function feeFor(channel: ChannelOrBlend, c: Controls): FeeModel {
     },
     { commission: 0, payment: 0, shipSubsidy: 0 },
   )
-  return { label: 'All channels', ...blend, commission: blend.commission * k, dealPerDay: 150 * k, share: 1, boost: 1, note: 'Weighted across your channels' }
+  return { label: 'All channels', ...blend, commission: blend.commission * k, dealPerDay: c.market.blendDealPerDay * k, share: 1, boost: 1, note: 'Weighted across your channels' }
 }
 
 export const effStock = (s: Sku, c: Controls) => Math.round(s.stock * c.stockMult)
+
+/** Hi-Lo trains buyers to wait for sales (more pull-forward, more price sensitivity); EDLP does the opposite. */
+export const STRATEGY = {
+  edlp: { pull: -0.06, elasticity: 0.85, label: 'EDLP · everyday low price' },
+  balanced: { pull: 0, elasticity: 1, label: 'Balanced' },
+  hilo: { pull: 0.1, elasticity: 1.15, label: 'Hi-Lo · frequent deep promos' },
+} as const
+const effPull = (c: Controls) => Math.min(0.6, Math.max(0, c.pullForward + STRATEGY[c.strategy].pull))
+export const effElasticity = (s: Sku, c: Controls) => s.elasticity * c.elasticityMult * STRATEGY[c.strategy].elasticity
 
 /** Expected weekly units with no promotion. */
 export function baselineWeekly(s: Sku, c: Controls): number {
@@ -94,7 +84,7 @@ export function simulate(s: Sku, c: Controls, input: SimInput): SimResult {
   const base = baselineWeekly(s, c) * share
   const price = s.price
   const promoPrice = price * (1 - d)
-  const e = s.elasticity * c.elasticityMult
+  const e = effElasticity(s, c)
 
   const unitNet = (p: number) => p * (1 - fee.commission - fee.payment) - s.cost - fee.shipSubsidy
   const mult = d > 0 ? Math.pow(1 - d, e) * fee.boost : 1
@@ -104,7 +94,7 @@ export function simulate(s: Sku, c: Controls, input: SimInput): SimResult {
   const promoUnits = Math.min(avail, base * mult * w)
   const lift = Math.max(0, promoUnits - baseUnits)
   const cannibalized = Math.min(lift * 0.6, lift * s.cannibalRate * (0.5 + d))
-  const pulledForward = lift * c.pullForward
+  const pulledForward = lift * effPull(c)
   const incremental = Math.max(0, lift - cannibalized - pulledForward)
 
   const k = 1 - fee.commission - fee.payment
@@ -114,6 +104,8 @@ export function simulate(s: Sku, c: Controls, input: SimInput): SimResult {
   const pullForwardCost = pulledForward * Math.max(0, unitNet(price))
   const liftProfit = lift * unitNet(promoPrice)
   const haloProfit = incremental * s.haloRate * s.haloMargin
+  // Extra units bring extra returns: lost margin plus reverse logistics.
+  const returnsCost = lift * (s.returnRate ?? 0) * (Math.max(0, unitNet(promoPrice)) + 80)
 
   const window = s.sellWindowWeeks
   const baseFull = baselineWeekly(s, c)
@@ -122,14 +114,14 @@ export function simulate(s: Sku, c: Controls, input: SimInput): SimResult {
   const goalClear = c.goal === 'clear' ? 1.3 : 1
   const writeOffSaved = (riskBefore - riskAfter) * s.cost * (1 - SALVAGE) * goalClear
 
-  const given = subsidyCost + dealFees + cannibalCost + pullForwardCost
+  const given = subsidyCost + dealFees + cannibalCost + pullForwardCost + returnsCost
   const earned = liftProfit + haloProfit + writeOffSaved
   const grow = c.goal === 'grow' ? incremental * promoPrice * 0.08 : 0
   const net = earned - given + grow
 
   return {
     ...input, price, promoPrice, baseUnits, promoUnits, lift, cannibalized, pulledForward, incremental,
-    subsidyCost, dealFees, cannibalCost, pullForwardCost, liftProfit, haloProfit, writeOffSaved,
+    subsidyCost, dealFees, cannibalCost, pullForwardCost, returnsCost, liftProfit, haloProfit, writeOffSaved,
     given, earned, net,
     revenue: promoUnits * promoPrice,
     stockClearedPct: stock ? promoUnits / stock : 0,
@@ -173,9 +165,27 @@ export function mechanicFor(s: Sku, h: Health, d: number): string {
   if (s.tags.includes('giftset')) return 'Markdown ladder'
   if (s.tags.includes('expiring')) return 'Clearance markdown'
   if (s.tags.includes('seasonal')) return 'Lightning Deal'
+  if (s.tags.includes('broken-sizes')) return 'Size clearance'
+  if (s.tags.includes('old-model')) return d >= 0.3 ? 'Clearance markdown' : 'Bank offer + bundle'
   if (h === 'at-risk') return 'Clearance markdown'
   if (h === 'slow') return d >= 0.25 ? 'Markdown' : 'Bundle offer'
   return 'Event discount'
+}
+
+/** How much to trust a recommendation: noisy sales history or messy data lowers it. */
+export function confidenceOf(s: Sku, c: Controls): { level: Confidence; why: string } {
+  const xs = s.weeklySales.slice(-8)
+  const mean = xs.reduce((a, b) => a + b, 0) / xs.length
+  const sd = Math.sqrt(xs.reduce((a, b) => a + (b - mean) ** 2, 0) / xs.length)
+  const cv = mean > 0 ? sd / mean : 1
+  let score = cv < 0.15 ? 2 : cv < 0.35 ? 1 : 0
+  if (mean < 3) score -= 1
+  if (c.dataQuality === 'messy') score -= 1
+  const level: Confidence = score >= 2 ? 'high' : score >= 1 ? 'medium' : 'low'
+  const bits = [cv < 0.15 ? 'steady weekly sales' : cv < 0.35 ? 'sales vary week to week' : 'very uneven sales history']
+  if (mean < 3) bits.push('few units a week')
+  if (c.dataQuality === 'messy') bits.push('gaps and duplicates in the sales feed')
+  return { level, why: bits.join(', ') }
 }
 
 export function recommend(s: Sku, c: Controls): Recommendation {
@@ -210,7 +220,9 @@ export function recommend(s: Sku, c: Controls): Recommendation {
     why = parts.join(' ')
   }
   const short = discount === 0 ? 'Keep full price' : `${pct(discount)} · ${weeks} wks → ${inrK(result.net)}`
-  return { sku: s, health: h, mechanic, discount, weeks, result, why, short, floorMaxDiscount: fmax, cliff }
+  const conf = confidenceOf(s, c)
+  if (conf.level === 'low' && discount > 0) why += ' Treat this as a starting point: the data behind it is thin.'
+  return { sku: s, health: h, mechanic, discount, weeks, result, why, short, floorMaxDiscount: fmax, cliff, confidence: conf.level, confidenceWhy: conf.why }
 }
 
 /* ───────── Truth Lens: what last festival's blanket sale really did ───────── */
@@ -230,28 +242,31 @@ export interface TruthResult {
   planNet: number
 }
 
-export function truthLens(skus: Sku[], c: Controls, discount = 0.4, weeks = 2): TruthResult {
+export interface History { label: string; discount: number; weeks: number; seasonality: number }
+
+export function truthLens(skus: Sku[], c: Controls, h: History = { label: 'Diwali 2025 · 40% off everything', discount: 0.4, weeks: 2, seasonality: 1.7 }): TruthResult {
+  const { discount, weeks } = h
   // Neutral accounting: no goal weighting, festive demand, the stock she actually had.
   // History doesn't change with today's scenario; only modelling assumptions (sensitivity, pull-forward, fees) do.
-  const festive: Controls = { ...c, seasonality: 1.7, competitorPrice: 0, stockMult: 1, marginFloor: 0.2, goal: 'launch' }
+  const festive: Controls = { ...c, seasonality: h.seasonality, competitorPrice: 0, stockMult: 1, marginFloor: 0.2, goal: 'launch' }
   let baseUnits = 0, promoUnits = 0, cannibalized = 0, pulledForward = 0, incremental = 0
-  let revGain = 0, subsidy = 0, cannibalCost = 0, pullCost = 0, liftProfit = 0, halo = 0, writeOff = 0, net = 0, planNet = 0, perSkuFees = 0
+  let revGain = 0, subsidy = 0, cannibalCost = 0, pullCost = 0, returns = 0, liftProfit = 0, halo = 0, writeOff = 0, net = 0, planNet = 0, perSkuFees = 0
   for (const s of skus) {
     const r = simulate(s, festive, { discount, weeks, channel: 'blended' })
     baseUnits += r.baseUnits; promoUnits += r.promoUnits; cannibalized += r.cannibalized
     pulledForward += r.pulledForward; incremental += r.incremental
     revGain += r.revenue - r.baseUnits * r.price
-    subsidy += r.subsidyCost; cannibalCost += r.cannibalCost; pullCost += r.pullForwardCost
+    subsidy += r.subsidyCost; cannibalCost += r.cannibalCost; pullCost += r.pullForwardCost; returns += r.returnsCost
     liftProfit += r.liftProfit; halo += r.haloProfit; writeOff += r.writeOffSaved; perSkuFees += r.dealFees
     net += r.net
     const rec = recommend(s, festive)
     planNet += rec.result.net
   }
-  // A blanket sale books one campaign across four channels, not one deal per SKU.
-  const fees = 1000 * 7 * weeks * 4
+  // A blanket sale books one campaign per channel, not one deal per SKU.
+  const fees = 1000 * 7 * weeks * channelsOf(c).length
   net += perSkuFees - fees
   return {
-    label: `Diwali 2025 · ${Math.round(discount * 100)}% off everything`,
+    label: h.label,
     discount, baseUnits, promoUnits,
     subsidized: Math.min(baseUnits, promoUnits), cannibalized, pulledForward, incremental,
     headlineRevenueGain: revGain,
@@ -262,6 +277,7 @@ export function truthLens(skus: Sku[], c: Controls, discount = 0.4, weeks = 2): 
       { key: 'subsidy', label: 'Discount to buyers who would have paid full price', value: -subsidy },
       { key: 'cannibal', label: 'Sales stolen from your own products', value: -cannibalCost },
       { key: 'pull', label: 'Future full-price sales pulled forward', value: -pullCost },
+      ...(returns > 1 ? [{ key: 'returns', label: 'Returns on the extra orders', value: -returns }] : []),
       { key: 'fees', label: 'Deal and campaign fees', value: -fees },
     ],
     net, planNet,
@@ -279,5 +295,7 @@ export function portfolio(skus: Sku[], c: Controls) {
   const promos = recs.filter((r) => r.discount > 0)
   const counts = { fast: 0, healthy: 0, slow: 0, 'at-risk': 0 } as Record<Health, number>
   recs.forEach((r) => counts[r.health]++)
-  return { recs, stuck, stockValue, gain, promos, holds: recs.length - promos.length, counts }
+  // Open-to-buy: cash released by selling risky stock sooner, available for new stock.
+  const freed = promos.reduce((a, r) => a + Math.max(0, r.result.promoUnits - r.result.baseUnits) * r.sku.cost, 0)
+  return { recs, stuck, stockValue, gain, promos, holds: recs.length - promos.length, counts, freed }
 }

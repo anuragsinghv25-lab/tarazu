@@ -1,13 +1,32 @@
 import { Command } from 'cmdk'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Glasses, SlidersHorizontal, Zap, Package } from 'lucide-react'
+import {
+  LayoutDashboard, Grid3x3, Scale, ScanSearch, Store, Glasses, SlidersHorizontal, Zap, Package, Workflow, ShoppingCart,
+  CalendarDays, Gift, Crown, Building2, Users, Wand2,
+} from 'lucide-react'
 import { useStore } from '@/state/store'
-import { SCENARIOS } from '@/engine/scenarios'
-import { skus, heroSkuId } from '@/data/meera'
+import { useSeller } from '@/state/hooks'
+import { SELLERS } from '@/data/sellers'
+import { Avatar } from './AppShell'
+
+const SCREENS = [
+  { to: '/', label: 'Overview', icon: LayoutDashboard },
+  { to: '/pulse', label: 'Stock Pulse', icon: Grid3x3 },
+  { to: '/truth', label: 'Truth Lens', icon: ScanSearch },
+  { to: '/compare', label: 'Platform compare', icon: Store },
+  { to: '/campaigns', label: 'Campaign builder', icon: Workflow },
+  { to: '/sandbox', label: 'Cart Sandbox', icon: ShoppingCart },
+  { to: '/plan', label: 'Season plan, clearance and scenario duel', icon: CalendarDays },
+  { to: '/bundles', label: 'Bundle Matchmaker', icon: Gift },
+  { to: '/loyalty', label: 'Loyalty, referrals and win-back', icon: Crown },
+  { to: '/brand', label: 'Brand mode: trade spend and gross-to-net', icon: Building2 },
+  { to: '/sellers', label: 'Demo sellers and coverage', icon: Users },
+]
 
 export function CommandPalette() {
-  const { paletteOpen, setPalette, toggleLens, setRoom, applyScenario } = useStore()
+  const { paletteOpen, setPalette, toggleLens, setRoom, applyScenario, setSeller, setQuiz } = useStore()
+  const seller = useSeller()
   const nav = useNavigate()
   const run = (fn: () => void) => { setPalette(false); setTimeout(fn, 10) }
   const item = 'flex cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13.5px] text-ink-2 data-[selected=true]:bg-paper-2 data-[selected=true]:text-ink'
@@ -17,30 +36,36 @@ export function CommandPalette() {
     <Dialog.Root open={paletteOpen} onOpenChange={setPalette}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-ink/25 backdrop-blur-[2px]" />
-        <Dialog.Content className="fixed top-[14vh] left-1/2 z-50 w-[92vw] max-w-[560px] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule bg-card shadow-[var(--shadow-lift)] data-[state=open]:animate-[fadeIn_.16s]">
+        <Dialog.Content className="fixed top-[14vh] left-1/2 z-50 w-[92vw] max-w-[580px] -translate-x-1/2 overflow-hidden rounded-2xl border border-rule bg-card shadow-[var(--shadow-lift)] data-[state=open]:animate-[fadeIn_.16s]">
           <Dialog.Title className="sr-only">Jump to anything</Dialog.Title>
           <Command loop>
-            <Command.Input autoFocus placeholder="Jump to a screen, a product, or a scenario…" className="w-full border-b border-rule bg-transparent px-4 py-3.5 text-[15px] text-ink outline-none placeholder:text-ink-3" />
+            <Command.Input autoFocus placeholder="Jump to a screen, seller, product or scenario…" className="w-full border-b border-rule bg-transparent px-4 py-3.5 text-[15px] text-ink outline-none placeholder:text-ink-3" />
             <Command.List className="max-h-[56vh] overflow-y-auto py-2">
               <Command.Empty className="px-4 py-6 text-center text-[13px] text-ink-3">Nothing matches.</Command.Empty>
               <Command.Group heading="Screens" className={group}>
-                <Command.Item className={item} onSelect={() => run(() => nav('/'))}><LayoutDashboard size={15} /> Overview</Command.Item>
-                <Command.Item className={item} onSelect={() => run(() => nav('/pulse'))}><Grid3x3 size={15} /> Stock Pulse</Command.Item>
-                <Command.Item className={item} onSelect={() => run(() => nav(`/sku/${heroSkuId}`))}><Scale size={15} /> The Scale</Command.Item>
-                <Command.Item className={item} onSelect={() => run(() => nav('/truth'))}><ScanSearch size={15} /> Truth Lens</Command.Item>
-                <Command.Item className={item} onSelect={() => run(() => nav('/compare'))}><Store size={15} /> Platform compare</Command.Item>
+                {SCREENS.slice(0, 2).map((s) => <Command.Item key={s.to} className={item} onSelect={() => run(() => nav(s.to))}><s.icon size={15} /> {s.label}</Command.Item>)}
+                <Command.Item className={item} onSelect={() => run(() => nav(`/sku/${seller.heroSkuId}`))}><Scale size={15} /> The Scale</Command.Item>
+                {SCREENS.slice(2).map((s) => <Command.Item key={s.to} className={item} onSelect={() => run(() => nav(s.to))}><s.icon size={15} /> {s.label}</Command.Item>)}
+              </Command.Group>
+              <Command.Group heading="View as seller" className={group}>
+                {SELLERS.map((s) => (
+                  <Command.Item key={s.id} className={item} value={`seller ${s.name} ${s.brand} ${s.category}`} onSelect={() => run(() => setSeller(s.id))}>
+                    <Avatar s={s} size={20} /> <span className="flex-1">{s.name} · {s.brand}</span><span className="text-[11.5px] text-ink-3">{s.city}</span>
+                  </Command.Item>
+                ))}
+                <Command.Item className={item} onSelect={() => run(() => setQuiz(true))}><Wand2 size={15} className="text-brass" /> Which seller are you?</Command.Item>
               </Command.Group>
               <Command.Group heading="Prototype" className={group}>
                 <Command.Item className={item} onSelect={() => run(toggleLens)}><Glasses size={15} /> Toggle BA Lens</Command.Item>
                 <Command.Item className={item} onSelect={() => run(() => setRoom(true))}><SlidersHorizontal size={15} /> Open Control Room</Command.Item>
-                {(Object.keys(SCENARIOS) as (keyof typeof SCENARIOS)[]).map((id) => (
-                  <Command.Item key={id} className={item} value={`scenario ${SCENARIOS[id].label}`} onSelect={() => run(() => applyScenario(id))}>
-                    <Zap size={15} className="text-brass" /> Scenario: {SCENARIOS[id].label}
+                {seller.presets.map((p) => (
+                  <Command.Item key={p.id} className={item} value={`scenario ${p.label}`} onSelect={() => run(() => applyScenario(p.id))}>
+                    <Zap size={15} className="text-brass" /> Scenario: {p.label}
                   </Command.Item>
                 ))}
               </Command.Group>
-              <Command.Group heading="Products" className={group}>
-                {skus.map((s) => (
+              <Command.Group heading={`${seller.name}'s products`} className={group}>
+                {seller.skus.map((s) => (
                   <Command.Item key={s.id} className={item} value={`${s.name} ${s.category}`} onSelect={() => run(() => nav(`/sku/${s.id}`))}>
                     <Package size={15} /> <span className="flex-1">{s.name}</span><span className="text-[11.5px] text-ink-3">{s.category}</span>
                   </Command.Item>

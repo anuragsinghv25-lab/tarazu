@@ -6,21 +6,11 @@ import { Card, Chip, Eyebrow, HEALTH_META, Money, PageHeader, Segmented, Slider,
 import { Spot } from '@/components/Spot'
 import { ScaleVisual } from './ScaleVisual'
 import { ProfitCurve } from './ProfitCurve'
-import { useControls, useRec } from '@/state/hooks'
-import { storySkuIds } from '@/data/meera'
+import { useControls, useRec, useSeller } from '@/state/hooks'
 import { simulate, curve, sweetSpot, weeksOfSupply, effStock, mechanicFor } from '@/engine/engine'
 import type { ChannelOrBlend, Recommendation } from '@/engine/types'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
-
-const STORY_LABEL: Record<string, string> = {
-  'vitamin-c-saffron-serum-30-ml': 'Expiring serum',
-  'beetroot-lip-balm-regular': 'Overstocked lip balm',
-  'diwali-glow-box-set': 'Leftover gift sets',
-  'kumkumadi-glow-serum-30-ml': 'Bestselling serum',
-  'mineral-sunscreen-spf-50-50-g': 'Sunscreen',
-  'rose-toner-200-ml': 'Slow toner',
-}
 
 export function SkuDetail() {
   const { id = '' } = useParams()
@@ -32,6 +22,7 @@ export function SkuDetail() {
 function SkuInner({ rec }: { rec: Recommendation }) {
   const s = rec.sku
   const c = useControls()
+  const seller = useSeller()
   const [d, setD] = useState(rec.discount)
   const [weeks, setWeeks] = useState(rec.weeks)
   const [channel, setChannel] = useState<ChannelOrBlend>('blended')
@@ -55,10 +46,10 @@ function SkuInner({ rec }: { rec: Recommendation }) {
         </span>
       </PageHeader>
       <div className="-mt-2 mb-6 flex flex-wrap items-center gap-1.5">
-            <span className="mr-1 text-[11.5px] text-ink-3">Meera's story products:</span>
-            {storySkuIds.filter((k) => STORY_LABEL[k]).map((k) => (
+            <span className="mr-1 text-[11.5px] text-ink-3">{seller.name}'s story products:</span>
+            {seller.story.map(({ id: k, label }) => (
               <Link key={k} to={`/sku/${k}`} className={cn('rounded-full border px-2.5 py-1 text-[11.5px] transition-colors', k === s.id ? 'border-ink bg-ink text-paper' : 'border-rule bg-card text-ink-2 hover:border-ink-3/40')}>
-                {STORY_LABEL[k]}
+                {label}
               </Link>
             ))}
       </div>
@@ -84,6 +75,7 @@ function SkuInner({ rec }: { rec: Recommendation }) {
                 ['Sales stolen from your other products', r.cannibalCost],
                 ['Future sales pulled forward', r.pullForwardCost],
                 ['Deal fees', r.dealFees],
+                ...(r.returnsCost > 1 ? [['Returns on extra orders', r.returnsCost] as [string, number]] : []),
               ]} />
               <PanLedger title="Earned" tone="gain" total={r.earned} align="right" rows={[
                 ['Profit on extra units', r.liftProfit],
@@ -105,7 +97,7 @@ function SkuInner({ rec }: { rec: Recommendation }) {
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 <Segmented<number> size="sm" value={weeks} onChange={setWeeks} options={[1, 2, 3, 4].map((w) => ({ value: w, label: `${w} wk` }))} />
                 <Segmented<ChannelOrBlend> size="sm" value={channel} onChange={setChannel} options={[
-                  { value: 'blended', label: 'All' }, { value: 'amazon', label: 'Amazon' }, { value: 'flipkart', label: 'Flipkart' }, { value: 'nykaa', label: 'Nykaa' }, { value: 'website', label: 'Website' },
+                  { value: 'blended', label: 'All' }, ...Object.entries(c.market.channels).map(([k, f]) => ({ value: k, label: f.label.replace('Own website', 'Website').replace('Kiranas via distributor', 'Kiranas') })),
                 ]} />
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -122,6 +114,10 @@ function SkuInner({ rec }: { rec: Recommendation }) {
             <Card className="relative overflow-hidden p-5">
               <div className="flex items-center gap-2 text-brass"><Sparkles size={15} /><Eyebrow className="text-brass">Why this?</Eyebrow></div>
               <div className="display mt-2 text-[22px] leading-tight text-ink">{rec.mechanic}{rec.discount ? ` · ${pct(rec.discount)}` : ''}</div>
+              <div className="mt-2 flex items-center gap-2">
+                <Chip tone={rec.confidence === 'high' ? 'gain' : rec.confidence === 'medium' ? 'warn' : 'loss'}>{rec.confidence} confidence</Chip>
+                <span className="text-[11.5px] text-ink-3">{rec.confidenceWhy}</span>
+              </div>
               <p className="mt-2 text-[13.5px] leading-relaxed text-ink-2">{rec.why}</p>
               <div className="mt-4 grid grid-cols-3 gap-2 border-t border-dashed border-rule pt-3 text-center">
                 <Stat label="Sweet spot" value={pct(best.d)} />

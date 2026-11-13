@@ -3,8 +3,8 @@ import { motion } from 'motion/react'
 import { ArrowRight, ArrowUpRight, ScanSearch, Store } from 'lucide-react'
 import { Card, Chip, Eyebrow, HEALTH_META, Money, PageHeader, Count } from '@/components/ui'
 import { Spot } from '@/components/Spot'
-import { usePortfolio, useTruth } from '@/state/hooks'
-import { seller } from '@/data/meera'
+import { usePortfolio, useTruth, useSeller } from '@/state/hooks'
+import { FatigueCard } from './FatigueCard'
 import { inrShort, pct } from '@/lib/format'
 import type { Health } from '@/engine/types'
 
@@ -13,6 +13,7 @@ const ORDER: Health[] = ['at-risk', 'slow', 'healthy', 'fast']
 export function Overview() {
   const p = usePortfolio()
   const t = useTruth()
+  const seller = useSeller()
   const actions = [...p.promos].sort((a, b) => b.result.net - a.result.net).slice(0, 6)
   const holds = p.recs.filter((r) => r.discount === 0 && r.sku.tags.includes('bestseller')).slice(0, 1)
   const riskCount = p.counts['at-risk'] + p.counts.slow
@@ -21,18 +22,24 @@ export function Overview() {
     <div>
       <PageHeader
         eyebrow={`Overview · ${seller.brand}, ${seller.city}`}
-        title={<>Namaste, Meera.<br /><span className="text-ink-3">{inrShort(p.stuck)} is waiting in your godown.</span></>}
+        title={<>Namaste, {seller.name}.<br /><span className="text-ink-3">{inrShort(p.stuck)} is waiting in your godown.</span></>}
       >
-        Here's where your money is before {seller.event}, and the few promotions worth running. Everything below is weighed after
-        discounts, platform fees and the sales a deal only steals from your other products.
+        Here's where your money is before the {seller.event}, and the few promotions worth running. Everything below is weighed after
+        discounts, {seller.id === 'anaya' ? 'trade margins' : 'platform fees'}, returns and the sales a deal only steals from your other products.
       </PageHeader>
 
       <Spot id="opportunity" className="mb-8">
         <Card className="border-beam overflow-hidden">
           <div className="grid divide-y divide-rule md:grid-cols-3 md:divide-x md:divide-y-0">
             <Kpi label="Stuck in risky stock" tone="loss" value={p.stuck} sub={`${riskCount} SKUs won't sell out in time at today's pace`} link={{ to: '/pulse', text: 'See Stock Pulse' }} />
-            <Kpi label="Leaked last Diwali" tone="loss" value={t.net} sub={`"40% off everything" sold ${pct(t.promoUnits / t.baseUnits - 1)} more, then lost money`} link={{ to: '/truth', text: 'Open Truth Lens' }} />
-            <Kpi label="Projected gain this season" tone="gain" value={p.gain} signed sub={`From ${p.promos.length} targeted promotions; ${p.holds} products stay at full price`} link={{ to: `/sku/${actions[0]?.sku.id ?? ''}`, text: 'Weigh the top deal' }} />
+            <Kpi label="Leaked last Diwali" tone="loss" value={t.net} sub={`${t.label.split(' · ')[1] ?? 'The last sale'} sold ${pct(t.promoUnits / t.baseUnits - 1)} more, then lost money`} link={{ to: '/truth', text: 'Open Truth Lens' }} />
+            <Kpi label="Projected gain this season" tone="gain" value={p.gain} signed sub={`From ${p.promos.length} targeted promotions; ${p.holds} products stay at full price. Frees ${inrShort(p.freed)} of cash for new stock.`} link={{ to: `/sku/${actions[0]?.sku.id ?? ''}`, text: 'Weigh the top deal' }} />
+          </div>
+          <div className="flex flex-wrap items-center gap-2 border-t border-rule bg-paper-2/40 px-6 py-3">
+            <span className="mr-1 text-[11px] font-semibold tracking-[0.14em] text-ink-3 uppercase">Untapped</span>
+            {seller.untapped.map((u) => (
+              <Link key={u.label} to={u.to ?? '/'} className="rounded-full border border-dashed border-brass/50 bg-card px-2.5 py-1 text-[12px] text-ink-2 transition-colors hover:border-brass hover:text-ink">{u.label}</Link>
+            ))}
           </div>
         </Card>
       </Spot>
@@ -99,8 +106,9 @@ export function Overview() {
             </Card>
           </Spot>
 
-          <TeaserCard to="/truth" icon={<ScanSearch size={18} />} eyebrow="Truth Lens" title="What last Diwali really earned" body={`The dashboard said +${pct(t.promoUnits / t.baseUnits - 1)} sales. Peel it and only ${pct(t.incremental / t.promoUnits)} of those units were truly new.`} />
-          <TeaserCard to="/compare" icon={<Store size={18} />} eyebrow="Platform compare" title="Same deal, four very different profits" body="See which channel turns a sunscreen Lightning Deal into profit after commission and deal fees." />
+          <FatigueCard />
+          <TeaserCard to="/truth" icon={<ScanSearch size={18} />} eyebrow="Truth Lens" title={`What ${t.label.split(' · ')[0]} really earned`} body={`The dashboard said +${pct(t.promoUnits / t.baseUnits - 1)} sales. Peel it and only ${pct(t.incremental / t.promoUnits)} of those units were truly new.`} />
+          <TeaserCard to="/compare" icon={<Store size={18} />} eyebrow="Platform compare" title="Same deal, four very different profits" body={`See which of ${seller.name}'s ${Object.keys(seller.market.channels).length} channels turns a deal into profit after ${seller.id === 'anaya' ? 'trade margins' : 'commission'} and deal fees.`} />
         </div>
       </div>
     </div>

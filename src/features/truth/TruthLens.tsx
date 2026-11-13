@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { ChevronDown, RotateCcw, TrendingUp } from 'lucide-react'
 import { Card, Eyebrow, Money, PageHeader } from '@/components/ui'
 import { Spot } from '@/components/Spot'
-import { useTruth } from '@/state/hooks'
+import { useSeller, useTruth } from '@/state/hooks'
 import { inrShort, pct, units } from '@/lib/format'
 import { cn } from '@/lib/cn'
 
@@ -17,6 +17,8 @@ const LAYERS = [
 
 export function TruthLens() {
   const t = useTruth()
+  const seller = useSeller()
+  const [when, what] = t.label.split(' · ')
   const [params] = useSearchParams()
   // ?peel=5 opens fully peeled — handy for demos and story mode
   const [stage, setStage] = useState(() => Math.min(5, Number(params.get('peel')) || 0))
@@ -31,7 +33,7 @@ export function TruthLens() {
   return (
     <div>
       <PageHeader eyebrow="Truth Lens" title={<>Most promotions look better<br />than they are.</>}>
-        Last Diwali, Meera ran 40% off her whole catalogue for two weeks. Here is the headline her dashboard showed, and what was underneath it.
+        {when}: {seller.name} ran {what} for {seller.history.weeks} weeks. Here is the headline the dashboard showed, and what was underneath it.
       </PageHeader>
 
       <Spot id="truth-headline">
@@ -128,7 +130,7 @@ export function TruthLens() {
                 <Eyebrow>Same festival, weighed by Tarazu</Eyebrow>
                 <div className="display mt-2 text-[24px] leading-tight text-ink">Targeted offers on the stock that needed them. Full price on everything else.</div>
                 <div className="mt-5 grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-loss-soft p-3"><div className="text-[11px] text-loss">40% off everything</div><Money value={t.net} signed className="text-[22px] font-semibold text-loss" /></div>
+                  <div className="rounded-xl bg-loss-soft p-3"><div className="text-[11px] text-loss">{what}</div><Money value={t.net} signed className="text-[22px] font-semibold text-loss" /></div>
                   <div className="rounded-xl bg-gain-soft p-3"><div className="text-[11px] text-gain">Tarazu's plan</div><Money value={t.planNet} signed className="text-[22px] font-semibold text-gain" /></div>
                 </div>
                 <p className="mt-auto pt-5 text-[13px] leading-relaxed text-ink-2">

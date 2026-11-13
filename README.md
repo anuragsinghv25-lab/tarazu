@@ -14,7 +14,7 @@ to leave at full price.
 
 ## Release 1 · "The Scale"
 
-The first of three releases. Meera — a fictional Ayurvedic skincare brand in Jaipur selling on Amazon, Flipkart,
+Meera — a fictional Ayurvedic skincare brand in Jaipur selling on Amazon, Flipkart,
 Nykaa and her own website — has 140 SKUs and three weeks until Big Billion Days.
 
 | Screen | What it shows |
@@ -40,6 +40,38 @@ Two prototype layers sit on top of every screen:
 | **Truth Lens** | **Control Room** |
 | ![Truth Lens](docs/screenshots/truth-lens.png) | ![Control Room](docs/screenshots/control-room.png) |
 
+## Release 2 · "The Market"
+
+Four demo sellers, each chosen to own a slice of the promotion vocabulary. Switch between them from the top bar,
+take the 4-question quiz ("Which seller are you?"), or open a link with `?seller=farhan`.
+
+| Seller | Business | What their story demonstrates |
+| --- | --- | --- |
+| **Meera** · Saanjh Botanicals, Jaipur | Ayurvedic skincare on Amazon, Flipkart, Nykaa, own site | Expiry-driven clearance, coupons, a leaked code, points and referrals |
+| **Farhan** · Rangreza Weaves, Surat | Ethnic wear on Meesho, Flipkart, Amazon | Hi-Lo habit, promo fatigue, seasonal markdown ladders, bundles; why loyalty isn't for him |
+| **Kabir** · VoltLane, Delhi | Phone accessories, launching a new charger | Bank offers, no-cost EMI, stacking, an old model to clear, win-back |
+| **Anaya** · Malwa Bites, Indore | Snacks and chai through distributors and retailers | Brand mode: trade spend, gross-to-net, forward buying, deductions |
+
+| Screen | What it shows |
+| --- | --- |
+| **Campaign builder** | Rules as blocks read top to bottom: WHO (segment) → IF (cart, product, payment) → THEN (percent, flat, BOGO, gift, bundle, tiered, points) → LIMITS (caps, budget) → STACK (exclusive, stackable, always, priority). A plain-English sentence, budget burn-down and a conflict check. |
+| **Cart Sandbox** | Drag products into a cart and watch every campaign pass or fail each gate. Leaks are flagged with a one-click fix; the receipt shows who funds each line. |
+| **Season plan** | Campaigns on the sale-event calendar, a week-by-week clearance ladder, and a Hi-Lo vs everyday-low-price duel. |
+| **Bundles** | Slow movers matched to bestsellers the same buyers already pick up, priced so the bundle clears stock without giving away the bestseller's margin. Turn any bundle into a campaign. |
+| **Loyalty** | Programme economics and points liability, win-back offers, referral fraud checks; a reasoned "not for you" for sellers it wouldn't pay for. |
+| **Brand mode** | Gross-to-net waterfall, every trade deal scored by ROI, a trade-promotion-optimisation slider, sell-in vs sell-out, and a deductions ledger with disputes. |
+| **Demo sellers** | The four sellers side by side, plus a coverage matrix of which seller demonstrates which concept. |
+
+Dotted-underlined terms explain themselves on hover, and every new element has a BA Lens note.
+
+| Campaign builder | Cart Sandbox |
+| --- | --- |
+| ![Campaign builder](docs/screenshots/campaign-builder.png) | ![Cart Sandbox](docs/screenshots/cart-sandbox.png) |
+| **Brand mode** | **Bundles** |
+| ![Brand mode](docs/screenshots/brand-mode.png) | ![Bundles](docs/screenshots/bundles.png) |
+| **Season plan** | **Demo sellers** |
+| ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
+
 ## How the numbers work
 
 Every figure comes from a small, tested engine in [`src/engine`](src/engine):
@@ -53,6 +85,10 @@ earned             = profit on lift + halo on other products + write-off avoided
 net impact         = earned − given away
 ```
 
+A campaign is checked against a cart in four gates, in order: **WHO** (is this shopper eligible) → **IF** (are the
+conditions met) → **STACK** (does it combine with what already applied) → **LIMITS** (caps and budget left). The first
+gate that fails is the reason shown.
+
 Recommendations pick the discount with the highest net impact inside the margin floor, hold full price when the best
 deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overstock that needs a deep cut.
 
@@ -60,8 +96,8 @@ deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overs
 
 | Release | Scope |
 | --- | --- |
-| **1 · The Scale** (this) | Design system, engine, Meera's data, five decision screens, Control Room, BA Lens |
-| **2 · The Market** | Campaign builder (visual rules, caps, budgets), Cart Sandbox (stacking and leakage), season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
+| **1 · The Scale** (done) | Design system, engine, Meera's data, five decision screens, Control Room, BA Lens |
+| **2 · The Market** (this) | Campaign builder (visual rules, caps, budgets), Cart Sandbox (stacking and leakage), season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
 | **3 · The Mind** | Six AI features (copilot, brief to plan, Watchtower alerts, sale debrief, offer copy, autonomy dial), story mode, interactive case study hub, dark mode |
 
 ## Run it
