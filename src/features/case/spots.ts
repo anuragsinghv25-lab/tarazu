@@ -23,6 +23,9 @@ export function routeOf(id: string, s: SellerDef): string | null {
     'creator-split': '/creators', 'creator-roster': '/creators', 'creator-deal': '/creators', 'creator-disclosure': '/creators', 'creator-calendar': '/creators',
     'affiliate-commission': '/affiliates', 'affiliate-attribution': '/affiliates', 'affiliate-ledger': '/affiliates', 'referral-design': '/affiliates?tab=referrals', 'referral-fraud': '/affiliates?tab=referrals', resellers: '/affiliates?tab=resellers',
     'community-drop': '/community', 'community-group': '/community', 'community-reviews': '/community',
+    'uplift-quadrant': '/uplift', 'uplift-compare': '/uplift', 'uplift-segments': '/uplift', 'uplift-curve': '/uplift', 'ads-curve': '/ads-vs-discount', 'ads-buys': '/ads-vs-discount',
+    'ondc-order': '/ondc', 'ondc-settings': '/ondc', 'ondc-fit': '/ondc', subscribe: '/commitments', preorder: '/commitments?tab=preorder', 'price-protect': '/commitments?tab=protect',
+    'experiment-plan': '/experiments', 'experiment-peeking': '/experiments', 'experiment-readout': '/experiments', 'experiment-rules': '/experiments',
   }
   return map[id] ?? null
 }
@@ -39,6 +42,7 @@ export const SCREEN_NAME: Record<string, string> = {
   '/sandbox': 'Cart Sandbox', '/plan': 'Season plan', '/bundles': 'Bundles', '/loyalty': 'Loyalty', '/brand': 'Brand mode', '/sellers': 'Demo sellers',
   '/launch': 'Launch flow', '/lifecycle': 'Lifecycle', '/codes': 'Code studio', '/storefront': 'Shopper preview', '/edge-cases': 'Edge-case lab',
   '/creators': 'Creator hub', '/affiliates': 'Affiliates and referrals', '/community': 'Community',
+  '/uplift': 'Uplift targeting', '/ads-vs-discount': 'Ads vs discount', '/ondc': 'ONDC channel', '/commitments': 'Subscribe and pre-order', '/experiments': 'Experiments',
   '/ask': 'Ask Tarazu', '/brief': 'Brief to plan', '/watchtower': 'Watchtower', '/debrief': 'Sale debrief', '/copy': 'Offer copy',
 }
 export const screenName = (route: string) => SCREEN_NAME[route.startsWith('/sku') ? '/sku' : route.split('?')[0]] ?? route

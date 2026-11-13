@@ -341,8 +341,8 @@ function Kpis() {
     ['R2 · The Market', 'Four sellers, Campaign builder, Cart Sandbox, Season plan, Bundles, Loyalty, Brand mode', 'Shipped'],
     ['R3 · The Mind', 'Six scripted AI features, story mode, this Case Study, dark mode, mobile', 'Shipped'],
     ['R4 · The Launch', 'The builder journey: goal to live offer, codes, channel formats, pre-flight, approvals, lifecycle, guardrails, edge cases', 'Shipped'],
-    ['R5 · The Reach', 'Creator hub with true ROI, affiliates and attribution, referral 2.0 with a fraud queue, reseller mode, community drops, group buys and review rewards', 'This release'],
-    ['R6 · The Edge', 'Uplift targeting, ads vs discount, ONDC, subscribe and save, experiments', 'Planned'],
+    ['R5 · The Reach', 'Creator hub with true ROI, affiliates and attribution, referral 2.0 with a fraud queue, reseller mode, community drops, group buys and review rewards', 'Shipped'],
+    ['R6 · The Edge', 'Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders, price-drop protection, experiments', 'This release'],
   ]
   return (
     <section>

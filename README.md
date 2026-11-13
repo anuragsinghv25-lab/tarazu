@@ -72,6 +72,30 @@ Dotted-underlined terms explain themselves on hover, and every new element has a
 | **Season plan** | **Demo sellers** |
 | ![Season plan](docs/screenshots/season-plan.png) | ![Demo sellers](docs/screenshots/sellers.png) |
 
+## Release 6 · "The Edge"
+
+The techniques that separate a good promotion team from a great one. Each still lands on the Scale: money given away against money earned.
+
+| Screen | What it does |
+| --- | --- |
+| **Uplift targeting** | Customers sorted into persuadables, sure things, lost causes and sleeping dogs. Sending to everyone, to the most likely buyers, and to the most persuadable are compared on net; the uplift curve shows where to stop. One click drafts the targeted offer into the Launch flow. |
+| **Ads vs discount** | One monthly budget split between paid ads (cost per buyer rises with spend) and discounts (the extra-order share falls as reach widens). Finds the most profitable mix and shows what each rupee buys. |
+| **ONDC channel** | One order's fees on ONDC against the seller's main marketplace, with buyer-app and seller-app fees, network-funded discounts and pass-through pricing as settings. Products ranked by extra margin kept. |
+| **Subscribe and save** | A month's subscribers followed for a year against what the same buyers would order anyway. Honest about fit: not offered for sarees. |
+| **Pre-orders** | An early-bird window before a launch (Kabir's 65W): confirmed pre-orders narrow the demand forecast, cut stock at risk and bring cash in early. |
+| **Price-drop protection** | "If our price drops within N days, we refund the difference": buyers who stop waiting vs claims when a sale lands inside the window. |
+| **Experiments** | Sample size and days for a test, alternate-week tests where marketplaces can't split traffic, the peeking problem shown on two identical offers, and a readout on profit per visitor as well as conversion. |
+
+ONDC fees, incentives and volumes are illustrative, not quoted rates. Customer groups and their offer effects are invented.
+
+| Uplift targeting | Ads vs discount |
+| --- | --- |
+| ![Uplift targeting](docs/screenshots/uplift.png) | ![Ads vs discount](docs/screenshots/ads-vs-discount.png) |
+| **ONDC channel** | **Experiments** |
+| ![ONDC](docs/screenshots/ondc.png) | ![Experiments](docs/screenshots/experiments.png) |
+| **Pre-orders** | |
+| ![Pre-orders](docs/screenshots/pre-orders.png) | |
+
 ## Release 5 · "The Reach"
 
 Promotion beyond the discount: creators, affiliates, referring customers, resellers and a seller's own community.
@@ -201,8 +225,8 @@ deal isn't worth training customers to wait, and switch to Buy 1 Get 1 for overs
 | **2 · The Market** (done) | Campaign builder, Cart Sandbox, season plan, bundles, loyalty; demo sellers Farhan, Kabir and Anaya with a CPG "Brand mode" |
 | **3 · The Mind** (done) | Six AI features, story mode, Case Study hub, night mode, mobile |
 | **4 · The Launch** (done) | The builder journey: goal to live offer, codes, segments, schedules, marketplace format mapping, approvals, lifecycle, guardrails and edge cases |
-| **5 · The Reach** (this) | Creator hub with a true ROI peel, affiliates and attribution, referral 2.0 with fraud signals, reseller mode, community drops, group buys and review rewards |
-| **6 · The Edge** | Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders and price-drop protection, proper experiments |
+| **5 · The Reach** (done) | Creator hub with a true ROI peel, affiliates and attribution, referral 2.0 with fraud signals, reseller mode, community drops, group buys and review rewards |
+| **6 · The Edge** (this) | Uplift targeting, ads vs discount, ONDC as a channel, subscribe and save, pre-orders and price-drop protection, proper experiments |
 
 ## Run it
 
