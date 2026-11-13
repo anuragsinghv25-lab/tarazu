@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/fraunces';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+/* ───────── Tarazu design tokens ─────────
+   Paper and ink, a brass accent for the one number that matters,
+   green for gain and vermilion for loss. Nothing else gets colour. */
+@theme {
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+
+  --color-paper: #f5efe3;
+  --color-paper-2: #ede5d4;
+  --color-card: #fbf8f1;
+  --color-ink: #1c1a17;
+  --color-ink-2: #4a453d;
+  --color-ink-3: #8a8274;
+  --color-rule: #dcd2bf;
+  --color-rule-2: #e8e0cf;
+
+  --color-brass: #b07d2b;
+  --color-brass-2: #d9a441;
+  --color-brass-soft: #f1e2bf;
+
+  --color-gain: #2e7a57;
+  --color-gain-soft: #d9ead9;
+  --color-loss: #c2421c;
+  --color-loss-soft: #f5dccf;
+  --color-warn: #c48a12;
+  --color-warn-soft: #f6e6c0;
+
+  --color-night: #15130f;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 0 rgba(28, 26, 23, 0.04), 0 8px 24px -12px rgba(28, 26, 23, 0.18);
+  --shadow-lift: 0 2px 0 rgba(28, 26, 23, 0.05), 0 18px 40px -16px rgba(28, 26, 23, 0.3);
+
+  --animate-glow: glow 1.4s ease-out;
+  --animate-breathe: breathe var(--breathe, 3s) ease-in-out infinite;
+  --animate-beam: beam 6s linear infinite;
+  --animate-marker: marker 2.4s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 rgba(217, 164, 65, 0.65); }
+  35% { box-shadow: 0 0 0 6px rgba(217, 164, 65, 0.28); }
+  100% { box-shadow: 0 0 0 14px rgba(217, 164, 65, 0); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); filter: saturate(1); }
+  50% { transform: scale(0.94); filter: saturate(1.25); }
+}
+@keyframes beam {
+  to { offset-distance: 100%; }
+}
+@keyframes marker {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 0.45; }
+}
+
+@layer base {
+  html { background: var(--color-paper); color: var(--color-ink); }
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    /* fine paper grain */
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0.055 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection { background: var(--color-brass-soft); }
+  .tnum { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .display { font-family: var(--font-display); font-optical-sizing: auto; letter-spacing: -0.02em; }
+  :focus-visible { outline: 2px solid var(--color-brass); outline-offset: 2px; border-radius: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Ruled ledger lines used behind hero visuals */
+.ledger {
+  background-image: repeating-linear-gradient(to bottom, transparent 0 27px, var(--color-rule-2) 27px 28px);
+}
+
+/* Border beam (Magic UI–style): a light that travels around a card's edge */
+.border-beam { position: relative; isolation: isolate; }
+.border-beam::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--beam-angle, 0deg), transparent 0 70%, var(--color-brass-2) 82%, transparent 92%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-beam 5s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@property --beam-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes spin-beam { to { --beam-angle: 360deg; } }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes slideOut { from { transform: none; } to { transform: translateX(100%); } }
